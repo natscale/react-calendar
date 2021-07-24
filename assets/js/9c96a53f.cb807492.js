@@ -1,1 +1,0 @@
-(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[872],{1469:function(e){"use strict";e.exports=JSON.parse('{"allTagsPath":"/react-calendar/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/react-calendar/blog/tags/hello"}')}}]);
