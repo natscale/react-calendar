@@ -1,0 +1,12 @@
+/docs/
+/src/
+/.vscode/
+/build/
+/test/
+README.md
+.prettierrc
+.npmrc
+.npmignore
+.gitignore
+.eslintignore
+.eslintrc.js
