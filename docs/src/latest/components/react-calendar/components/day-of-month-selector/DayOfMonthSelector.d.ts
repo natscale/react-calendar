@@ -1,15 +1,14 @@
 import React from 'react';
-import { CSSProps, Value } from '../../calendar';
-import { MonthIndices, WeekdayIndices } from '../../types';
+import type { CSSProps, MonthIndices, Value, WeekdayIndices } from '../../types';
 interface Props {
-    onChangeViewingYear: (year: number) => any;
-    onChangeViewingMonth: (month: MonthIndices) => any;
-    onChangenNewSelectedRangeEnd: (date: Date | undefined) => any;
-    onChangenNewSelectedRangeStart: (date: Date | undefined) => any;
-    onChangenSelectedRangeStart: (date: Date | undefined) => any;
-    onChangenSelectedRangeEnd: (date: Date | undefined) => any;
-    onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => any;
-    onChangenSelectedDate: (dates: Date) => any;
+    onChangeViewingYear: (year: number) => unknown;
+    onChangeViewingMonth: (month: MonthIndices) => unknown;
+    onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
+    onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
+    onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
+    onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
+    onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
+    onChangenSelectedDate: (dates: Date) => unknown;
     viewingMonth: MonthIndices;
     allowFewerDatesThanRange: boolean;
     skipDisabledDatesInRange: boolean;
@@ -39,7 +38,7 @@ interface Props {
     isDisabled: (date: Date) => boolean;
     checkIfWeekend: (date: Date) => boolean;
     today: Date;
-    onChange?: (value: Value) => any | Promise<any>;
+    onChange?: (value: Value) => unknown | Promise<unknown>;
     layoutCalcs: CSSProps;
 }
 declare function DayOfMonthSelectorComponent({ selectedDate, selectedRangeStart, selectedRangeEnd, newSelectedRangeStart, weekStartIndex, onChangeViewingYear, onChangeViewingMonth, newSelectedRangeEnd, isRangeSelectorView, skipDisabledDatesInRange, setIsRangeSelectModeOn, fixedRangeLength, isFixedRangeView, isRangeSelectModeOn, isDisabled, onChangenSelectedMultiDates, selectedMultiDates, isMultiSelectorView, today, viewingMonth, onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd, onChangenSelectedRangeStart, onChangenSelectedDate, layoutCalcs, weekendIndices, onChange, viewingYear, allowFewerDatesThanRange, disableFuture, disablePast, lockView, checkIfWeekend, highlights, disableToday, }: Props): JSX.Element;

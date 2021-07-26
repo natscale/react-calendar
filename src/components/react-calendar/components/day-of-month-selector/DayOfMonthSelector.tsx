@@ -1,18 +1,18 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { CSSProps, Value } from '../../calendar';
 
-import { DayOfMonthCell, MonthIndices, WeekdayIndices } from '../../types';
+import type { CSSProps, DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../types';
+
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
 
 interface Props {
-  onChangeViewingYear: (year: number) => any;
-  onChangeViewingMonth: (month: MonthIndices) => any;
-  onChangenNewSelectedRangeEnd: (date: Date | undefined) => any;
-  onChangenNewSelectedRangeStart: (date: Date | undefined) => any;
-  onChangenSelectedRangeStart: (date: Date | undefined) => any;
-  onChangenSelectedRangeEnd: (date: Date | undefined) => any;
-  onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => any;
-  onChangenSelectedDate: (dates: Date) => any;
+  onChangeViewingYear: (year: number) => unknown;
+  onChangeViewingMonth: (month: MonthIndices) => unknown;
+  onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
+  onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
+  onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
+  onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
+  onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
+  onChangenSelectedDate: (dates: Date) => unknown;
   viewingMonth: MonthIndices;
   allowFewerDatesThanRange: boolean;
   skipDisabledDatesInRange: boolean;
@@ -42,7 +42,7 @@ interface Props {
   isDisabled: (date: Date) => boolean;
   checkIfWeekend: (date: Date) => boolean;
   today: Date;
-  onChange?: (value: Value) => any | Promise<any>;
+  onChange?: (value: Value) => unknown | Promise<unknown>;
   layoutCalcs: CSSProps;
 }
 
@@ -158,7 +158,7 @@ function DayOfMonthSelectorComponent({
           const previouslySelectedDate = new Date(
             newSelectedRangeStart.getFullYear(),
             newSelectedRangeStart.getMonth(),
-            newSelectedRangeStart.getDate()
+            newSelectedRangeStart.getDate(),
           );
 
           if (isBefore(previouslySelectedDate, clickedDate)) {
@@ -228,7 +228,7 @@ function DayOfMonthSelectorComponent({
           onChange(
             Object.keys(newselectedMultiDates)
               .filter((dk) => !!newselectedMultiDates[dk])
-              .map((dk) => newselectedMultiDates[dk] as Date)
+              .map((dk) => newselectedMultiDates[dk] as Date),
           );
       } else {
         onChangenSelectedDate(clickedDate);
@@ -264,13 +264,13 @@ function DayOfMonthSelectorComponent({
       selectedMultiDates,
       onChangenSelectedMultiDates,
       onChangenSelectedDate,
-    ]
+    ],
   );
 
   return (
-    <div style={layoutCalcs.dayOfMonth['arc_view-days-of-month']} className='arc_view-days-of-month' role='grid'>
+    <div style={layoutCalcs.dayOfMonth['arc_view-days-of-month']} className="arc_view-days-of-month" role="grid">
       {daysOfMMonthViewMatrix.map((row, index) => (
-        <div style={layoutCalcs.dayOfMonth.arc_view_row} className='arc_view_row' key={index}>
+        <div style={layoutCalcs.dayOfMonth.arc_view_row} className="arc_view_row" key={index}>
           {row.map((cell) => (
             <div
               style={layoutCalcs.dayOfMonth.arc_view_cell}
@@ -292,13 +292,15 @@ function DayOfMonthSelectorComponent({
                 cell.isDisabled ? ' arc_disabled' : ''
               }${cell.isInRange ? ' arc_in_range' : ''}${cell.isRangeStart ? ' arc_range_start' : ''}${
                 cell.isRangeEnd ? ' arc_range_end' : ''
-              }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}>
-              <div style={layoutCalcs.dayOfMonth.arc_view_cell_value} className='arc_view_cell_value'>
+              }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}
+            >
+              <div style={layoutCalcs.dayOfMonth.arc_view_cell_value} className="arc_view_cell_value">
                 <button
                   style={layoutCalcs.dayOfMonth.arc_view_cell_value_button}
                   disabled={cell.isDisabled}
                   tabIndex={cell.isDisabled ? -1 : 0}
-                  onClick={() => onDateClicked(cell)}>
+                  onClick={() => onDateClicked(cell)}
+                >
                   {cell.dayOfMonth}
                 </button>
               </div>

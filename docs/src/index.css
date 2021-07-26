@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 24px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.input {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  border: 1px solid #efefef;
+  border-radius: 2px;
+}
+
+.input input {
+  -webkit-font-smoothing: antialiased;
+  padding: 4px;
+  border: none;
+  height: 32px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #0f2b44;
+  font-weight: 400;
+}
+
+.input input:focus {
+  outline: none;
+}
+
+.input > div {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  border-left: 1px solid #efefef;
+  cursor: pointer;
+}
+
+.arc {
+  margin-bottom: 16px;
+}
+
+.arc.green {
+  --arc-color-accent: #9fbb06;
+  --arc-color-accent-light: #ddea99;
+  --arc-color-accent-lighter: #f6f8e7;
+}
+
+.arc.brown {
+  --arc-color-accent: #bb6a06;
+  --arc-color-accent-light: #e8c498;
+  --arc-color-accent-lighter: #f8f0e5;
+}
+
+.arc.violet {
+  --arc-color-primary: #8755ff;
+  --arc-color-primary-light: #e1c2f9;
+  --arc-color-primary-lighter: #f9ecff;
+}

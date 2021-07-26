@@ -1,6 +1,5 @@
 import React from 'react';
-import { CSSProps } from '../../calendar';
-import { MonthIndices } from '../../types';
+import { CSSProps, MonthIndices } from '../../types';
 interface Props {
     onClickPrev: () => any;
     onClickNext: () => any;

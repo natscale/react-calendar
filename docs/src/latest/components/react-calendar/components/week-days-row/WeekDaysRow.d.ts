@@ -1,6 +1,5 @@
 import React from 'react';
-import { CSSProps } from '../../calendar';
-import { WeekdayIndices } from '../../types';
+import { CSSProps, WeekdayIndices } from '../../types';
 interface Props {
     weekStartIndex: WeekdayIndices;
     weekendIndices: WeekdayIndices[];

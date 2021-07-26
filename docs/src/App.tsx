@@ -372,7 +372,7 @@ export function App(): React.ReactElement {
         <div>
           <p>Can be rendered inside a popover</p>
         </div>
-        <div style={{ justifyContent: 'flex-start' }}>
+        <div style={{ justifyContent: 'flex-start', width: '202px' }}>
           <div className="input">
             <input value={giveFormatter('YYYY-DD-MM')(ten as Date, '#')} />
             <Popover

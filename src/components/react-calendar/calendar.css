@@ -6,17 +6,17 @@
   --arc-color-text-light: #fff;
   --arc-color-bg-light: #fff;
   --arc-color-border: #f3f3f3;
-  --arc-color-box-shadow: #f1f1f1;
+  --arc-color-text-hover: rgb(248, 249, 250);
   /* General Theme Main Colors */
-  --arc-color-primary: #1c7ed6;
-  --arc-color-primary-light: #c2d7f9;
-  --arc-color-primary-lighter: #e9f2fa;
-  --arc-color-accent: #f03e3e;
-  --arc-color-accent-light: #faa5a5;
-  --arc-color-accent-lighter: #fff2f2;
+  --arc-color-primary: rgb(28 126 214);
+  --arc-color-primary-light: rgba(28 126 214 / 40%);
+  --arc-color-primary-lighter: rgba(28 126 214 / 10%);
+  --arc-color-accent: rgb(240 62 62);
+  --arc-color-accent-light: rgba(240 62 62 / 48%);
+  --arc-color-accent-lighter: rgba(240 62 62 / 7%);
   /* Context Specific */
   --arc-color-border-root: var(--arc-color-border);
-  --arc-color-box-shadow-header-button: var(--arc-color-box-shadow);
+  --arc-color-bg-text-hover-header-button: var(--arc-color-text-hover);
   --arc-color-text-today: var(--arc-color-primary);
   --arc-color-border-weekdays: var(--arc-color-border);
   --arc-color-text-weekday-label: var(--arc-color-text-inactive);
@@ -46,24 +46,6 @@
   --arc-color-bg-disabled-weekend-cross: var(--arc-color-accent-light);
 }
 
-.arc.green {
-  --arc-color-accent: #9fbb06;
-  --arc-color-accent-light: #ddea99;
-  --arc-color-accent-lighter: #f6f8e7;
-}
-
-.arc.brown {
-  --arc-color-accent: #bb6a06;
-  --arc-color-accent-light: #e8c498;
-  --arc-color-accent-lighter: #f8f0e5;
-}
-
-.arc.violet {
-  --arc-color-primary: #8755ff;
-  --arc-color-primary-light: #e1c2f9;
-  --arc-color-primary-lighter: #f9ecff;
-}
-
 .arc.dark {
   /* General Theme */
   --arc-color-transparent: rgba(0, 0, 0, 0);
@@ -72,7 +54,7 @@
   --arc-color-text-light: #353535;
   --arc-color-bg-light: #353535;
   --arc-color-border: #4e4d4d;
-  --arc-color-box-shadow: #403e3e;
+  --arc-color-text-hover: #403e3e;
   /* General Theme Main Colors */
   --arc-color-primary: #ced9ea;
   --arc-color-primary-light: #6d707f;
@@ -120,13 +102,11 @@
 /** arc_header **/
 
 .arc_header_nav {
-  box-shadow: 0 0px 3px 1px var(--arc-color-box-shadow-header-button);
   border-radius: 6px;
   cursor: pointer;
 }
 
 .arc_header_label {
-  box-shadow: 0 0px 3px 1px var(--arc-color-box-shadow-header-button);
   border-radius: 6px;
   cursor: pointer;
 }
@@ -136,9 +116,16 @@
 }
 
 .arc_header span {
-  font-weight: 500;
   font-size: 0.84em;
   color: var(--arc-color-text-dark);
+}
+
+.arc_header button:hover {
+  background-color: var(--arc-color-bg-text-hover-header-button);
+}
+
+.arc_header button:active {
+  transform: translateY(1px);
 }
 
 /** arc_view **/
@@ -149,13 +136,14 @@
 
 /** arc_view-months **/
 
-.arc_view-months .arc_view_cell {
-  cursor: pointer;
-}
-
 .arc_view-months .arc_view_cell button {
   font-size: 0.83em;
   color: var(--arc-color-text-dom-active);
+  cursor: pointer;
+}
+
+.arc_view-months .arc_view_cell button:hover {
+  background-color: var(--arc-color-bg-text-hover-header-button);
 }
 
 .arc_view-months .arc_view_cell.arc_this_month {
@@ -167,8 +155,12 @@
 
 .arc_view-years .arc_view_cell button {
   font-size: 0.83em;
-  cursor: pointer;
   color: var(--arc-color-text-dom-active);
+  cursor: pointer;
+}
+
+.arc_view-years .arc_view_cell button:hover {
+  background-color: var(--arc-color-bg-text-hover-header-button);
 }
 
 .arc_view-years .arc_view_cell.arc_this_year {
@@ -201,6 +193,10 @@
 .arc_view-days-of-month .arc_view_cell .arc_view_cell_value {
   border-radius: 2px;
   cursor: pointer;
+}
+
+.arc_view-days-of-month .arc_view_cell .arc_view_cell_value:hover {
+  background-color: var(--arc-color-bg-text-hover-header-button);
 }
 
 .arc_view-days-of-month .arc_view_cell button {
