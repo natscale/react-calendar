@@ -311,7 +311,7 @@ function Calendar({
   );
 
   return (
-    <section style={styles.root.arc} className={computedClass}>
+    <div style={styles.root.arc} className={computedClass}>
       <Header
         layoutCalcs={styles}
         onClickPrev={onPrevClick}
@@ -323,7 +323,7 @@ function Calendar({
         yearMatrixStart={yearMatrixRangeStart}
         yearMatrixEnd={yearMatrixRangeEnd}
       />
-      <main style={styles.root.arc_view} className="arc_view">
+      <div style={styles.root.arc_view} className="arc_view">
         {view === 'months' && (
           <MonthSelector layoutCalcs={styles} onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />
         )}
@@ -382,8 +382,8 @@ function Calendar({
             />
           </>
         )}
-      </main>
-    </section>
+      </div>
+    </div>
   );
 }
 
