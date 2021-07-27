@@ -965,8 +965,8 @@ var getStyles = function (size, fontSize) { return ({
     },
     weekdaysRow: {
         arc_view_weekdays: {
-            height: '14.001%',
-            margin: '0 0 3.26% 0',
+            height: '15%',
+            margin: '0',
             padding: 0,
             display: 'flex',
             width: '100%',
@@ -989,7 +989,7 @@ var getStyles = function (size, fontSize) { return ({
     },
     dayOfMonth: {
         'arc_view-days-of-month': {
-            height: '82.179%',
+            height: '85%',
         },
         arc_view_row: {
             height: '16.664%',
@@ -1265,9 +1265,9 @@ function Calendar(_a) {
         });
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
-    return (React.createElement("section", { style: styles.root.arc, className: computedClass },
+    return (React.createElement("div", { style: styles.root.arc, className: computedClass },
         React.createElement(Header, { layoutCalcs: styles, onClickPrev: onPrevClick, onClickNext: onNextClick, onChangeViewType: changeView, viewType: view, viewingMonth: monthInView, viewingYear: yearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd }),
-        React.createElement("main", { style: styles.root.arc_view, className: "arc_view" },
+        React.createElement("div", { style: styles.root.arc_view, className: "arc_view" },
             view === 'months' && (React.createElement(MonthSelector, { layoutCalcs: styles, onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView })),
             view === 'years' && (React.createElement(YearSelector, { layoutCalcs: styles, onChangeViewType: changeView, onChangeViewingYear: changeYearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd })),
             view === 'month_dates' && (React.createElement(React.Fragment, null,

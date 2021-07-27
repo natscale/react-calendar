@@ -25,8 +25,8 @@ export const getStyles: (size: number, fontSize: number) => CSSProps = (size, fo
   },
   weekdaysRow: {
     arc_view_weekdays: {
-      height: '14.001%',
-      margin: '0 0 3.26% 0',
+      height: '15%',
+      margin: '0',
       padding: 0,
       display: 'flex',
       width: '100%',
@@ -49,7 +49,7 @@ export const getStyles: (size: number, fontSize: number) => CSSProps = (size, fo
   },
   dayOfMonth: {
     'arc_view-days-of-month': {
-      height: '82.179%',
+      height: '85%',
     },
     arc_view_row: {
       height: '16.664%',
