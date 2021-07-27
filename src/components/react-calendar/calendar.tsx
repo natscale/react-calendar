@@ -30,8 +30,6 @@ import { DayOfMonthSelector } from './components/day-of-month-selector/DayOfMont
 
 import { getStyles } from './utils/styles';
 
-import './calendar.css';
-
 function Calendar({
   value,
   isMultiSelector,
