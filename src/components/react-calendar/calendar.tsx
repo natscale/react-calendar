@@ -39,7 +39,7 @@ function Calendar({
   weekends,
   highlights = [],
   skipWeekendsInRange = false,
-  initialViewDate,
+  viewDate: initialViewDate,
   allowFewerDatesThanRange = false,
   startOfWeek = 1,
   maxAllowedDate,
@@ -173,6 +173,14 @@ function Calendar({
       ? value[0].getFullYear()
       : today.getFullYear(),
   );
+
+  useEffect(() => {
+    if (isValid(initialViewDate)) {
+      setMonthInView(initialViewDate.getMonth() as MonthIndices);
+      setYearInView(initialViewDate.getFullYear());
+      // set date in focus
+    }
+  }, [initialViewDate]);
 
   const changeMonthInView = useCallback(
     (month: MonthIndices) => {

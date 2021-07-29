@@ -1,7 +1,31 @@
 import React from 'react';
 import type { CalendarProps } from './types';
 import { giveRangeDays } from './utils/date-utils';
-declare function Calendar({ value, isMultiSelector, className, isRangeSelector, useDarkMode, weekends, highlights, skipWeekendsInRange, initialViewDate, allowFewerDatesThanRange, startOfWeek, maxAllowedDate, skipDisabledDatesInRange, minAllowedDate, fixedRange, isDisabled, onChange, lockView, disableFuture, size, fontSize, disablePast, disableToday, }: CalendarProps): React.ReactElement<CalendarProps>;
+declare function Calendar({
+  value,
+  isMultiSelector,
+  className,
+  isRangeSelector,
+  useDarkMode,
+  weekends,
+  highlights,
+  skipWeekendsInRange,
+  viewDate: initialViewDate,
+  allowFewerDatesThanRange,
+  startOfWeek,
+  maxAllowedDate,
+  skipDisabledDatesInRange,
+  minAllowedDate,
+  fixedRange,
+  isDisabled,
+  onChange,
+  lockView,
+  disableFuture,
+  size,
+  fontSize,
+  disablePast,
+  disableToday,
+}: CalendarProps): React.ReactElement<CalendarProps>;
 export default Calendar;
 export declare const giveDaysInRange: typeof giveRangeDays;
 /**

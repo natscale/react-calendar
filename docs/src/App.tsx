@@ -143,10 +143,11 @@ export function App(): React.ReactElement {
     [setFiveteen],
   );
 
+  const [viewDate, setViewDate] = useState<Date>(new Date());
+
   const maxDate = new Date(2021, 7, 28);
   const minDate = new Date(2021, 7, 4);
 
-  console.log(giveDaysInRange(thirteen as [Date, Date]));
   return (
     <div className="demo">
       <div>
@@ -290,8 +291,25 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <Calendar startOfWeek={3} onChange={onChangefour} />
+            <Calendar viewDate={viewDate} startOfWeek={3} onChange={onChangefour} />
           </div>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              setViewDate(new Date(2016, 1, 13));
+            }}
+          >
+            Move to 2016, Feb, 13
+          </button>
+          <button
+            style={{ marginLeft: '16px' }}
+            onClick={() => {
+              setViewDate(new Date());
+            }}
+          >
+            Move to Today
+          </button>
         </div>
       </div>
       <div>
@@ -400,7 +418,7 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <Calendar initialViewDate={new Date(2020, 8, 9)} onChange={onChangeTweleve} />
+            <Calendar viewDate={new Date(2020, 8, 9)} onChange={onChangeTweleve} />
           </div>
         </div>
       </div>

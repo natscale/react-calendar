@@ -1,14 +1,26 @@
-import type { MonthIndices, WeekdayIndices, MonthCell, YearCell, DayOfMonthCell, GetDaysOfMonthViewMetrixParams, CheckIfDateIsDisabledHOFParams } from '../types';
+import type {
+  MonthIndices,
+  WeekdayIndices,
+  MonthCell,
+  YearCell,
+  DayOfMonthCell,
+  GetDaysOfMonthViewMetrixParams,
+  CheckIfDateIsDisabledHOFParams,
+} from '../types';
 /**
  * Add number of days to a month.
  */
-export declare function addDays(date: Date, numberOfDaysToAdd: number, options: {
+export declare function addDays(
+  date: Date,
+  numberOfDaysToAdd: number,
+  options: {
     isDisabled: (arg: Date) => boolean;
     skipDisabledDatesInRange?: boolean;
     upperLimit?: Date;
-}): {
-    endDate: Date;
-    limitReached: boolean;
+  },
+): {
+  endDate: Date;
+  limitReached: boolean;
 };
 /**
  * Converts a date to string
@@ -57,8 +69,8 @@ export declare function giveRangeDays(range: [Date, Date]): Date[];
  * @param startOfTheWeek index of the day to be considered as start of the week
  */
 export declare function getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfTheWeek?: number): {
-    map: Record<WeekdayIndices, string>;
-    order: WeekdayIndices[];
+  map: Record<WeekdayIndices, string>;
+  order: WeekdayIndices[];
 };
 /**
  * Returns info about what indexes are weekend
@@ -74,8 +86,16 @@ export declare function getMonthViewMetrix(selectedMonth: Record<number, 1>): Ar
 export declare function getPreviousRangeStartingYear(rangeStartYear: number): number;
 export declare function getNextRangeStartingYear(rangeStartYear: number): number;
 export declare function getYearRangeLimits(rangeStartYear: number): [number, number];
-export declare function getYearsViewMetrix(rangeStartYear: number, selectedYearMap: Record<number, 1>): Array<YearCell>[];
-export declare function validateAndReturnDateFormatter(format: string): (date: Date, separator: string) => string | undefined;
-export declare function checkIfWeekendHOF(weekends: WeekdayIndices[], startDayOfWeek: WeekdayIndices): (date: Date) => boolean;
+export declare function getYearsViewMetrix(
+  rangeStartYear: number,
+  selectedYearMap: Record<number, 1>,
+): Array<YearCell>[];
+export declare function validateAndReturnDateFormatter(
+  format: string,
+): (date: Date, separator: string) => string | undefined;
+export declare function checkIfWeekendHOF(
+  weekends: WeekdayIndices[],
+  startDayOfWeek: WeekdayIndices,
+): (date: Date) => boolean;
 export declare function checkIfDateIsDisabledHOF(params: CheckIfDateIsDisabledHOFParams): (date: Date) => boolean;
 export declare function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams): Array<DayOfMonthCell>[];

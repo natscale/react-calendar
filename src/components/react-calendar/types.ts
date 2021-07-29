@@ -132,7 +132,7 @@ export interface CalendarProps {
    * By default it shows today's date month and year. If a date is selected it shows the selected
    * date's month and year.
    */
-  initialViewDate?: Date;
+  viewDate?: Date;
   /**
    * User can not change month/year
    */
