@@ -1006,8 +1006,8 @@ var getStyles = function (size, fontSize) { return ({
             justifyContent: 'center',
         },
         arc_view_cell_value: {
-            width: '65.95%',
-            height: '80.5%',
+            width: '69.80%',
+            height: '80%',
         },
         arc_view_cell_value_button: {
             width: '100%',
@@ -1025,8 +1025,8 @@ var getStyles = function (size, fontSize) { return ({
             justifyContent: 'center',
         },
         arc_view_cell_value_button: {
-            width: '78px',
-            height: '28px',
+            width: '95%',
+            height: '45%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1042,8 +1042,8 @@ var getStyles = function (size, fontSize) { return ({
             justifyContent: 'center',
         },
         arc_view_cell_value_button: {
-            width: '48px',
-            height: '26px',
+            width: '95%',
+            height: '45%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
