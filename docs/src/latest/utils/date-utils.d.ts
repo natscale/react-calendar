@@ -1,4 +1,4 @@
-import type { MonthIndices, WeekdayIndices, MonthCell, YearCell, DayOfMonthCell, GetDaysOfMonthViewMetrixParams, CheckIfDateIsDisabledHOFParams } from '../types';
+import type { MonthIndices, WeekdayIndices, MonthCell, YearCell, DayOfMonthCell, GetDaysOfMonthViewMetrixParams, CheckIfDateIsDisabledHOFParams } from './types';
 /**
  * Add number of days to a month.
  */

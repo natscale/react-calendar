@@ -1,3 +1,3 @@
-import Calendar, { giveDaysInRange, giveFormatter } from './components/react-calendar/calendar';
+import Calendar, { giveDaysInRange, giveFormatter } from './components/calendar/Calendar';
 
 export { Calendar, giveDaysInRange, giveFormatter };

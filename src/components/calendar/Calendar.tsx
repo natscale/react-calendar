@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { CalendarProps, MonthIndices } from './types';
+import type { CalendarProps, MonthIndices } from '../../utils/types';
 
 import {
   getStartOfRangeForAYear,
@@ -20,15 +20,15 @@ import {
   checkIfWeekendHOF,
   giveRangeDays,
   validateAndReturnDateFormatter,
-} from './utils/date-utils';
+} from '../../utils/date-utils';
 
-import { Header } from './components/header/Header';
-import { MonthSelector } from './components/month-selector/MonthSelector';
-import { YearSelector } from './components/year-selector/YearSelector';
-import { WeekDaysRow } from './components/week-days-row/WeekDaysRow';
-import { DayOfMonthSelector } from './components/day-of-month-selector/DayOfMonthSelector';
+import { Header } from '../header/Header';
+import { MonthSelector } from '../month-selector/MonthSelector';
+import { YearSelector } from '../year-selector/YearSelector';
+import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
+import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
 
-import { getStyles } from './utils/styles';
+import { getStyles } from '../../utils/styles';
 
 function Calendar({
   value,
@@ -159,6 +159,10 @@ function Calendar({
       ? selectedRangeStart.getMonth()
       : isMultiSelectorView && Array.isArray(value) && isValid(value[0])
       ? value[0].getMonth()
+      : isValid(minAllowedDate)
+      ? minAllowedDate.getMonth()
+      : isValid(maxAllowedDate)
+      ? maxAllowedDate.getMonth()
       : today.getMonth()) as MonthIndices,
   );
 
@@ -171,6 +175,10 @@ function Calendar({
       ? selectedRangeStart.getFullYear()
       : isMultiSelectorView && Array.isArray(value) && isValid(value[0])
       ? value[0].getFullYear()
+      : isValid(minAllowedDate)
+      ? minAllowedDate.getFullYear()
+      : isValid(maxAllowedDate)
+      ? maxAllowedDate.getFullYear()
       : today.getFullYear(),
   );
 
@@ -407,4 +415,4 @@ export const giveDaysInRange = giveRangeDays;
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const giveFormatter = (format: string) => validateAndReturnDateFormatter(format || 'DD-MM-YYYY');
 
-export * from './types';
+export * from '../../utils/types';

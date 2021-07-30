@@ -197,7 +197,6 @@ export function App(): React.ReactElement {
         <div>
           <div className="calendar">
             <Calendar
-              initialViewDate={new Date(2021, 7, 10)}
               isRangeSelector
               maxAllowedDate={maxDate}
               minAllowedDate={minDate}

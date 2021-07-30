@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
-import { CSSProps, YearCell } from '../../types';
+import { CSSProps, YearCell } from '../../utils/types';
 
 import { getYearsViewMetrix } from '../../utils/date-utils';
 

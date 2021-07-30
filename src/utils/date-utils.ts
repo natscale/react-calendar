@@ -7,7 +7,7 @@ import type {
   DayOfMonthCell,
   GetDaysOfMonthViewMetrixParams,
   CheckIfDateIsDisabledHOFParams,
-} from '../types';
+} from './types';
 
 import { NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP } from './constants';
 
@@ -234,8 +234,16 @@ function isLastDayOfMonth(date: Date): boolean {
   return getNumberOfDaysInAMonth(date.getFullYear(), date.getMonth() as MonthIndices) === date.getDate();
 }
 
+function isFirstDayOfMonth(date: Date): boolean {
+  return date.getDate() === 1;
+}
+
 function isLastDayOfYear(date: Date): boolean {
   return (date.getMonth() as MonthIndices) === 11 && isLastDayOfMonth(date);
+}
+
+function isFirstDayOfYear(date: Date): boolean {
+  return (date.getMonth() as MonthIndices) === 0 && date.getDate() === 1;
 }
 
 export function getPreviousMonth(month: MonthIndices): MonthIndices {
@@ -261,6 +269,20 @@ export function getNextDate(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth() + 1, 1);
   } else {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+  }
+}
+
+export function getPrevDate(date: Date): Date {
+  if (isFirstDayOfYear(date)) {
+    return new Date(date.getFullYear() - 1, 11, getNumberOfDaysInAMonth(date.getFullYear() - 1, 11));
+  } else if (isFirstDayOfMonth(date)) {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth() - 1,
+      getNumberOfDaysInAMonth(date.getFullYear(), (date.getMonth() - 1) as MonthIndices),
+    );
+  } else {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
   }
 }
 

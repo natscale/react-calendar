@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
-import { CSSProps, MonthCell, MonthIndices } from '../../types';
+import { CSSProps, MonthCell, MonthIndices } from '../../utils/types';
 
 import { getMonthViewMetrix } from '../../utils/date-utils';
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';

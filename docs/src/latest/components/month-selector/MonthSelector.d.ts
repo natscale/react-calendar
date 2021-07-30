@@ -1,5 +1,5 @@
 import React from 'react';
-import { CSSProps, MonthIndices } from '../../types';
+import { CSSProps, MonthIndices } from '../../utils/types';
 interface Props {
     onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
     onChangeViewingMonth: (month: MonthIndices) => unknown;

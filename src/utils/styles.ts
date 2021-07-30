@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { CSSProps } from '../types';
+import type { CSSProps } from './types';
 
 export const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {

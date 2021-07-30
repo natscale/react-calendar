@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
-import { CSSProps, WeekdayIndices } from '../../types';
+import { CSSProps, WeekdayIndices } from '../../utils/types';
 
 import { getWeekDaysIndexToLabelMapForAStartOfTheWeek } from '../../utils/date-utils';
 

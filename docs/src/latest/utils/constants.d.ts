@@ -1,4 +1,4 @@
-import type { MonthIndices, WeekdayIndices } from '../types';
+import type { MonthIndices, WeekdayIndices } from './types';
 /**
  * This weekday index-to-label map is what is used by the Date object
  */

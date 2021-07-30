@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import type { CSSProps, DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../types';
+import type { CSSProps, DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
 
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
 

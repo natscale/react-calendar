@@ -1,3 +1,5 @@
 /dist/
 /node_modules/
 /build/
+/docs/src/latest/
+/docs/build/

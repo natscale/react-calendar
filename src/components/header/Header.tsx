@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { memo } from 'react';
 
-import { CSSProps, MonthIndices } from '../../types';
+import { CSSProps, MonthIndices } from '../../utils/types';
 
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
 
