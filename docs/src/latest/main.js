@@ -1109,7 +1109,7 @@ var getStyles = function (size, fontSize) { return ({
     },
 }); };
 var emptyArray = [];
-function Calendar(_a) {
+function CalendarWithRef(_a, ref) {
     var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? emptyArray : _d, _e = _a.skipWeekendsInRange, skipWeekendsInRange = _e === void 0 ? false : _e, initialViewDate = _a.viewDate, _f = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _f === void 0 ? false : _f, _g = _a.startOfWeek, startOfWeek = _g === void 0 ? 1 : _g, maxAllowedDate = _a.maxAllowedDate, _h = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _h === void 0 ? false : _h, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onChange = _a.onChange, _j = _a.lockView, lockView = _j === void 0 ? false : _j, _k = _a.disableFuture, disableFuture = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 276 : _l, _m = _a.fontSize, fontSize = _m === void 0 ? 16 : _m, _o = _a.disablePast, disablePast = _o === void 0 ? false : _o, _p = _a.disableToday, disableToday = _p === void 0 ? false : _p;
     var styles = useMemo(function () { return getStyles(size, fontSize); }, [size, fontSize]);
     var today = useState(new Date())[0];
@@ -1325,7 +1325,7 @@ function Calendar(_a) {
         });
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
-    return (React.createElement("div", { style: styles.root.arc, className: computedClass },
+    return (React.createElement("div", { ref: ref, style: styles.root.arc, className: computedClass },
         React.createElement(Header, { onClickPrev: onPrevClick, onClickNext: onNextClick, onChangeViewType: changeView, viewType: view, viewingMonth: monthInView, viewingYear: yearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd }),
         React.createElement("div", { style: styles.root.arc_view, className: "arc_view" },
             view === 'months' && React.createElement(MonthSelector, { onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView }),
@@ -1334,6 +1334,7 @@ function Calendar(_a) {
                 React.createElement(WeekDaysRow, { weekStartIndex: startOfTheWeek, weekendIndices: weekendIndexes }),
                 React.createElement(DayOfMonthSelector, { isRangeSelectModeOn: isRangeSelectModeOn, setIsRangeSelectModeOn: setIsRangeSelectModeOn, skipDisabledDatesInRange: !!skipDisabledDatesInRange, allowFewerDatesThanRange: !!allowFewerDatesThanRange, selectedDate: selectedDate, selectedRangeStart: selectedRangeStart, selectedRangeEnd: selectedRangeEnd, lockView: !!lockView, newSelectedRangeStart: newSelectedRangeStart, weekStartIndex: startOfTheWeek, onChangeViewingYear: changeYearInView, onChangeViewingMonth: changeMonthInView, onChangenSelectedMultiDates: setSelectedMultiDates, onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd, onChangenNewSelectedRangeStart: setNewSelectedRangeStart, onChangenSelectedRangeEnd: setSelectedRangeEnd, onChangenSelectedRangeStart: setSelectedRangeStart, onChangenSelectedDate: setSelectedDate, newSelectedRangeEnd: newSelectedRangeEnd, isRangeSelectorView: isRangeSelectorView, fixedRangeLength: fixedRangeLength, isFixedRangeView: isFixedRangeView, isDisabled: checkDisabledForADate, checkIfWeekend: checkIfWeekend, selectedMultiDates: selectedMultiDates, isMultiSelectorView: isMultiSelectorView, viewingMonth: monthInView, today: today, maxAllowedDate: maxAllowedDate, minAllowedDate: minAllowedDate, weekendIndices: weekendIndexes, skipWeekendsInRange: !!skipWeekendsInRange, onChange: onChange, viewingYear: yearInView, disableFuture: disableFuture, disablePast: disablePast, highlights: highlights, disableToday: disableToday }))))));
 }
+var Calendar = React.forwardRef(CalendarWithRef);
 var giveDaysInRange = giveRangeDays;
 /**
  * A combination of YYYY-MM-DD.

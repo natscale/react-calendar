@@ -45,31 +45,34 @@ const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize)
 
 const emptyArray: Date[] = [];
 
-function Calendar({
-  value,
-  isMultiSelector,
-  className = '',
-  isRangeSelector,
-  useDarkMode = false,
-  weekends,
-  highlights = emptyArray,
-  skipWeekendsInRange = false,
-  viewDate: initialViewDate,
-  allowFewerDatesThanRange = false,
-  startOfWeek = 1,
-  maxAllowedDate,
-  skipDisabledDatesInRange = false,
-  minAllowedDate,
-  fixedRange,
-  isDisabled,
-  onChange,
-  lockView = false,
-  disableFuture = false,
-  size = 276,
-  fontSize = 16,
-  disablePast = false,
-  disableToday = false,
-}: CalendarProps): React.ReactElement<CalendarProps> {
+function CalendarWithRef(
+  {
+    value,
+    isMultiSelector,
+    className = '',
+    isRangeSelector,
+    useDarkMode = false,
+    weekends,
+    highlights = emptyArray,
+    skipWeekendsInRange = false,
+    viewDate: initialViewDate,
+    allowFewerDatesThanRange = false,
+    startOfWeek = 1,
+    maxAllowedDate,
+    skipDisabledDatesInRange = false,
+    minAllowedDate,
+    fixedRange,
+    isDisabled,
+    onChange,
+    lockView = false,
+    disableFuture = false,
+    size = 276,
+    fontSize = 16,
+    disablePast = false,
+    disableToday = false,
+  }: CalendarProps,
+  ref: React.Ref<HTMLDivElement>,
+): React.ReactElement<CalendarProps> {
   const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
 
   const [today] = useState(new Date());
@@ -342,7 +345,7 @@ function Calendar({
   );
 
   return (
-    <div style={styles.root.arc} className={computedClass}>
+    <div ref={ref} style={styles.root.arc} className={computedClass}>
       <Header
         onClickPrev={onPrevClick}
         onClickNext={onNextClick}
@@ -412,6 +415,8 @@ function Calendar({
     </div>
   );
 }
+
+const Calendar = React.forwardRef(CalendarWithRef);
 
 export default Calendar;
 
