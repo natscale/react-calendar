@@ -1,10 +1,13 @@
 import type { Value } from './latest/components/react-calendar/calendar';
 import React, { useCallback, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
+import Slider from 'rc-slider';
 
 import { Calendar, giveDaysInRange, giveFormatter } from './latest/main';
 
 import { Popover } from 'react-tiny-popover';
+
+import 'rc-slider/assets/index.css';
 
 export function App(): React.ReactElement {
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
@@ -133,6 +136,8 @@ export function App(): React.ReactElement {
     },
     [setFourteen],
   );
+
+  const [width, setWidth] = useState<number>(400);
 
   const [fiveteen, setFiveteen] = useState<object>({});
 
@@ -456,11 +461,12 @@ export function App(): React.ReactElement {
           <p>Can easily adjust scale</p>
         </div>
         <div>
-          <div>
-            <Calendar fontSize={20} size={600} isRangeSelector />
+          <div style={{ width: '300px', marginTop: '24px', marginBottom: '24px' }}>
+            <p style={{ marginBottom: '16px' }}>Use slider to update size</p>
+            <Slider step={50} min={350} max={1200} value={width} onChange={(value) => setWidth(value)} />
           </div>
           <div>
-            <Calendar fontSize={17} size={400} isMultiSelector />
+            <Calendar fontSize={20} size={width} isRangeSelector />
           </div>
         </div>
       </div>
