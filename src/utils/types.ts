@@ -181,4 +181,12 @@ export interface CalendarProps {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (value: Value) => any | Promise<any> | void;
+  /**
+   * This callback will be called when user selects the start range
+   */
+  onPartialRangeSelect?: (value: Value) => any | Promise<any> | void;
+  /**
+   * This callback will be called for each date in a multiselect calendar
+   */
+  onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
 }

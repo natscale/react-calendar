@@ -63,6 +63,8 @@ function CalendarWithRef(
     minAllowedDate,
     fixedRange,
     isDisabled,
+    onPartialRangeSelect,
+    onEachMultiSelect,
     onChange,
     lockView = false,
     disableFuture = false,
@@ -388,6 +390,8 @@ function CalendarWithRef(
               onChangenSelectedRangeEnd={setSelectedRangeEnd}
               onChangenSelectedRangeStart={setSelectedRangeStart}
               onChangenSelectedDate={setSelectedDate}
+              onPartialRangeSelect={onPartialRangeSelect}
+              onEachMultiSelect={onEachMultiSelect}
               newSelectedRangeEnd={newSelectedRangeEnd}
               isRangeSelectorView={isRangeSelectorView}
               fixedRangeLength={fixedRangeLength}

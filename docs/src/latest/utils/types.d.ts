@@ -170,4 +170,12 @@ export interface CalendarProps {
      * OnChange callback functionn.
      */
     onChange?: (value: Value) => any | Promise<any> | void;
+    /**
+     * This callback will be called when user selects the start range
+     */
+    onPartialRangeSelect?: (value: Value) => any | Promise<any> | void;
+    /**
+     * This callback will be called for each date in a multiselect calendar
+     */
+    onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
 }

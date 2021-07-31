@@ -44,6 +44,8 @@ interface Props {
   checkIfWeekend: (date: Date) => boolean;
   today: Date;
   onChange?: (value: Value) => unknown | Promise<unknown>;
+  onPartialRangeSelect?: (value: Value) => unknown | Promise<unknown>;
+  onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
 }
 
 const dayOfMonthStyles = {
@@ -97,6 +99,8 @@ function DayOfMonthSelectorComponent({
   disablePast,
   lockView,
   checkIfWeekend,
+  onPartialRangeSelect,
+  onEachMultiSelect,
   highlights,
   disableToday,
 }: Props) {
@@ -208,6 +212,7 @@ function DayOfMonthSelectorComponent({
           onChangenNewSelectedRangeEnd(undefined);
 
           setIsRangeSelectModeOn(true);
+          onPartialRangeSelect && onPartialRangeSelect(clickedDate);
         }
       } else if (isFixedRangeView) {
         onChangenSelectedRangeStart(clickedDate);
@@ -240,6 +245,7 @@ function DayOfMonthSelectorComponent({
 
         onChangenSelectedMultiDates(newselectedMultiDates);
 
+        onEachMultiSelect && onEachMultiSelect(clickedDate);
         onChange &&
           onChange(
             Object.keys(newselectedMultiDates)
