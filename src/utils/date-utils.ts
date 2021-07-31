@@ -110,44 +110,52 @@ export function isEqual(first: Date, second: Date): boolean {
  * Returns true if the given date falls inside the range
  */
 export function isPartOfRange(rangeStart: Date, rangeEnd: Date, date: Date): boolean {
+  const rangeStartYear = rangeStart.getFullYear();
+  const rangeStartMonth = rangeStart.getMonth();
+  const rangeStartDate = rangeStart.getDate();
+
+  const rangeEndYear = rangeEnd.getFullYear();
+  const rangeEndMonth = rangeEnd.getMonth();
+  const rangeEndDate = rangeEnd.getDate();
+
+  const dateYear = date.getFullYear();
+  const dateMonth = date.getMonth();
+  const dateDate = date.getDate();
+
   // if date lies in between the year
-  if (rangeStart.getFullYear() <= date.getFullYear() && date.getFullYear() <= rangeEnd.getFullYear()) {
+  if (rangeStartYear <= dateYear && dateYear <= rangeEndYear) {
     // if year is in-between range year start and year end
-    if (rangeStart.getFullYear() < date.getFullYear() && date.getFullYear() < rangeEnd.getFullYear()) {
+    if (rangeStartYear < dateYear && dateYear < rangeEndYear) {
       return true;
     }
 
     // if start year and end year are same
-    if (rangeStart.getFullYear() === rangeEnd.getFullYear()) {
-      if (rangeStart.getMonth() <= date.getMonth() && date.getMonth() <= rangeEnd.getMonth()) {
+    if (rangeStartYear === rangeEndYear) {
+      if (rangeStartMonth <= dateMonth && dateMonth <= rangeEndMonth) {
         // if month is in-between month start and and moth end
-        if (rangeStart.getMonth() < date.getMonth() && date.getMonth() < rangeEnd.getMonth()) {
+        if (rangeStartMonth < dateMonth && dateMonth < rangeEndMonth) {
           return true;
         }
 
         // if month start and month end are same
-        if (rangeStart.getMonth() === rangeEnd.getMonth()) {
-          if (
-            rangeStart.getDate() <= date.getDate() &&
-            date.getDate() <= rangeEnd.getDate() &&
-            date.getMonth() === rangeEnd.getMonth()
-          ) {
+        if (rangeStartMonth === rangeEndMonth) {
+          if (rangeStartDate <= dateDate && dateDate <= rangeEndDate && dateMonth === rangeEndMonth) {
             return true;
           }
           return false;
         }
 
         // if date is in start month
-        if (rangeStart.getMonth() === date.getMonth()) {
-          if (rangeStart.getDate() <= date.getDate()) {
+        if (rangeStartMonth === dateMonth) {
+          if (rangeStartDate <= dateDate) {
             return true;
           }
           return false;
         }
 
         // if date is in end month
-        if (rangeEnd.getMonth() === date.getMonth()) {
-          if (date.getDate() <= rangeEnd.getDate()) {
+        if (rangeEndMonth === dateMonth) {
+          if (dateDate <= rangeEndDate) {
             return true;
           }
           return false;
@@ -159,16 +167,16 @@ export function isPartOfRange(rangeStart: Date, rangeEnd: Date, date: Date): boo
     }
 
     // if year is same as start year
-    if (rangeStart.getFullYear() === date.getFullYear()) {
+    if (rangeStartYear === dateYear) {
       // if month is greater than start month
-      if (date.getMonth() > rangeStart.getMonth()) {
+      if (dateMonth > rangeStartMonth) {
         return true;
       }
 
       // if month is same as start month
-      if (date.getMonth() === rangeStart.getMonth()) {
+      if (dateMonth === rangeStartMonth) {
         // if date is greater than range start date
-        if (date.getDate() >= rangeStart.getDate()) {
+        if (dateDate >= rangeStartDate) {
           return true;
         }
       }
@@ -177,16 +185,16 @@ export function isPartOfRange(rangeStart: Date, rangeEnd: Date, date: Date): boo
     }
 
     // if year is same as end year
-    if (rangeEnd.getFullYear() === date.getFullYear()) {
+    if (rangeEndYear === dateYear) {
       // if month is smaller than end month
-      if (date.getMonth() < rangeEnd.getMonth()) {
+      if (dateMonth < rangeEndMonth) {
         return true;
       }
 
       // if month is same as end month
-      if (date.getMonth() === rangeEnd.getMonth()) {
+      if (dateMonth === rangeEndMonth) {
         // if date is smaller than range end date
-        if (date.getDate() <= rangeEnd.getDate()) {
+        if (dateDate <= rangeEndDate) {
           return true;
         }
       }

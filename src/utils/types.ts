@@ -74,31 +74,6 @@ export interface CSSProps {
   root: {
     arc: CSSProperties;
     arc_view: CSSProperties;
-    arc_header: CSSProperties;
-    'arc_view-months': CSSProperties;
-    'arc_view-years': CSSProperties;
-  };
-  weekdaysRow: {
-    arc_view_weekdays: CSSProperties;
-    arc_view_weekdays_cell: CSSProperties;
-    arc_view_weekdays_cell_value: CSSProperties;
-  };
-  dayOfMonth: {
-    'arc_view-days-of-month': CSSProperties;
-    arc_view_row: CSSProperties;
-    arc_view_cell: CSSProperties;
-  };
-  months: {
-    arc_view_row: CSSProperties;
-    arc_view_cell: CSSProperties;
-  };
-  years: {
-    arc_view_row: CSSProperties;
-    arc_view_cell: CSSProperties;
-  };
-  header: {
-    arc_header_nav: CSSProperties;
-    arch_header_label: CSSProperties;
   };
 }
 

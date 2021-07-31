@@ -30,6 +30,8 @@ import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector'
 
 import { getStyles } from '../../utils/styles';
 
+const emptyArray: Date[] = [];
+
 function Calendar({
   value,
   isMultiSelector,
@@ -37,7 +39,7 @@ function Calendar({
   isRangeSelector,
   useDarkMode = false,
   weekends,
-  highlights = [],
+  highlights = emptyArray,
   skipWeekendsInRange = false,
   viewDate: initialViewDate,
   allowFewerDatesThanRange = false,
@@ -329,7 +331,6 @@ function Calendar({
   return (
     <div style={styles.root.arc} className={computedClass}>
       <Header
-        layoutCalcs={styles}
         onClickPrev={onPrevClick}
         onClickNext={onNextClick}
         onChangeViewType={changeView}
@@ -340,12 +341,9 @@ function Calendar({
         yearMatrixEnd={yearMatrixRangeEnd}
       />
       <div style={styles.root.arc_view} className="arc_view">
-        {view === 'months' && (
-          <MonthSelector layoutCalcs={styles} onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />
-        )}
+        {view === 'months' && <MonthSelector onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />}
         {view === 'years' && (
           <YearSelector
-            layoutCalcs={styles}
             onChangeViewType={changeView}
             onChangeViewingYear={changeYearInView}
             yearMatrixStart={yearMatrixRangeStart}
@@ -354,11 +352,10 @@ function Calendar({
         )}
         {view === 'month_dates' && (
           <>
-            <WeekDaysRow layoutCalcs={styles} weekStartIndex={startOfTheWeek} weekendIndices={weekendIndexes} />
+            <WeekDaysRow weekStartIndex={startOfTheWeek} weekendIndices={weekendIndexes} />
             <DayOfMonthSelector
               isRangeSelectModeOn={isRangeSelectModeOn}
               setIsRangeSelectModeOn={setIsRangeSelectModeOn}
-              layoutCalcs={styles}
               skipDisabledDatesInRange={!!skipDisabledDatesInRange}
               allowFewerDatesThanRange={!!allowFewerDatesThanRange}
               selectedDate={selectedDate}

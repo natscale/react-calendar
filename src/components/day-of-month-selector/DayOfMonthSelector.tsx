@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import type { CSSProps, DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
+import type { DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
 
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
@@ -44,8 +44,24 @@ interface Props {
   checkIfWeekend: (date: Date) => boolean;
   today: Date;
   onChange?: (value: Value) => unknown | Promise<unknown>;
-  layoutCalcs: CSSProps;
 }
+
+const dayOfMonthStyles = {
+  'arc_view-days-of-month': {
+    height: '85%',
+  },
+  arc_view_row: {
+    height: '16.664%',
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+  },
+  arc_view_cell: {
+    flexBasis: '14.286%',
+    maxWidth: '14.286%',
+    height: '100%',
+  },
+};
 
 function DayOfMonthSelectorComponent({
   selectedDate,
@@ -73,7 +89,6 @@ function DayOfMonthSelectorComponent({
   onChangenSelectedRangeEnd,
   onChangenSelectedRangeStart,
   onChangenSelectedDate,
-  layoutCalcs,
   weekendIndices,
   onChange,
   viewingYear,
@@ -269,12 +284,12 @@ function DayOfMonthSelectorComponent({
   );
 
   return (
-    <div style={layoutCalcs.dayOfMonth['arc_view-days-of-month']} className="arc_view-days-of-month" role="grid">
+    <div style={dayOfMonthStyles['arc_view-days-of-month']} className="arc_view-days-of-month" role="grid">
       {daysOfMMonthViewMatrix.map((row, index) => (
-        <div style={layoutCalcs.dayOfMonth.arc_view_row} className="arc_view_row" key={index}>
+        <div style={dayOfMonthStyles.arc_view_row} className="arc_view_row" key={index}>
           {row.map((cell) => (
             <div
-              style={layoutCalcs.dayOfMonth.arc_view_cell}
+              style={dayOfMonthStyles.arc_view_cell}
               onMouseEnter={() => {
                 if (isRangeSelectorView) {
                   if (isRangeSelectModeOn) {

@@ -104,38 +104,45 @@ function isEqual(first, second) {
  * Returns true if the given date falls inside the range
  */
 function isPartOfRange(rangeStart, rangeEnd, date) {
+    var rangeStartYear = rangeStart.getFullYear();
+    var rangeStartMonth = rangeStart.getMonth();
+    var rangeStartDate = rangeStart.getDate();
+    var rangeEndYear = rangeEnd.getFullYear();
+    var rangeEndMonth = rangeEnd.getMonth();
+    var rangeEndDate = rangeEnd.getDate();
+    var dateYear = date.getFullYear();
+    var dateMonth = date.getMonth();
+    var dateDate = date.getDate();
     // if date lies in between the year
-    if (rangeStart.getFullYear() <= date.getFullYear() && date.getFullYear() <= rangeEnd.getFullYear()) {
+    if (rangeStartYear <= dateYear && dateYear <= rangeEndYear) {
         // if year is in-between range year start and year end
-        if (rangeStart.getFullYear() < date.getFullYear() && date.getFullYear() < rangeEnd.getFullYear()) {
+        if (rangeStartYear < dateYear && dateYear < rangeEndYear) {
             return true;
         }
         // if start year and end year are same
-        if (rangeStart.getFullYear() === rangeEnd.getFullYear()) {
-            if (rangeStart.getMonth() <= date.getMonth() && date.getMonth() <= rangeEnd.getMonth()) {
+        if (rangeStartYear === rangeEndYear) {
+            if (rangeStartMonth <= dateMonth && dateMonth <= rangeEndMonth) {
                 // if month is in-between month start and and moth end
-                if (rangeStart.getMonth() < date.getMonth() && date.getMonth() < rangeEnd.getMonth()) {
+                if (rangeStartMonth < dateMonth && dateMonth < rangeEndMonth) {
                     return true;
                 }
                 // if month start and month end are same
-                if (rangeStart.getMonth() === rangeEnd.getMonth()) {
-                    if (rangeStart.getDate() <= date.getDate() &&
-                        date.getDate() <= rangeEnd.getDate() &&
-                        date.getMonth() === rangeEnd.getMonth()) {
+                if (rangeStartMonth === rangeEndMonth) {
+                    if (rangeStartDate <= dateDate && dateDate <= rangeEndDate && dateMonth === rangeEndMonth) {
                         return true;
                     }
                     return false;
                 }
                 // if date is in start month
-                if (rangeStart.getMonth() === date.getMonth()) {
-                    if (rangeStart.getDate() <= date.getDate()) {
+                if (rangeStartMonth === dateMonth) {
+                    if (rangeStartDate <= dateDate) {
                         return true;
                     }
                     return false;
                 }
                 // if date is in end month
-                if (rangeEnd.getMonth() === date.getMonth()) {
-                    if (date.getDate() <= rangeEnd.getDate()) {
+                if (rangeEndMonth === dateMonth) {
+                    if (dateDate <= rangeEndDate) {
                         return true;
                     }
                     return false;
@@ -145,30 +152,30 @@ function isPartOfRange(rangeStart, rangeEnd, date) {
             return false;
         }
         // if year is same as start year
-        if (rangeStart.getFullYear() === date.getFullYear()) {
+        if (rangeStartYear === dateYear) {
             // if month is greater than start month
-            if (date.getMonth() > rangeStart.getMonth()) {
+            if (dateMonth > rangeStartMonth) {
                 return true;
             }
             // if month is same as start month
-            if (date.getMonth() === rangeStart.getMonth()) {
+            if (dateMonth === rangeStartMonth) {
                 // if date is greater than range start date
-                if (date.getDate() >= rangeStart.getDate()) {
+                if (dateDate >= rangeStartDate) {
                     return true;
                 }
             }
             return false;
         }
         // if year is same as end year
-        if (rangeEnd.getFullYear() === date.getFullYear()) {
+        if (rangeEndYear === dateYear) {
             // if month is smaller than end month
-            if (date.getMonth() < rangeEnd.getMonth()) {
+            if (dateMonth < rangeEndMonth) {
                 return true;
             }
             // if month is same as end month
-            if (date.getMonth() === rangeEnd.getMonth()) {
+            if (dateMonth === rangeEndMonth) {
                 // if date is smaller than range end date
-                if (date.getDate() <= rangeEnd.getDate()) {
+                if (dateDate <= rangeEndDate) {
                     return true;
                 }
             }
@@ -678,24 +685,43 @@ function getCellValue(_a) {
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+var header = {
+    root: {
+        height: '12%',
+        padding: '1% 2%',
+        display: 'flex',
+        alignTtems: 'center',
+        width: '100%',
+    },
+    arc_header_nav: { width: '10.14%', height: '100%', flex: '0 0 auto' },
+    arch_header_label: {
+        width: '65.21%',
+        height: '100%',
+        margin: '0 4.34%',
+        flex: '1 1 auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+};
 function HeaderComponent(_a) {
-    var onClickPrev = _a.onClickPrev, onChangeViewType = _a.onChangeViewType, onClickNext = _a.onClickNext, viewType = _a.viewType, viewingMonth = _a.viewingMonth, viewingYear = _a.viewingYear, yearMatrixEnd = _a.yearMatrixEnd, yearMatrixStart = _a.yearMatrixStart, layoutCalcs = _a.layoutCalcs;
-    return (React.createElement("header", { style: layoutCalcs.root.arc_header, className: "arc_header" },
-        React.createElement("button", { style: layoutCalcs.header.arc_header_nav, className: "arc_header_nav arc_header_nav-prev", onClick: onClickPrev },
+    var onClickPrev = _a.onClickPrev, onChangeViewType = _a.onChangeViewType, onClickNext = _a.onClickNext, viewType = _a.viewType, viewingMonth = _a.viewingMonth, viewingYear = _a.viewingYear, yearMatrixEnd = _a.yearMatrixEnd, yearMatrixStart = _a.yearMatrixStart;
+    return (React.createElement("header", { style: header.root, className: "arc_header" },
+        React.createElement("button", { style: header.arc_header_nav, className: "arc_header_nav arc_header_nav-prev", onClick: onClickPrev },
             React.createElement("span", null, "\u2190")),
-        viewType === 'month_dates' ? (React.createElement("button", { style: layoutCalcs.header.arch_header_label, className: "arc_header_label arc_header_label-days-of-month", onClick: function () { return onChangeViewType('years'); } },
+        viewType === 'month_dates' ? (React.createElement("button", { style: header.arch_header_label, className: "arc_header_label arc_header_label-days-of-month", onClick: function () { return onChangeViewType('years'); } },
             React.createElement("div", null,
                 React.createElement("span", null, NATIVE_INDEX_TO_LABEL_MONTHS_MAP[viewingMonth])),
             React.createElement("div", null,
-                React.createElement("span", null, viewingYear)))) : viewType === 'months' ? (React.createElement("button", { style: layoutCalcs.header.arch_header_label, className: "arc_header_label arc_header_label-months" },
+                React.createElement("span", null, viewingYear)))) : viewType === 'months' ? (React.createElement("button", { style: header.arch_header_label, className: "arc_header_label arc_header_label-months" },
             React.createElement("div", { onClick: function () { return onChangeViewType('years'); } },
-                React.createElement("span", null, viewingYear)))) : (React.createElement("button", { style: layoutCalcs.header.arch_header_label, className: "arc_header_label arc_header_label-years", onClick: function () { return onChangeViewType('month_dates'); } },
+                React.createElement("span", null, viewingYear)))) : (React.createElement("button", { style: header.arch_header_label, className: "arc_header_label arc_header_label-years", onClick: function () { return onChangeViewType('month_dates'); } },
             React.createElement("div", null,
                 React.createElement("span", null,
                     yearMatrixStart,
                     "-",
                     yearMatrixEnd)))),
-        React.createElement("button", { style: layoutCalcs.header.arc_header_nav, className: "arc_header_nav arc_header_nav-next", onClick: onClickNext },
+        React.createElement("button", { style: header.arc_header_nav, className: "arc_header_nav arc_header_nav-next", onClick: onClickNext },
             React.createElement("span", null, "\u2192"))));
 }
 var Header = memo(HeaderComponent);
@@ -723,12 +749,21 @@ function Component$2(_a) {
 }
 var Month = memo(Component$2);
 
+var months = {
+    root: { height: '100%' },
+    arc_view_row: { height: '24.9%', display: 'flex', width: '100%' },
+    arc_view_cell: {
+        flexBasis: '33.33%',
+        maxWidth: '33.33%',
+        height: '100%',
+    },
+};
 function MonthSelectorComponent(_a) {
-    var onChangeViewingMonth = _a.onChangeViewingMonth, onChangeViewType = _a.onChangeViewType, layoutCalcs = _a.layoutCalcs;
+    var onChangeViewingMonth = _a.onChangeViewingMonth, onChangeViewType = _a.onChangeViewType;
     var monthsViewMatrix = useMemo(function () {
         return getMonthViewMetrix({});
     }, []);
-    return (React.createElement("div", { style: layoutCalcs.root['arc_view-months'], className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: layoutCalcs.months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: layoutCalcs.months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
+    return (React.createElement("div", { style: months.root, className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
         React.createElement(Month, { cell: cell, onMonthClicked: function (cell) {
                 onChangeViewingMonth(cell.month), onChangeViewType('month_dates');
             } }))); }))); })));
@@ -758,21 +793,53 @@ function Component$1(_a) {
 }
 var Year = memo(Component$1);
 
+var years = {
+    root: { height: '100%' },
+    arc_view_row: { height: '24.9%', display: 'flex', width: '100%' },
+    arc_view_cell: {
+        width: '20%',
+        height: '100%',
+    },
+};
 function YearSelectorComponent(_a) {
-    var onChangeViewType = _a.onChangeViewType, onChangeViewingYear = _a.onChangeViewingYear, yearMatrixStart = _a.yearMatrixStart, layoutCalcs = _a.layoutCalcs;
+    var onChangeViewType = _a.onChangeViewType, onChangeViewingYear = _a.onChangeViewingYear, yearMatrixStart = _a.yearMatrixStart;
     // TODO add highlight slected dates years
     var yearsMatrix = useMemo(function () {
         return getYearsViewMetrix(yearMatrixStart, {});
     }, [yearMatrixStart]);
-    return (React.createElement("div", { style: layoutCalcs.root['arc_view-years'], className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: layoutCalcs.years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: layoutCalcs.years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
+    return (React.createElement("div", { style: years.root, className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
         React.createElement(Year, { cell: cell, onYearClicked: function (cell) {
                 onChangeViewingYear(cell.year), onChangeViewType('months');
             } }))); }))); })));
 }
 var YearSelector = memo(YearSelectorComponent);
 
+var weekdaysRow = {
+    arc_view_weekdays: {
+        height: '15%',
+        margin: '0',
+        padding: 0,
+        display: 'flex',
+        width: '100%',
+        listStyle: 'none',
+    },
+    arc_view_weekdays_cell: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        flexBasis: '14.286%',
+        maxWidth: '14.286%',
+    },
+    arc_view_weekdays_cell_value: {
+        width: '65.95%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+};
 function WeekDaysRowComponent(_a) {
-    var weekStartIndex = _a.weekStartIndex, weekendIndices = _a.weekendIndices, layoutCalcs = _a.layoutCalcs;
+    var weekStartIndex = _a.weekStartIndex, weekendIndices = _a.weekendIndices;
     // week days as per the start day of the week
     var _b = useMemo(function () {
         return getWeekDaysIndexToLabelMapForAStartOfTheWeek(weekStartIndex);
@@ -783,8 +850,8 @@ function WeekDaysRowComponent(_a) {
             return acc;
         }, {});
     }, [weekendIndices]);
-    return (React.createElement("ul", { style: layoutCalcs.weekdaysRow.arc_view_weekdays, className: "arc_view_weekdays" }, weekDayOrder.map(function (weekDay, weekdayIndex) { return (React.createElement("li", { style: layoutCalcs.weekdaysRow.arc_view_weekdays_cell, key: weekDay, className: "arc_view_weekdays_cell" + (weekendIndicesMap[weekdayIndex] ? ' arc_wknd' : '') },
-        React.createElement("div", { style: layoutCalcs.weekdaysRow.arc_view_weekdays_cell_value },
+    return (React.createElement("ul", { style: weekdaysRow.arc_view_weekdays, className: "arc_view_weekdays" }, weekDayOrder.map(function (weekDay, weekdayIndex) { return (React.createElement("li", { style: weekdaysRow.arc_view_weekdays_cell, key: weekDay, className: "arc_view_weekdays_cell" + (weekendIndicesMap[weekdayIndex] ? ' arc_wknd' : '') },
+        React.createElement("div", { style: weekdaysRow.arc_view_weekdays_cell_value },
             React.createElement("span", null, weekDayMap[weekdayIndex])))); })));
 }
 var WeekDaysRow = memo(WeekDaysRowComponent);
@@ -841,8 +908,24 @@ function Component(_a) {
 }
 var DayOfMonth = memo(Component);
 
+var dayOfMonthStyles = {
+    'arc_view-days-of-month': {
+        height: '85%',
+    },
+    arc_view_row: {
+        height: '16.664%',
+        display: 'flex',
+        width: '100%',
+        alignItems: 'center',
+    },
+    arc_view_cell: {
+        flexBasis: '14.286%',
+        maxWidth: '14.286%',
+        height: '100%',
+    },
+};
 function DayOfMonthSelectorComponent(_a) {
-    var selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, weekStartIndex = _a.weekStartIndex, onChangeViewingYear = _a.onChangeViewingYear, onChangeViewingMonth = _a.onChangeViewingMonth, newSelectedRangeEnd = _a.newSelectedRangeEnd, isRangeSelectorView = _a.isRangeSelectorView, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, setIsRangeSelectModeOn = _a.setIsRangeSelectModeOn, fixedRangeLength = _a.fixedRangeLength, isFixedRangeView = _a.isFixedRangeView, isRangeSelectModeOn = _a.isRangeSelectModeOn, isDisabled = _a.isDisabled, onChangenSelectedMultiDates = _a.onChangenSelectedMultiDates, selectedMultiDates = _a.selectedMultiDates, isMultiSelectorView = _a.isMultiSelectorView, today = _a.today, viewingMonth = _a.viewingMonth, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd = _a.onChangenSelectedRangeEnd, onChangenSelectedRangeStart = _a.onChangenSelectedRangeStart, onChangenSelectedDate = _a.onChangenSelectedDate, layoutCalcs = _a.layoutCalcs, weekendIndices = _a.weekendIndices, onChange = _a.onChange, viewingYear = _a.viewingYear, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, lockView = _a.lockView, checkIfWeekend = _a.checkIfWeekend, highlights = _a.highlights, disableToday = _a.disableToday;
+    var selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, weekStartIndex = _a.weekStartIndex, onChangeViewingYear = _a.onChangeViewingYear, onChangeViewingMonth = _a.onChangeViewingMonth, newSelectedRangeEnd = _a.newSelectedRangeEnd, isRangeSelectorView = _a.isRangeSelectorView, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, setIsRangeSelectModeOn = _a.setIsRangeSelectModeOn, fixedRangeLength = _a.fixedRangeLength, isFixedRangeView = _a.isFixedRangeView, isRangeSelectModeOn = _a.isRangeSelectModeOn, isDisabled = _a.isDisabled, onChangenSelectedMultiDates = _a.onChangenSelectedMultiDates, selectedMultiDates = _a.selectedMultiDates, isMultiSelectorView = _a.isMultiSelectorView, today = _a.today, viewingMonth = _a.viewingMonth, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd = _a.onChangenSelectedRangeEnd, onChangenSelectedRangeStart = _a.onChangenSelectedRangeStart, onChangenSelectedDate = _a.onChangenSelectedDate, weekendIndices = _a.weekendIndices, onChange = _a.onChange, viewingYear = _a.viewingYear, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, lockView = _a.lockView, checkIfWeekend = _a.checkIfWeekend, highlights = _a.highlights, disableToday = _a.disableToday;
     var highlightsMap = useState(function () {
         if (Array.isArray(highlights)) {
             return highlights
@@ -999,7 +1082,7 @@ function DayOfMonthSelectorComponent(_a) {
         onChangenSelectedMultiDates,
         onChangenSelectedDate,
     ]);
-    return (React.createElement("div", { style: layoutCalcs.dayOfMonth['arc_view-days-of-month'], className: "arc_view-days-of-month", role: "grid" }, daysOfMMonthViewMatrix.map(function (row, index) { return (React.createElement("div", { style: layoutCalcs.dayOfMonth.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: layoutCalcs.dayOfMonth.arc_view_cell, onMouseEnter: function () {
+    return (React.createElement("div", { style: dayOfMonthStyles['arc_view-days-of-month'], className: "arc_view-days-of-month", role: "grid" }, daysOfMMonthViewMatrix.map(function (row, index) { return (React.createElement("div", { style: dayOfMonthStyles.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: dayOfMonthStyles.arc_view_cell, onMouseEnter: function () {
             if (isRangeSelectorView) {
                 if (isRangeSelectModeOn) {
                     onChangenNewSelectedRangeEnd(new Date(cell.year, cell.month, cell.dayOfMonth));
@@ -1022,88 +1105,13 @@ var getStyles = function (size, fontSize) { return ({
             boxSizing: 'border-box',
         },
         arc_view: { height: '88%', width: '100%' },
-        'arc_view-months': { height: '100%' },
-        'arc_view-years': { height: '100%' },
-        arc_header: {
-            height: '12%',
-            padding: '1% 2%',
-            display: 'flex',
-            alignTtems: 'center',
-            width: '100%',
-        },
-    },
-    weekdaysRow: {
-        arc_view_weekdays: {
-            height: '15%',
-            margin: '0',
-            padding: 0,
-            display: 'flex',
-            width: '100%',
-            listStyle: 'none',
-        },
-        arc_view_weekdays_cell: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            flexBasis: '14.286%',
-            maxWidth: '14.286%',
-        },
-        arc_view_weekdays_cell_value: {
-            width: '65.95%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    },
-    dayOfMonth: {
-        'arc_view-days-of-month': {
-            height: '85%',
-        },
-        arc_view_row: {
-            height: '16.664%',
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-        },
-        arc_view_cell: {
-            flexBasis: '14.286%',
-            maxWidth: '14.286%',
-            height: '100%',
-        },
-    },
-    months: {
-        arc_view_row: { height: '24.9%', display: 'flex', width: '100%' },
-        arc_view_cell: {
-            flexBasis: '33.33%',
-            maxWidth: '33.33%',
-            height: '100%',
-        },
-    },
-    years: {
-        arc_view_row: { height: '24.9%', display: 'flex', width: '100%' },
-        arc_view_cell: {
-            width: '20%',
-            height: '100%',
-        },
-    },
-    header: {
-        arc_header_nav: { width: '10.14%', height: '100%', flex: '0 0 auto' },
-        arch_header_label: {
-            width: '65.21%',
-            height: '100%',
-            margin: '0 4.34%',
-            flex: '1 1 auto',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
     },
 }); };
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+var emptyArray = [];
 function Calendar(_a) {
-    var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? [] : _d, _e = _a.skipWeekendsInRange, skipWeekendsInRange = _e === void 0 ? false : _e, initialViewDate = _a.viewDate, _f = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _f === void 0 ? false : _f, _g = _a.startOfWeek, startOfWeek = _g === void 0 ? 1 : _g, maxAllowedDate = _a.maxAllowedDate, _h = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _h === void 0 ? false : _h, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onChange = _a.onChange, _j = _a.lockView, lockView = _j === void 0 ? false : _j, _k = _a.disableFuture, disableFuture = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 276 : _l, _m = _a.fontSize, fontSize = _m === void 0 ? 16 : _m, _o = _a.disablePast, disablePast = _o === void 0 ? false : _o, _p = _a.disableToday, disableToday = _p === void 0 ? false : _p;
+    var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? emptyArray : _d, _e = _a.skipWeekendsInRange, skipWeekendsInRange = _e === void 0 ? false : _e, initialViewDate = _a.viewDate, _f = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _f === void 0 ? false : _f, _g = _a.startOfWeek, startOfWeek = _g === void 0 ? 1 : _g, maxAllowedDate = _a.maxAllowedDate, _h = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _h === void 0 ? false : _h, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onChange = _a.onChange, _j = _a.lockView, lockView = _j === void 0 ? false : _j, _k = _a.disableFuture, disableFuture = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 276 : _l, _m = _a.fontSize, fontSize = _m === void 0 ? 16 : _m, _o = _a.disablePast, disablePast = _o === void 0 ? false : _o, _p = _a.disableToday, disableToday = _p === void 0 ? false : _p;
     var styles = useMemo(function () { return getStyles(size, fontSize); }, [size, fontSize]);
     var today = useState(new Date())[0];
     var isRangeSelectorView = useState(!!isRangeSelector)[0];
@@ -1319,13 +1327,13 @@ function Calendar(_a) {
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
     return (React.createElement("div", { style: styles.root.arc, className: computedClass },
-        React.createElement(Header, { layoutCalcs: styles, onClickPrev: onPrevClick, onClickNext: onNextClick, onChangeViewType: changeView, viewType: view, viewingMonth: monthInView, viewingYear: yearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd }),
+        React.createElement(Header, { onClickPrev: onPrevClick, onClickNext: onNextClick, onChangeViewType: changeView, viewType: view, viewingMonth: monthInView, viewingYear: yearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd }),
         React.createElement("div", { style: styles.root.arc_view, className: "arc_view" },
-            view === 'months' && (React.createElement(MonthSelector, { layoutCalcs: styles, onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView })),
-            view === 'years' && (React.createElement(YearSelector, { layoutCalcs: styles, onChangeViewType: changeView, onChangeViewingYear: changeYearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd })),
+            view === 'months' && React.createElement(MonthSelector, { onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView }),
+            view === 'years' && (React.createElement(YearSelector, { onChangeViewType: changeView, onChangeViewingYear: changeYearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd })),
             view === 'month_dates' && (React.createElement(React.Fragment, null,
-                React.createElement(WeekDaysRow, { layoutCalcs: styles, weekStartIndex: startOfTheWeek, weekendIndices: weekendIndexes }),
-                React.createElement(DayOfMonthSelector, { isRangeSelectModeOn: isRangeSelectModeOn, setIsRangeSelectModeOn: setIsRangeSelectModeOn, layoutCalcs: styles, skipDisabledDatesInRange: !!skipDisabledDatesInRange, allowFewerDatesThanRange: !!allowFewerDatesThanRange, selectedDate: selectedDate, selectedRangeStart: selectedRangeStart, selectedRangeEnd: selectedRangeEnd, lockView: !!lockView, newSelectedRangeStart: newSelectedRangeStart, weekStartIndex: startOfTheWeek, onChangeViewingYear: changeYearInView, onChangeViewingMonth: changeMonthInView, onChangenSelectedMultiDates: setSelectedMultiDates, onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd, onChangenNewSelectedRangeStart: setNewSelectedRangeStart, onChangenSelectedRangeEnd: setSelectedRangeEnd, onChangenSelectedRangeStart: setSelectedRangeStart, onChangenSelectedDate: setSelectedDate, newSelectedRangeEnd: newSelectedRangeEnd, isRangeSelectorView: isRangeSelectorView, fixedRangeLength: fixedRangeLength, isFixedRangeView: isFixedRangeView, isDisabled: checkDisabledForADate, checkIfWeekend: checkIfWeekend, selectedMultiDates: selectedMultiDates, isMultiSelectorView: isMultiSelectorView, viewingMonth: monthInView, today: today, maxAllowedDate: maxAllowedDate, minAllowedDate: minAllowedDate, weekendIndices: weekendIndexes, skipWeekendsInRange: !!skipWeekendsInRange, onChange: onChange, viewingYear: yearInView, disableFuture: disableFuture, disablePast: disablePast, highlights: highlights, disableToday: disableToday }))))));
+                React.createElement(WeekDaysRow, { weekStartIndex: startOfTheWeek, weekendIndices: weekendIndexes }),
+                React.createElement(DayOfMonthSelector, { isRangeSelectModeOn: isRangeSelectModeOn, setIsRangeSelectModeOn: setIsRangeSelectModeOn, skipDisabledDatesInRange: !!skipDisabledDatesInRange, allowFewerDatesThanRange: !!allowFewerDatesThanRange, selectedDate: selectedDate, selectedRangeStart: selectedRangeStart, selectedRangeEnd: selectedRangeEnd, lockView: !!lockView, newSelectedRangeStart: newSelectedRangeStart, weekStartIndex: startOfTheWeek, onChangeViewingYear: changeYearInView, onChangeViewingMonth: changeMonthInView, onChangenSelectedMultiDates: setSelectedMultiDates, onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd, onChangenNewSelectedRangeStart: setNewSelectedRangeStart, onChangenSelectedRangeEnd: setSelectedRangeEnd, onChangenSelectedRangeStart: setSelectedRangeStart, onChangenSelectedDate: setSelectedDate, newSelectedRangeEnd: newSelectedRangeEnd, isRangeSelectorView: isRangeSelectorView, fixedRangeLength: fixedRangeLength, isFixedRangeView: isFixedRangeView, isDisabled: checkDisabledForADate, checkIfWeekend: checkIfWeekend, selectedMultiDates: selectedMultiDates, isMultiSelectorView: isMultiSelectorView, viewingMonth: monthInView, today: today, maxAllowedDate: maxAllowedDate, minAllowedDate: minAllowedDate, weekendIndices: weekendIndexes, skipWeekendsInRange: !!skipWeekendsInRange, onChange: onChange, viewingYear: yearInView, disableFuture: disableFuture, disablePast: disablePast, highlights: highlights, disableToday: disableToday }))))));
 }
 var giveDaysInRange = giveRangeDays;
 /**

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { CSSProps, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
+import type { MonthIndices, Value, WeekdayIndices } from '../../utils/types';
 interface Props {
     onChangeViewingYear: (year: number) => unknown;
     onChangeViewingMonth: (month: MonthIndices) => unknown;
@@ -39,8 +39,7 @@ interface Props {
     checkIfWeekend: (date: Date) => boolean;
     today: Date;
     onChange?: (value: Value) => unknown | Promise<unknown>;
-    layoutCalcs: CSSProps;
 }
-declare function DayOfMonthSelectorComponent({ selectedDate, selectedRangeStart, selectedRangeEnd, newSelectedRangeStart, weekStartIndex, onChangeViewingYear, onChangeViewingMonth, newSelectedRangeEnd, isRangeSelectorView, skipDisabledDatesInRange, setIsRangeSelectModeOn, fixedRangeLength, isFixedRangeView, isRangeSelectModeOn, isDisabled, onChangenSelectedMultiDates, selectedMultiDates, isMultiSelectorView, today, viewingMonth, onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd, onChangenSelectedRangeStart, onChangenSelectedDate, layoutCalcs, weekendIndices, onChange, viewingYear, allowFewerDatesThanRange, disableFuture, disablePast, lockView, checkIfWeekend, highlights, disableToday, }: Props): JSX.Element;
+declare function DayOfMonthSelectorComponent({ selectedDate, selectedRangeStart, selectedRangeEnd, newSelectedRangeStart, weekStartIndex, onChangeViewingYear, onChangeViewingMonth, newSelectedRangeEnd, isRangeSelectorView, skipDisabledDatesInRange, setIsRangeSelectModeOn, fixedRangeLength, isFixedRangeView, isRangeSelectModeOn, isDisabled, onChangenSelectedMultiDates, selectedMultiDates, isMultiSelectorView, today, viewingMonth, onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd, onChangenSelectedRangeStart, onChangenSelectedDate, weekendIndices, onChange, viewingYear, allowFewerDatesThanRange, disableFuture, disablePast, lockView, checkIfWeekend, highlights, disableToday, }: Props): JSX.Element;
 export declare const DayOfMonthSelector: React.MemoExoticComponent<typeof DayOfMonthSelectorComponent>;
 export {};
