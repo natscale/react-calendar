@@ -1093,6 +1093,7 @@ function DayOfMonthSelectorComponent(_a) {
 }
 var DayOfMonthSelector = memo(DayOfMonthSelectorComponent);
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 var getStyles = function (size, fontSize) { return ({
     root: {
         arc: {
@@ -1107,8 +1108,6 @@ var getStyles = function (size, fontSize) { return ({
         arc_view: { height: '88%', width: '100%' },
     },
 }); };
-
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 var emptyArray = [];
 function Calendar(_a) {
     var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? emptyArray : _d, _e = _a.skipWeekendsInRange, skipWeekendsInRange = _e === void 0 ? false : _e, initialViewDate = _a.viewDate, _f = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _f === void 0 ? false : _f, _g = _a.startOfWeek, startOfWeek = _g === void 0 ? 1 : _g, maxAllowedDate = _a.maxAllowedDate, _h = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _h === void 0 ? false : _h, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onChange = _a.onChange, _j = _a.lockView, lockView = _j === void 0 ? false : _j, _k = _a.disableFuture, disableFuture = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 276 : _l, _m = _a.fontSize, fontSize = _m === void 0 ? 16 : _m, _o = _a.disablePast, disablePast = _o === void 0 ? false : _o, _p = _a.disableToday, disableToday = _p === void 0 ? false : _p;

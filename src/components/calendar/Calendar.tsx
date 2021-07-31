@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { CalendarProps, MonthIndices } from '../../utils/types';
+import type { CalendarProps, CSSProps, MonthIndices } from '../../utils/types';
 
 import {
   getStartOfRangeForAYear,
@@ -28,7 +28,20 @@ import { YearSelector } from '../year-selector/YearSelector';
 import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
 import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
 
-import { getStyles } from '../../utils/styles';
+const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
+  root: {
+    arc: {
+      width: `${size!}px`,
+      height: `${size!}px`,
+      fontSize: `${fontSize}px`,
+      display: 'flex',
+      alignItems: 'flex-start',
+      flexDirection: 'column',
+      boxSizing: 'border-box',
+    },
+    arc_view: { height: '88%', width: '100%' },
+  },
+});
 
 const emptyArray: Date[] = [];
 
