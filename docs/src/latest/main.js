@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { memo, useMemo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
 /**
  * This weekday index-to-label map is what is used by the Date object
@@ -763,7 +763,7 @@ function MonthSelectorComponent(_a) {
     var monthsViewMatrix = useMemo(function () {
         return getMonthViewMetrix({});
     }, []);
-    return (React.createElement("div", { style: months.root, className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
+    return (React.createElement("div", { role: "grid", style: months.root, className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
         React.createElement(Month, { cell: cell, onMonthClicked: function (cell) {
                 onChangeViewingMonth(cell.month), onChangeViewType('month_dates');
             } }))); }))); })));
@@ -807,7 +807,7 @@ function YearSelectorComponent(_a) {
     var yearsMatrix = useMemo(function () {
         return getYearsViewMetrix(yearMatrixStart, {});
     }, [yearMatrixStart]);
-    return (React.createElement("div", { style: years.root, className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
+    return (React.createElement("div", { role: "grid", style: years.root, className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
         React.createElement(Year, { cell: cell, onYearClicked: function (cell) {
                 onChangeViewingYear(cell.year), onChangeViewType('months');
             } }))); }))); })));
@@ -1111,7 +1111,7 @@ var getStyles = function (size, fontSize) { return ({
     },
 }); };
 var emptyArray = [];
-function CalendarWithRef(_a, ref) {
+function CalendarWithRef(_a, forwardRef) {
     var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? emptyArray : _d, _e = _a.skipWeekendsInRange, skipWeekendsInRange = _e === void 0 ? false : _e, initialViewDate = _a.viewDate, _f = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _f === void 0 ? false : _f, _g = _a.startOfWeek, startOfWeek = _g === void 0 ? 1 : _g, maxAllowedDate = _a.maxAllowedDate, _h = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _h === void 0 ? false : _h, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, onChange = _a.onChange, _j = _a.lockView, lockView = _j === void 0 ? false : _j, _k = _a.disableFuture, disableFuture = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 276 : _l, _m = _a.fontSize, fontSize = _m === void 0 ? 16 : _m, _o = _a.disablePast, disablePast = _o === void 0 ? false : _o, _p = _a.disableToday, disableToday = _p === void 0 ? false : _p;
     var styles = useMemo(function () { return getStyles(size, fontSize); }, [size, fontSize]);
     var today = useState(new Date())[0];
@@ -1327,7 +1327,100 @@ function CalendarWithRef(_a, ref) {
         });
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
-    return (React.createElement("div", { ref: ref, style: styles.root.arc, className: computedClass },
+    var calendarRef = useRef(null);
+    var menuItems = useRef([]);
+    useEffect(function () {
+        var currentCalendarRef = calendarRef.current;
+        if (!currentCalendarRef) {
+            return;
+        }
+        menuItems.current = currentCalendarRef
+            ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
+            : [];
+        console.log(menuItems);
+        var firstItem = menuItems.current[0];
+        var lastItem = menuItems.current[menuItems.current.length - 1];
+        firstItem.focus();
+        // Go to next/previous item if it exists
+        // or loop around
+        var focusNext = function (currentItem, startItem) {
+            // Determine which item is the startItem (first or last)
+            var goingDown = startItem === firstItem;
+            // Helper function for getting next legitimate element
+            var move = function (elem) {
+                var indexOfItem = menuItems.current.indexOf(elem);
+                if (goingDown) {
+                    if (indexOfItem < menuItems.current.length - 1) {
+                        return menuItems.current[indexOfItem + 1];
+                    }
+                    return startItem;
+                }
+                if (indexOfItem - 1 > -1) {
+                    return menuItems.current[indexOfItem - 1];
+                }
+                return startItem;
+            };
+            if (!currentItem) {
+                return null;
+            }
+            // Make first move
+            var nextItem = move(currentItem);
+            return nextItem;
+        };
+        function onKeyPressListener(e) {
+            var target = e.target;
+            var menuItem = menuItems.current && menuItems.current.find(function (item) { return item === target; });
+            if (!menuItem) {
+                return;
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                var count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+                var endItem = menuItem;
+                while (count > 0) {
+                    endItem = focusNext(endItem, firstItem);
+                    count--;
+                }
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                var count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+                var endItem = menuItem;
+                while (count > 0) {
+                    endItem = focusNext(endItem, lastItem);
+                    count--;
+                }
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                var endItem = focusNext(menuItem, lastItem);
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                var endItem = focusNext(menuItem, firstItem);
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'Home') {
+                e.preventDefault();
+                firstItem.focus();
+            }
+            if (e.key === 'End') {
+                e.preventDefault();
+                lastItem.focus();
+            }
+        }
+        currentCalendarRef.addEventListener('keydown', onKeyPressListener);
+        return function () {
+            currentCalendarRef.removeEventListener('keydown', onKeyPressListener);
+        };
+    }, [calendarRef, view]);
+    return (React.createElement("div", { ref: function (el) {
+            calendarRef.current = el;
+            typeof forwardRef === 'function' && forwardRef(el);
+        }, style: styles.root.arc, className: computedClass },
         React.createElement(Header, { onClickPrev: onPrevClick, onClickNext: onNextClick, onChangeViewType: changeView, viewType: view, viewingMonth: monthInView, viewingYear: yearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd }),
         React.createElement("div", { style: styles.root.arc_view, className: "arc_view" },
             view === 'months' && React.createElement(MonthSelector, { onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView }),

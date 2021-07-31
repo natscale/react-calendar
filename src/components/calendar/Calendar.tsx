@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { CalendarProps, CSSProps, MonthIndices } from '../../utils/types';
 
@@ -73,7 +73,7 @@ function CalendarWithRef(
     disablePast = false,
     disableToday = false,
   }: CalendarProps,
-  ref: React.Ref<HTMLDivElement>,
+  forwardRef: React.Ref<HTMLDivElement>,
 ): React.ReactElement<CalendarProps> {
   const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
 
@@ -346,8 +346,131 @@ function CalendarWithRef(
     [startOfTheWeek, weekendIndexes],
   );
 
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+  const menuItems = useRef<HTMLButtonElement[]>([]);
+
+  useEffect(() => {
+    const currentCalendarRef = calendarRef.current;
+
+    if (!currentCalendarRef) {
+      return;
+    }
+
+    menuItems.current = currentCalendarRef
+      ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
+      : [];
+
+    console.log(menuItems);
+
+    const firstItem = menuItems.current[0];
+    const lastItem = menuItems.current[menuItems.current.length - 1];
+
+    firstItem.focus();
+
+    // Go to next/previous item if it exists
+    // or loop around
+    const focusNext = (currentItem: HTMLButtonElement | null, startItem: HTMLButtonElement | null) => {
+      // Determine which item is the startItem (first or last)
+      const goingDown = startItem === firstItem;
+
+      // Helper function for getting next legitimate element
+      const move = (elem: HTMLButtonElement) => {
+        const indexOfItem = menuItems.current.indexOf(elem);
+
+        if (goingDown) {
+          if (indexOfItem < menuItems.current.length - 1) {
+            return menuItems.current[indexOfItem + 1];
+          }
+
+          return startItem;
+        }
+
+        if (indexOfItem - 1 > -1) {
+          return menuItems.current[indexOfItem - 1];
+        }
+
+        return startItem;
+      };
+
+      if (!currentItem) {
+        return null;
+      }
+
+      // Make first move
+      const nextItem = move(currentItem);
+
+      return nextItem;
+    };
+
+    function onKeyPressListener(e: KeyboardEvent) {
+      const { target } = e;
+      const menuItem = menuItems.current && menuItems.current.find((item) => item === target);
+
+      if (!menuItem) {
+        return;
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        let count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+        let endItem: HTMLButtonElement | null = menuItem;
+        while (count > 0) {
+          endItem = focusNext(endItem, firstItem);
+          count--;
+        }
+        endItem?.focus();
+      }
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        let count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+        let endItem: HTMLButtonElement | null = menuItem;
+        while (count > 0) {
+          endItem = focusNext(endItem, lastItem);
+          count--;
+        }
+        endItem?.focus();
+      }
+
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const endItem = focusNext(menuItem, lastItem);
+        endItem?.focus();
+      }
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const endItem = focusNext(menuItem, firstItem);
+        endItem?.focus();
+      }
+
+      if (e.key === 'Home') {
+        e.preventDefault();
+        firstItem.focus();
+      }
+
+      if (e.key === 'End') {
+        e.preventDefault();
+        lastItem.focus();
+      }
+    }
+
+    currentCalendarRef.addEventListener('keydown', onKeyPressListener);
+
+    return () => {
+      currentCalendarRef.removeEventListener('keydown', onKeyPressListener);
+    };
+  }, [calendarRef, view]);
+
   return (
-    <div ref={ref} style={styles.root.arc} className={computedClass}>
+    <div
+      ref={(el) => {
+        calendarRef.current = el;
+        typeof forwardRef === 'function' && forwardRef(el);
+      }}
+      style={styles.root.arc}
+      className={computedClass}
+    >
       <Header
         onClickPrev={onPrevClick}
         onClickNext={onNextClick}

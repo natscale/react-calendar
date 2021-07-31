@@ -26,7 +26,7 @@ function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: Prop
   }, []);
 
   return (
-    <div style={months.root} className="arc_view-months">
+    <div role="grid" style={months.root} className="arc_view-months">
       {monthsViewMatrix.map((row, index) => (
         <div style={months.arc_view_row} className="arc_view_row" key={index}>
           {row.map((cell) => (
