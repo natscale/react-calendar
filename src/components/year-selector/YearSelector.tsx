@@ -3,6 +3,7 @@ import React, { memo, useMemo } from 'react';
 import { CSSProps, YearCell } from '../../utils/types';
 
 import { getYearsViewMetrix } from '../../utils/date-utils';
+import { Year } from '../year-cell/Year';
 
 interface Props {
   onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
@@ -28,15 +29,12 @@ function YearSelectorComponent({ onChangeViewType, onChangeViewingYear, yearMatr
               className={`arc_view_cell${cell.isCurrentYear ? ' arc_this_year' : ''}`}
               key={cell.year}
             >
-              <button
-                style={layoutCalcs.months.arc_view_cell_value_button}
-                onClick={() => {
-                  onChangeViewingYear(cell.year);
-                  onChangeViewType('months');
+              <Year
+                cell={cell}
+                onYearClicked={(cell) => {
+                  onChangeViewingYear(cell.year), onChangeViewType('months');
                 }}
-              >
-                {cell.year}
-              </button>
+              />
             </div>
           ))}
         </div>

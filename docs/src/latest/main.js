@@ -700,18 +700,63 @@ function HeaderComponent(_a) {
 }
 var Header = memo(HeaderComponent);
 
+var arc_view_cell_value$2 = {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+var arc_view_cell_value_button$2 = {
+    width: '95%',
+    height: '45%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+function Component$2(_a) {
+    var cell = _a.cell, onMonthClicked = _a.onMonthClicked;
+    return (React.createElement("div", { style: arc_view_cell_value$2 },
+        React.createElement("button", { style: arc_view_cell_value_button$2, onClick: function () {
+                onMonthClicked(cell);
+            } }, NATIVE_INDEX_TO_LABEL_MONTHS_MAP[cell.month])));
+}
+var Month = memo(Component$2);
+
 function MonthSelectorComponent(_a) {
     var onChangeViewingMonth = _a.onChangeViewingMonth, onChangeViewType = _a.onChangeViewType, layoutCalcs = _a.layoutCalcs;
     var monthsViewMatrix = useMemo(function () {
         return getMonthViewMetrix({});
     }, []);
     return (React.createElement("div", { style: layoutCalcs.root['arc_view-months'], className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: layoutCalcs.months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: layoutCalcs.months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
-        React.createElement("button", { style: layoutCalcs.months.arc_view_cell_value_button, onClick: function () {
-                onChangeViewingMonth(cell.month);
-                onChangeViewType('month_dates');
-            } }, NATIVE_INDEX_TO_LABEL_MONTHS_MAP[cell.month]))); }))); })));
+        React.createElement(Month, { cell: cell, onMonthClicked: function (cell) {
+                onChangeViewingMonth(cell.month), onChangeViewType('month_dates');
+            } }))); }))); })));
 }
 var MonthSelector = memo(MonthSelectorComponent);
+
+var arc_view_cell_value$1 = {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+var arc_view_cell_value_button$1 = {
+    width: '95%',
+    height: '45%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+function Component$1(_a) {
+    var cell = _a.cell, onYearClicked = _a.onYearClicked;
+    return (React.createElement("div", { style: arc_view_cell_value$1 },
+        React.createElement("button", { style: arc_view_cell_value_button$1, onClick: function () {
+                onYearClicked(cell);
+            } }, cell.year)));
+}
+var Year = memo(Component$1);
 
 function YearSelectorComponent(_a) {
     var onChangeViewType = _a.onChangeViewType, onChangeViewingYear = _a.onChangeViewingYear, yearMatrixStart = _a.yearMatrixStart, layoutCalcs = _a.layoutCalcs;
@@ -720,10 +765,9 @@ function YearSelectorComponent(_a) {
         return getYearsViewMetrix(yearMatrixStart, {});
     }, [yearMatrixStart]);
     return (React.createElement("div", { style: layoutCalcs.root['arc_view-years'], className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: layoutCalcs.years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: layoutCalcs.years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
-        React.createElement("button", { style: layoutCalcs.months.arc_view_cell_value_button, onClick: function () {
-                onChangeViewingYear(cell.year);
-                onChangeViewType('months');
-            } }, cell.year))); }))); })));
+        React.createElement(Year, { cell: cell, onYearClicked: function (cell) {
+                onChangeViewingYear(cell.year), onChangeViewType('months');
+            } }))); }))); })));
 }
 var YearSelector = memo(YearSelectorComponent);
 
@@ -770,6 +814,32 @@ var __assign = function() {
     };
     return __assign.apply(this, arguments);
 };
+
+var arc_view_cell = {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+var arc_view_cell_value = {
+    width: '69.80%',
+    height: '80%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+var arc_view_cell_value_button = {
+    width: '100%',
+    height: '100%',
+};
+function Component(_a) {
+    var cell = _a.cell, onDateClicked = _a.onDateClicked;
+    return (React.createElement("div", { style: arc_view_cell },
+        React.createElement("div", { style: arc_view_cell_value, className: "arc_view_cell_value" },
+            React.createElement("button", { style: arc_view_cell_value_button, disabled: cell.isDisabled, tabIndex: cell.isDisabled ? -1 : 0, onClick: function () { return onDateClicked(cell); } }, cell.dayOfMonth))));
+}
+var DayOfMonth = memo(Component);
 
 function DayOfMonthSelectorComponent(_a) {
     var selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, weekStartIndex = _a.weekStartIndex, onChangeViewingYear = _a.onChangeViewingYear, onChangeViewingMonth = _a.onChangeViewingMonth, newSelectedRangeEnd = _a.newSelectedRangeEnd, isRangeSelectorView = _a.isRangeSelectorView, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, setIsRangeSelectModeOn = _a.setIsRangeSelectModeOn, fixedRangeLength = _a.fixedRangeLength, isFixedRangeView = _a.isFixedRangeView, isRangeSelectModeOn = _a.isRangeSelectModeOn, isDisabled = _a.isDisabled, onChangenSelectedMultiDates = _a.onChangenSelectedMultiDates, selectedMultiDates = _a.selectedMultiDates, isMultiSelectorView = _a.isMultiSelectorView, today = _a.today, viewingMonth = _a.viewingMonth, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd = _a.onChangenSelectedRangeEnd, onChangenSelectedRangeStart = _a.onChangenSelectedRangeStart, onChangenSelectedDate = _a.onChangenSelectedDate, layoutCalcs = _a.layoutCalcs, weekendIndices = _a.weekendIndices, onChange = _a.onChange, viewingYear = _a.viewingYear, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, lockView = _a.lockView, checkIfWeekend = _a.checkIfWeekend, highlights = _a.highlights, disableToday = _a.disableToday;
@@ -936,8 +1006,7 @@ function DayOfMonthSelectorComponent(_a) {
                 }
             }
         }, key: cell.dayOfMonth, className: "arc_view_cell" + (cell.activeMonthInView ? ' arc_active' : '') + (cell.isWeekend ? ' arc_wknd' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isFirstRow ? ' arc_fr' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isHighlight ? ' arc_highlight' : '') + (cell.isLastRow ? ' arc_lr' : '') + (cell.isFirsColumn ? ' arc_fc' : '') + (cell.isLastColumn ? ' arc_lc' : '') + (cell.isSelected && !isRangeSelectorView ? ' arc_selected' : '') + (cell.isDisabled ? ' arc_disabled' : '') + (cell.isInRange ? ' arc_in_range' : '') + (cell.isRangeStart ? ' arc_range_start' : '') + (cell.isRangeEnd ? ' arc_range_end' : '') + (isRangeSelectModeOn ? ' arc_range_mode' : '') },
-        React.createElement("div", { style: layoutCalcs.dayOfMonth.arc_view_cell_value, className: "arc_view_cell_value" },
-            React.createElement("button", { style: layoutCalcs.dayOfMonth.arc_view_cell_value_button, disabled: cell.isDisabled, tabIndex: cell.isDisabled ? -1 : 0, onClick: function () { return onDateClicked(cell); } }, cell.dayOfMonth)))); }))); })));
+        React.createElement(DayOfMonth, { cell: cell, onDateClicked: onDateClicked }))); }))); })));
 }
 var DayOfMonthSelector = memo(DayOfMonthSelectorComponent);
 
@@ -1001,17 +1070,6 @@ var getStyles = function (size, fontSize) { return ({
             flexBasis: '14.286%',
             maxWidth: '14.286%',
             height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        arc_view_cell_value: {
-            width: '69.80%',
-            height: '80%',
-        },
-        arc_view_cell_value_button: {
-            width: '100%',
-            height: '100%',
         },
     },
     months: {
@@ -1020,16 +1078,6 @@ var getStyles = function (size, fontSize) { return ({
             flexBasis: '33.33%',
             maxWidth: '33.33%',
             height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        arc_view_cell_value_button: {
-            width: '95%',
-            height: '45%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
         },
     },
     years: {
@@ -1037,16 +1085,6 @@ var getStyles = function (size, fontSize) { return ({
         arc_view_cell: {
             width: '20%',
             height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        arc_view_cell_value_button: {
-            width: '95%',
-            height: '45%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
         },
     },
     header: {

@@ -61,17 +61,6 @@ export const getStyles: (size: number, fontSize: number) => CSSProps = (size, fo
       flexBasis: '14.286%',
       maxWidth: '14.286%',
       height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    arc_view_cell_value: {
-      width: '69.80%',
-      height: '80%',
-    },
-    arc_view_cell_value_button: {
-      width: '100%',
-      height: '100%',
     },
   },
   months: {
@@ -80,16 +69,6 @@ export const getStyles: (size: number, fontSize: number) => CSSProps = (size, fo
       flexBasis: '33.33%',
       maxWidth: '33.33%',
       height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    arc_view_cell_value_button: {
-      width: '95%',
-      height: '45%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
   },
   years: {
@@ -97,16 +76,6 @@ export const getStyles: (size: number, fontSize: number) => CSSProps = (size, fo
     arc_view_cell: {
       width: '20%',
       height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    arc_view_cell_value_button: {
-      width: '95%',
-      height: '45%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
   },
   header: {

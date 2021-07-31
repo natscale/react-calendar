@@ -87,18 +87,14 @@ export interface CSSProps {
     'arc_view-days-of-month': CSSProperties;
     arc_view_row: CSSProperties;
     arc_view_cell: CSSProperties;
-    arc_view_cell_value: CSSProperties;
-    arc_view_cell_value_button: CSSProperties;
   };
   months: {
     arc_view_row: CSSProperties;
     arc_view_cell: CSSProperties;
-    arc_view_cell_value_button: CSSProperties;
   };
   years: {
     arc_view_row: CSSProperties;
     arc_view_cell: CSSProperties;
-    arc_view_cell_value_button: CSSProperties;
   };
   header: {
     arc_header_nav: CSSProperties;

@@ -3,6 +3,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import type { CSSProps, DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
 
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
+import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
 
 interface Props {
   onChangeViewingYear: (year: number) => unknown;
@@ -294,16 +295,7 @@ function DayOfMonthSelectorComponent({
                 cell.isRangeEnd ? ' arc_range_end' : ''
               }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}
             >
-              <div style={layoutCalcs.dayOfMonth.arc_view_cell_value} className="arc_view_cell_value">
-                <button
-                  style={layoutCalcs.dayOfMonth.arc_view_cell_value_button}
-                  disabled={cell.isDisabled}
-                  tabIndex={cell.isDisabled ? -1 : 0}
-                  onClick={() => onDateClicked(cell)}
-                >
-                  {cell.dayOfMonth}
-                </button>
-              </div>
+              <DayOfMonth cell={cell} onDateClicked={onDateClicked} />
             </div>
           ))}
         </div>
