@@ -27,6 +27,7 @@ import { MonthSelector } from '../month-selector/MonthSelector';
 import { YearSelector } from '../year-selector/YearSelector';
 import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
 import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
+import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
 
 const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {
@@ -68,7 +69,7 @@ function CalendarWithRef(
     onChange,
     lockView = false,
     disableFuture = false,
-    size = 276,
+    size = 280,
     fontSize = 16,
     disablePast = false,
     disableToday = false,
@@ -346,6 +347,26 @@ function CalendarWithRef(
     [startOfTheWeek, weekendIndexes],
   );
 
+  const updateDateView = useCallback((date: Date | undefined) => {
+    if (isValid(date)) {
+      setMonthInView(date.getMonth() as MonthIndices);
+      setYearInView(date.getFullYear());
+    }
+  }, []);
+
+  const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
+
+  const goToToday = useCallback(() => updateDateView(new Date()), [today]);
+  const goToRangeStart = useCallback(() => updateDateView(selectedRangeStart), [selectedRangeStart]);
+  const goToRangeEnd = useCallback(() => updateDateView(selectedRangeEnd), [selectedRangeEnd]);
+  const toggleDate = useCallback(() => {
+    const values = Object.values(selectedMultiDates).sort((a, b) =>
+      isValid(a) && isValid(b) ? a.getTime() - b.getTime() : 0,
+    );
+    updateDateView(values[toggleDateIndex]);
+    setToggleDateIndex(toggleDateIndex < values.length - 1 ? toggleDateIndex + 1 : 0);
+  }, [toggleDateIndex]);
+
   return (
     <div ref={ref} style={styles.root.arc} className={computedClass}>
       <Header
@@ -416,6 +437,12 @@ function CalendarWithRef(
           </>
         )}
       </div>
+      <ShortcutBar
+        onTodayClick={goToToday}
+        onRangeStartClick={goToRangeStart}
+        onRangeEndClick={goToRangeEnd}
+        onToggleDatesClick={toggleDate}
+      />
     </div>
   );
 }

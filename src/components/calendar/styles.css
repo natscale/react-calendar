@@ -128,6 +128,32 @@
   transform: translateY(1px);
 }
 
+.arc_shortcuts_view {
+  border-top: 1px solid #e7e7e7;
+  font-size: 0.7rem;
+}
+
+.arc_shortcuts_view button {
+  cursor: pointer;
+  border-right: 1px solid #e7e7e7;
+}
+
+.arc_shortcuts_view button:last-of-type {
+  border-right: none;
+}
+
+.arc_shortcuts_view button:hover {
+  background-color: var(--arc-color-bg-text-hover-header-button);
+}
+
+.arc_shortcuts_view button:active {
+  transform: translateY(1px);
+}
+
+.arc_header button:active {
+  transform: translateY(1px);
+}
+
 /** arc_view **/
 
 .arc_view {
