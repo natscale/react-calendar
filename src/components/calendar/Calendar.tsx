@@ -371,14 +371,20 @@ function CalendarWithRef(
     const lastItem = menuItems.current[menuItems.current.length - 1];
     const grid = currentCalendarRef.querySelector('[role="grid"]');
     const seletedItemIfAny: HTMLButtonElement | null =
-      currentCalendarRef.querySelector('[role="grid"] button.arc_selected') ||
-      currentCalendarRef.querySelector('[role="grid"] button.arc_range_end') ||
-      currentCalendarRef.querySelector('[role="grid"] button.arc_range_start');
+      currentCalendarRef.querySelector('[role="grid"] .arc_selected button') ||
+      currentCalendarRef.querySelector('[role="grid"] .arc_range_end button') ||
+      currentCalendarRef.querySelector('[role="grid"] .arc_range_start button');
+
+    const firstActiveItem: HTMLButtonElement | null = currentCalendarRef.querySelector(
+      '[role="grid"] .arc_active button',
+    );
 
     if (grid && !grid.contains(document.activeElement)) {
       // if focus in not already inside the GRID then bring the focus
       if (seletedItemIfAny) {
         seletedItemIfAny.focus();
+      } else if (firstActiveItem) {
+        firstActiveItem.focus();
       } else {
         firstItem.focus();
       }
