@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "lib": ["ES2015"],
+    "lib": ["ES2015", "DOM"],
     "declarationDir": "./dist",
     "strict": true,
     "allowSyntheticDefaultImports": true,

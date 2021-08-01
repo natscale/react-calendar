@@ -277,6 +277,7 @@ function DayOfMonthSelectorComponent({
       onChangenSelectedRangeEnd,
       onChange,
       onChangenNewSelectedRangeStart,
+      onPartialRangeSelect,
       fixedRangeLength,
       isDisabled,
       skipDisabledDatesInRange,
@@ -285,6 +286,7 @@ function DayOfMonthSelectorComponent({
       allowFewerDatesThanRange,
       selectedMultiDates,
       onChangenSelectedMultiDates,
+      onEachMultiSelect,
       onChangenSelectedDate,
     ],
   );
@@ -303,7 +305,7 @@ function DayOfMonthSelectorComponent({
                   }
                 }
               }}
-              key={cell.dayOfMonth}
+              key={toString(cell.date)}
               className={`arc_view_cell${cell.activeMonthInView ? ' arc_active' : ''}${
                 cell.isWeekend ? ' arc_wknd' : ''
               }${cell.isToday ? ' arc_today' : ''}${cell.isFirstRow ? ' arc_fr' : ''}${

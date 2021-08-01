@@ -28,7 +28,7 @@ function YearSelectorComponent({ onChangeViewType, onChangeViewingYear, yearMatr
   }, [yearMatrixStart]);
 
   return (
-    <div style={years.root} className="arc_view-years">
+    <div role="grid" style={years.root} className="arc_view-years">
       {yearsMatrix.map((row, index) => (
         <div style={years.arc_view_row} className="arc_view_row" key={index}>
           {row.map((cell) => (

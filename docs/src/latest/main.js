@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { memo, useMemo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useMemo, useState, useCallback, useEffect, useRef } from 'react';
 
 /**
  * This weekday index-to-label map is what is used by the Date object
@@ -763,7 +763,7 @@ function MonthSelectorComponent(_a) {
     var monthsViewMatrix = useMemo(function () {
         return getMonthViewMetrix({});
     }, []);
-    return (React.createElement("div", { style: months.root, className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
+    return (React.createElement("div", { role: "grid", style: months.root, className: "arc_view-months" }, monthsViewMatrix.map(function (row, index) { return (React.createElement("div", { style: months.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: months.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentMonth ? ' arc_this_month' : ''), key: cell.month },
         React.createElement(Month, { cell: cell, onMonthClicked: function (cell) {
                 onChangeViewingMonth(cell.month), onChangeViewType('month_dates');
             } }))); }))); })));
@@ -807,7 +807,7 @@ function YearSelectorComponent(_a) {
     var yearsMatrix = useMemo(function () {
         return getYearsViewMetrix(yearMatrixStart, {});
     }, [yearMatrixStart]);
-    return (React.createElement("div", { style: years.root, className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
+    return (React.createElement("div", { role: "grid", style: years.root, className: "arc_view-years" }, yearsMatrix.map(function (row, index) { return (React.createElement("div", { style: years.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: years.arc_view_cell, className: "arc_view_cell" + (cell.isCurrentYear ? ' arc_this_year' : ''), key: cell.year },
         React.createElement(Year, { cell: cell, onYearClicked: function (cell) {
                 onChangeViewingYear(cell.year), onChangeViewType('months');
             } }))); }))); })));
@@ -1090,7 +1090,7 @@ function DayOfMonthSelectorComponent(_a) {
                     onChangenNewSelectedRangeEnd(new Date(cell.year, cell.month, cell.dayOfMonth));
                 }
             }
-        }, key: cell.dayOfMonth, className: "arc_view_cell" + (cell.activeMonthInView ? ' arc_active' : '') + (cell.isWeekend ? ' arc_wknd' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isFirstRow ? ' arc_fr' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isHighlight ? ' arc_highlight' : '') + (cell.isLastRow ? ' arc_lr' : '') + (cell.isFirsColumn ? ' arc_fc' : '') + (cell.isLastColumn ? ' arc_lc' : '') + (cell.isSelected && !isRangeSelectorView ? ' arc_selected' : '') + (cell.isDisabled ? ' arc_disabled' : '') + (cell.isInRange ? ' arc_in_range' : '') + (cell.isRangeStart ? ' arc_range_start' : '') + (cell.isRangeEnd ? ' arc_range_end' : '') + (isRangeSelectModeOn ? ' arc_range_mode' : '') },
+        }, key: toString(cell.date), className: "arc_view_cell" + (cell.activeMonthInView ? ' arc_active' : '') + (cell.isWeekend ? ' arc_wknd' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isFirstRow ? ' arc_fr' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isHighlight ? ' arc_highlight' : '') + (cell.isLastRow ? ' arc_lr' : '') + (cell.isFirsColumn ? ' arc_fc' : '') + (cell.isLastColumn ? ' arc_lc' : '') + (cell.isSelected && !isRangeSelectorView ? ' arc_selected' : '') + (cell.isDisabled ? ' arc_disabled' : '') + (cell.isInRange ? ' arc_in_range' : '') + (cell.isRangeStart ? ' arc_range_start' : '') + (cell.isRangeEnd ? ' arc_range_end' : '') + (isRangeSelectModeOn ? ' arc_range_mode' : '') },
         React.createElement(DayOfMonth, { cell: cell, onDateClicked: onDateClicked }))); }))); })));
 }
 var DayOfMonthSelector = memo(DayOfMonthSelectorComponent);
@@ -1111,7 +1111,7 @@ var getStyles = function (size, fontSize) { return ({
     },
 }); };
 var emptyArray = [];
-function CalendarWithRef(_a, ref) {
+function CalendarWithRef(_a, forwardRef) {
     var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? emptyArray : _d, _e = _a.skipWeekendsInRange, skipWeekendsInRange = _e === void 0 ? false : _e, initialViewDate = _a.viewDate, _f = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _f === void 0 ? false : _f, _g = _a.startOfWeek, startOfWeek = _g === void 0 ? 1 : _g, maxAllowedDate = _a.maxAllowedDate, _h = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _h === void 0 ? false : _h, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, onChange = _a.onChange, _j = _a.lockView, lockView = _j === void 0 ? false : _j, _k = _a.disableFuture, disableFuture = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 276 : _l, _m = _a.fontSize, fontSize = _m === void 0 ? 16 : _m, _o = _a.disablePast, disablePast = _o === void 0 ? false : _o, _p = _a.disableToday, disableToday = _p === void 0 ? false : _p;
     var styles = useMemo(function () { return getStyles(size, fontSize); }, [size, fontSize]);
     var today = useState(new Date())[0];
@@ -1327,7 +1327,149 @@ function CalendarWithRef(_a, ref) {
         });
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
-    return (React.createElement("div", { ref: ref, style: styles.root.arc, className: computedClass },
+    var calendarRef = useRef(null);
+    var cells = useRef([]);
+    var _2 = useState(false), hasFocus = _2[0], setHasFocus = _2[1];
+    useEffect(function () {
+        if (!hasFocus) {
+            return;
+        }
+        var currentCalendarRef = calendarRef.current;
+        if (!currentCalendarRef) {
+            return;
+        }
+        cells.current = currentCalendarRef
+            ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
+            : [];
+        var firstItem = cells.current[0];
+        var lastItem = cells.current[cells.current.length - 1];
+        var grid = currentCalendarRef.querySelector('[role="grid"]');
+        var seletedItemIfAny = currentCalendarRef.querySelector('[role="grid"] .arc_selected button') ||
+            currentCalendarRef.querySelector('[role="grid"] .arc_range_end button') ||
+            currentCalendarRef.querySelector('[role="grid"] .arc_range_start button');
+        var firstActiveItem = currentCalendarRef.querySelector('[role="grid"] .arc_active button');
+        var prevButton = currentCalendarRef.querySelector('header .arc_header_nav-prev');
+        var nextButton = currentCalendarRef.querySelector('header .arc_header_nav-next');
+        var monthYearSelector = currentCalendarRef.querySelector('header .arc_header_label');
+        if (grid && !grid.contains(document.activeElement)) {
+            // if focus in not already inside the GRID then bring the focus
+            if (seletedItemIfAny) {
+                seletedItemIfAny.focus();
+            }
+            else if (firstActiveItem) {
+                firstActiveItem.focus();
+            }
+            else {
+                firstItem.focus();
+            }
+        }
+        var focusNext = function (currentItem, startItem) {
+            // Determine which item is the startItem (first or last)
+            var goingDown = startItem === firstItem;
+            var move = function (elem) {
+                var indexOfItem = cells.current.indexOf(elem);
+                if (goingDown) {
+                    if (indexOfItem < cells.current.length - 1) {
+                        return cells.current[indexOfItem + 1];
+                    }
+                    return startItem;
+                }
+                if (indexOfItem - 1 > -1) {
+                    return cells.current[indexOfItem - 1];
+                }
+                return startItem;
+            };
+            if (!currentItem) {
+                return null;
+            }
+            var nextItem = move(currentItem);
+            return nextItem;
+        };
+        function onKeyPressListener(e) {
+            var target = e.target;
+            var cell = cells.current && cells.current.find(function (item) { return item === target; });
+            if (!cell) {
+                return;
+            }
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                var endItem = focusNext(cell, firstItem);
+                if (endItem === firstItem) {
+                    prevButton === null || prevButton === void 0 ? void 0 : prevButton.focus();
+                }
+                else if (document.activeElement === nextButton) {
+                    firstItem === null || firstItem === void 0 ? void 0 : firstItem.focus();
+                }
+                else if (document.activeElement === monthYearSelector) {
+                    nextButton === null || nextButton === void 0 ? void 0 : nextButton.focus();
+                }
+                else if (document.activeElement === prevButton) {
+                    monthYearSelector === null || monthYearSelector === void 0 ? void 0 : monthYearSelector.focus();
+                }
+                else {
+                    endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+                }
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                var count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+                var endItem = cell;
+                while (count > 0) {
+                    endItem = focusNext(endItem, firstItem);
+                    count--;
+                }
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                var count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+                var endItem = cell;
+                while (count > 0) {
+                    endItem = focusNext(endItem, lastItem);
+                    count--;
+                }
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                var endItem = focusNext(cell, lastItem);
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                var endItem = focusNext(cell, firstItem);
+                endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+            }
+            if (e.key === 'Home') {
+                e.preventDefault();
+                firstItem.focus();
+            }
+            if (e.key === 'End') {
+                e.preventDefault();
+                lastItem.focus();
+            }
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                cell.blur();
+                currentCalendarRef === null || currentCalendarRef === void 0 ? void 0 : currentCalendarRef.blur();
+            }
+        }
+        currentCalendarRef.addEventListener('keydown', onKeyPressListener, { capture: true });
+        return function () {
+            currentCalendarRef.removeEventListener('keydown', onKeyPressListener, { capture: true });
+        };
+    }, [calendarRef, view, hasFocus, monthInView]);
+    return (React.createElement("div", { onFocus: function () {
+            !hasFocus && setHasFocus(true);
+        }, onBlur: function (e) {
+            if (e.currentTarget.contains(e.target)) ;
+            else {
+                setHasFocus(false);
+            }
+        }, ref: function (el) {
+            calendarRef.current = el;
+            typeof forwardRef === 'function' && forwardRef(el);
+        }, style: styles.root.arc, className: computedClass },
         React.createElement(Header, { onClickPrev: onPrevClick, onClickNext: onNextClick, onChangeViewType: changeView, viewType: view, viewingMonth: monthInView, viewingYear: yearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd }),
         React.createElement("div", { style: styles.root.arc_view, className: "arc_view" },
             view === 'months' && React.createElement(MonthSelector, { onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView }),
