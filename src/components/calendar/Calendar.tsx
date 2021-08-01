@@ -349,7 +349,7 @@ function CalendarWithRef(
   );
 
   const calendarRef = useRef<HTMLDivElement | null>(null);
-  const menuItems = useRef<HTMLButtonElement[]>([]);
+  const cells = useRef<HTMLButtonElement[]>([]);
   const [hasFocus, setHasFocus] = useState(false);
 
   useEffect(() => {
@@ -363,12 +363,12 @@ function CalendarWithRef(
       return;
     }
 
-    menuItems.current = currentCalendarRef
+    cells.current = currentCalendarRef
       ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
       : [];
 
-    const firstItem = menuItems.current[0];
-    const lastItem = menuItems.current[menuItems.current.length - 1];
+    const firstItem = cells.current[0];
+    const lastItem = cells.current[cells.current.length - 1];
     const grid = currentCalendarRef.querySelector('[role="grid"]');
     const seletedItemIfAny: HTMLButtonElement | null =
       currentCalendarRef.querySelector('[role="grid"] .arc_selected button') ||
@@ -378,6 +378,10 @@ function CalendarWithRef(
     const firstActiveItem: HTMLButtonElement | null = currentCalendarRef.querySelector(
       '[role="grid"] .arc_active button',
     );
+
+    const prevButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_nav-prev');
+    const nextButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_nav-next');
+    const monthYearSelector: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_label');
 
     if (grid && !grid.contains(document.activeElement)) {
       // if focus in not already inside the GRID then bring the focus
@@ -390,26 +394,23 @@ function CalendarWithRef(
       }
     }
 
-    // Go to next/previous item if it exists
-    // or loop around
     const focusNext = (currentItem: HTMLButtonElement | null, startItem: HTMLButtonElement | null) => {
       // Determine which item is the startItem (first or last)
       const goingDown = startItem === firstItem;
 
-      // Helper function for getting next legitimate element
       const move = (elem: HTMLButtonElement) => {
-        const indexOfItem = menuItems.current.indexOf(elem);
+        const indexOfItem = cells.current.indexOf(elem);
 
         if (goingDown) {
-          if (indexOfItem < menuItems.current.length - 1) {
-            return menuItems.current[indexOfItem + 1];
+          if (indexOfItem < cells.current.length - 1) {
+            return cells.current[indexOfItem + 1];
           }
 
           return startItem;
         }
 
         if (indexOfItem - 1 > -1) {
-          return menuItems.current[indexOfItem - 1];
+          return cells.current[indexOfItem - 1];
         }
 
         return startItem;
@@ -419,7 +420,6 @@ function CalendarWithRef(
         return null;
       }
 
-      // Make first move
       const nextItem = move(currentItem);
 
       return nextItem;
@@ -427,16 +427,32 @@ function CalendarWithRef(
 
     function onKeyPressListener(e: KeyboardEvent) {
       const { target } = e;
-      const menuItem = menuItems.current && menuItems.current.find((item) => item === target);
+      const cell = cells.current && cells.current.find((item) => item === target);
 
-      if (!menuItem) {
+      if (!cell) {
         return;
+      }
+
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const endItem = focusNext(cell, firstItem);
+        if (endItem === firstItem) {
+          prevButton?.focus();
+        } else if (document.activeElement === nextButton) {
+          firstItem?.focus();
+        } else if (document.activeElement === monthYearSelector) {
+          nextButton?.focus();
+        } else if (document.activeElement === prevButton) {
+          monthYearSelector?.focus();
+        } else {
+          endItem?.focus();
+        }
       }
 
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         let count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
-        let endItem: HTMLButtonElement | null = menuItem;
+        let endItem: HTMLButtonElement | null = cell;
         while (count > 0) {
           endItem = focusNext(endItem, firstItem);
           count--;
@@ -447,7 +463,7 @@ function CalendarWithRef(
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         let count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
-        let endItem: HTMLButtonElement | null = menuItem;
+        let endItem: HTMLButtonElement | null = cell;
         while (count > 0) {
           endItem = focusNext(endItem, lastItem);
           count--;
@@ -457,13 +473,13 @@ function CalendarWithRef(
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        const endItem = focusNext(menuItem, lastItem);
+        const endItem = focusNext(cell, lastItem);
         endItem?.focus();
       }
 
       if (e.key === 'ArrowRight') {
         e.preventDefault();
-        const endItem = focusNext(menuItem, firstItem);
+        const endItem = focusNext(cell, firstItem);
         endItem?.focus();
       }
 
@@ -477,12 +493,10 @@ function CalendarWithRef(
         lastItem.focus();
       }
 
-      if (e.key === ' ' || e.key === 'Spacebar') {
-        // menuItem.focus();
-      }
-
-      if (e.key === 'Enter') {
-        // menuItem.focus();
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        cell.blur();
+        currentCalendarRef?.blur();
       }
     }
 

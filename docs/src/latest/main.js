@@ -1328,7 +1328,7 @@ function CalendarWithRef(_a, forwardRef) {
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
     var calendarRef = useRef(null);
-    var menuItems = useRef([]);
+    var cells = useRef([]);
     var _2 = useState(false), hasFocus = _2[0], setHasFocus = _2[1];
     useEffect(function () {
         if (!hasFocus) {
@@ -1338,16 +1338,19 @@ function CalendarWithRef(_a, forwardRef) {
         if (!currentCalendarRef) {
             return;
         }
-        menuItems.current = currentCalendarRef
+        cells.current = currentCalendarRef
             ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
             : [];
-        var firstItem = menuItems.current[0];
-        var lastItem = menuItems.current[menuItems.current.length - 1];
+        var firstItem = cells.current[0];
+        var lastItem = cells.current[cells.current.length - 1];
         var grid = currentCalendarRef.querySelector('[role="grid"]');
         var seletedItemIfAny = currentCalendarRef.querySelector('[role="grid"] .arc_selected button') ||
             currentCalendarRef.querySelector('[role="grid"] .arc_range_end button') ||
             currentCalendarRef.querySelector('[role="grid"] .arc_range_start button');
         var firstActiveItem = currentCalendarRef.querySelector('[role="grid"] .arc_active button');
+        var prevButton = currentCalendarRef.querySelector('header .arc_header_nav-prev');
+        var nextButton = currentCalendarRef.querySelector('header .arc_header_nav-next');
+        var monthYearSelector = currentCalendarRef.querySelector('header .arc_header_label');
         if (grid && !grid.contains(document.activeElement)) {
             // if focus in not already inside the GRID then bring the focus
             if (seletedItemIfAny) {
@@ -1360,42 +1363,57 @@ function CalendarWithRef(_a, forwardRef) {
                 firstItem.focus();
             }
         }
-        // Go to next/previous item if it exists
-        // or loop around
         var focusNext = function (currentItem, startItem) {
             // Determine which item is the startItem (first or last)
             var goingDown = startItem === firstItem;
-            // Helper function for getting next legitimate element
             var move = function (elem) {
-                var indexOfItem = menuItems.current.indexOf(elem);
+                var indexOfItem = cells.current.indexOf(elem);
                 if (goingDown) {
-                    if (indexOfItem < menuItems.current.length - 1) {
-                        return menuItems.current[indexOfItem + 1];
+                    if (indexOfItem < cells.current.length - 1) {
+                        return cells.current[indexOfItem + 1];
                     }
                     return startItem;
                 }
                 if (indexOfItem - 1 > -1) {
-                    return menuItems.current[indexOfItem - 1];
+                    return cells.current[indexOfItem - 1];
                 }
                 return startItem;
             };
             if (!currentItem) {
                 return null;
             }
-            // Make first move
             var nextItem = move(currentItem);
             return nextItem;
         };
         function onKeyPressListener(e) {
             var target = e.target;
-            var menuItem = menuItems.current && menuItems.current.find(function (item) { return item === target; });
-            if (!menuItem) {
+            var cell = cells.current && cells.current.find(function (item) { return item === target; });
+            if (!cell) {
                 return;
+            }
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                var endItem = focusNext(cell, firstItem);
+                if (endItem === firstItem) {
+                    prevButton === null || prevButton === void 0 ? void 0 : prevButton.focus();
+                }
+                else if (document.activeElement === nextButton) {
+                    firstItem === null || firstItem === void 0 ? void 0 : firstItem.focus();
+                }
+                else if (document.activeElement === monthYearSelector) {
+                    nextButton === null || nextButton === void 0 ? void 0 : nextButton.focus();
+                }
+                else if (document.activeElement === prevButton) {
+                    monthYearSelector === null || monthYearSelector === void 0 ? void 0 : monthYearSelector.focus();
+                }
+                else {
+                    endItem === null || endItem === void 0 ? void 0 : endItem.focus();
+                }
             }
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
                 var count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
-                var endItem = menuItem;
+                var endItem = cell;
                 while (count > 0) {
                     endItem = focusNext(endItem, firstItem);
                     count--;
@@ -1405,7 +1423,7 @@ function CalendarWithRef(_a, forwardRef) {
             if (e.key === 'ArrowUp') {
                 e.preventDefault();
                 var count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
-                var endItem = menuItem;
+                var endItem = cell;
                 while (count > 0) {
                     endItem = focusNext(endItem, lastItem);
                     count--;
@@ -1414,12 +1432,12 @@ function CalendarWithRef(_a, forwardRef) {
             }
             if (e.key === 'ArrowLeft') {
                 e.preventDefault();
-                var endItem = focusNext(menuItem, lastItem);
+                var endItem = focusNext(cell, lastItem);
                 endItem === null || endItem === void 0 ? void 0 : endItem.focus();
             }
             if (e.key === 'ArrowRight') {
                 e.preventDefault();
-                var endItem = focusNext(menuItem, firstItem);
+                var endItem = focusNext(cell, firstItem);
                 endItem === null || endItem === void 0 ? void 0 : endItem.focus();
             }
             if (e.key === 'Home') {
@@ -1430,8 +1448,11 @@ function CalendarWithRef(_a, forwardRef) {
                 e.preventDefault();
                 lastItem.focus();
             }
-            if (e.key === ' ' || e.key === 'Spacebar') ;
-            if (e.key === 'Enter') ;
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                cell.blur();
+                currentCalendarRef === null || currentCalendarRef === void 0 ? void 0 : currentCalendarRef.blur();
+            }
         }
         currentCalendarRef.addEventListener('keydown', onKeyPressListener, { capture: true });
         return function () {

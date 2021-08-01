@@ -277,6 +277,7 @@ function DayOfMonthSelectorComponent({
       onChangenSelectedRangeEnd,
       onChange,
       onChangenNewSelectedRangeStart,
+      onPartialRangeSelect,
       fixedRangeLength,
       isDisabled,
       skipDisabledDatesInRange,
@@ -285,6 +286,7 @@ function DayOfMonthSelectorComponent({
       allowFewerDatesThanRange,
       selectedMultiDates,
       onChangenSelectedMultiDates,
+      onEachMultiSelect,
       onChangenSelectedDate,
     ],
   );
