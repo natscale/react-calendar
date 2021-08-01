@@ -28,6 +28,8 @@ import { YearSelector } from '../year-selector/YearSelector';
 import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
 import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
 
+import './styles.css';
+
 const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {
     arc: {
@@ -348,8 +350,13 @@ function CalendarWithRef(
 
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const menuItems = useRef<HTMLButtonElement[]>([]);
+  const [hasFocus, setHasFocus] = useState(false);
 
   useEffect(() => {
+    if (!hasFocus) {
+      return;
+    }
+
     const currentCalendarRef = calendarRef.current;
 
     if (!currentCalendarRef) {
@@ -360,12 +367,22 @@ function CalendarWithRef(
       ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
       : [];
 
-    console.log(menuItems);
-
     const firstItem = menuItems.current[0];
     const lastItem = menuItems.current[menuItems.current.length - 1];
+    const grid = currentCalendarRef.querySelector('[role="grid"]');
+    const seletedItemIfAny: HTMLButtonElement | null =
+      currentCalendarRef.querySelector('[role="grid"] button.arc_selected') ||
+      currentCalendarRef.querySelector('[role="grid"] button.arc_range_end') ||
+      currentCalendarRef.querySelector('[role="grid"] button.arc_range_start');
 
-    firstItem.focus();
+    if (grid && !grid.contains(document.activeElement)) {
+      // if focus in not already inside the GRID then bring the focus
+      if (seletedItemIfAny) {
+        seletedItemIfAny.focus();
+      } else {
+        firstItem.focus();
+      }
+    }
 
     // Go to next/previous item if it exists
     // or loop around
@@ -453,17 +470,35 @@ function CalendarWithRef(
         e.preventDefault();
         lastItem.focus();
       }
+
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        // menuItem.focus();
+      }
+
+      if (e.key === 'Enter') {
+        // menuItem.focus();
+      }
     }
 
-    currentCalendarRef.addEventListener('keydown', onKeyPressListener);
+    currentCalendarRef.addEventListener('keydown', onKeyPressListener, { capture: true });
 
     return () => {
-      currentCalendarRef.removeEventListener('keydown', onKeyPressListener);
+      currentCalendarRef.removeEventListener('keydown', onKeyPressListener, { capture: true });
     };
-  }, [calendarRef, view]);
+  }, [calendarRef, view, hasFocus, monthInView]);
 
   return (
     <div
+      onFocus={() => {
+        !hasFocus && setHasFocus(true);
+      }}
+      onBlur={(e: React.FocusEvent<HTMLDivElement>) => {
+        if (e.currentTarget.contains(e.target)) {
+          // if bluee vent has come from a child then do nothing
+        } else {
+          setHasFocus(false);
+        }
+      }}
       ref={(el) => {
         calendarRef.current = el;
         typeof forwardRef === 'function' && forwardRef(el);

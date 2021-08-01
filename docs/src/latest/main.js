@@ -1090,7 +1090,7 @@ function DayOfMonthSelectorComponent(_a) {
                     onChangenNewSelectedRangeEnd(new Date(cell.year, cell.month, cell.dayOfMonth));
                 }
             }
-        }, key: cell.dayOfMonth, className: "arc_view_cell" + (cell.activeMonthInView ? ' arc_active' : '') + (cell.isWeekend ? ' arc_wknd' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isFirstRow ? ' arc_fr' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isHighlight ? ' arc_highlight' : '') + (cell.isLastRow ? ' arc_lr' : '') + (cell.isFirsColumn ? ' arc_fc' : '') + (cell.isLastColumn ? ' arc_lc' : '') + (cell.isSelected && !isRangeSelectorView ? ' arc_selected' : '') + (cell.isDisabled ? ' arc_disabled' : '') + (cell.isInRange ? ' arc_in_range' : '') + (cell.isRangeStart ? ' arc_range_start' : '') + (cell.isRangeEnd ? ' arc_range_end' : '') + (isRangeSelectModeOn ? ' arc_range_mode' : '') },
+        }, key: toString(cell.date), className: "arc_view_cell" + (cell.activeMonthInView ? ' arc_active' : '') + (cell.isWeekend ? ' arc_wknd' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isFirstRow ? ' arc_fr' : '') + (cell.isToday ? ' arc_today' : '') + (cell.isHighlight ? ' arc_highlight' : '') + (cell.isLastRow ? ' arc_lr' : '') + (cell.isFirsColumn ? ' arc_fc' : '') + (cell.isLastColumn ? ' arc_lc' : '') + (cell.isSelected && !isRangeSelectorView ? ' arc_selected' : '') + (cell.isDisabled ? ' arc_disabled' : '') + (cell.isInRange ? ' arc_in_range' : '') + (cell.isRangeStart ? ' arc_range_start' : '') + (cell.isRangeEnd ? ' arc_range_end' : '') + (isRangeSelectModeOn ? ' arc_range_mode' : '') },
         React.createElement(DayOfMonth, { cell: cell, onDateClicked: onDateClicked }))); }))); })));
 }
 var DayOfMonthSelector = memo(DayOfMonthSelectorComponent);
@@ -1329,7 +1329,11 @@ function CalendarWithRef(_a, forwardRef) {
     var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
     var calendarRef = useRef(null);
     var menuItems = useRef([]);
+    var _2 = useState(false), hasFocus = _2[0], setHasFocus = _2[1];
     useEffect(function () {
+        if (!hasFocus) {
+            return;
+        }
         var currentCalendarRef = calendarRef.current;
         if (!currentCalendarRef) {
             return;
@@ -1337,10 +1341,21 @@ function CalendarWithRef(_a, forwardRef) {
         menuItems.current = currentCalendarRef
             ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
             : [];
-        console.log(menuItems);
         var firstItem = menuItems.current[0];
         var lastItem = menuItems.current[menuItems.current.length - 1];
-        firstItem.focus();
+        var grid = currentCalendarRef.querySelector('[role="grid"]');
+        var seletedItemIfAny = currentCalendarRef.querySelector('[role="grid"] button.arc_selected') ||
+            currentCalendarRef.querySelector('[role="grid"] button.arc_range_end') ||
+            currentCalendarRef.querySelector('[role="grid"] button.arc_range_start');
+        if (grid && !grid.contains(document.activeElement)) {
+            // if focus in not already inside the GRID then bring the focus
+            if (seletedItemIfAny) {
+                seletedItemIfAny.focus();
+            }
+            else {
+                firstItem.focus();
+            }
+        }
         // Go to next/previous item if it exists
         // or loop around
         var focusNext = function (currentItem, startItem) {
@@ -1411,13 +1426,22 @@ function CalendarWithRef(_a, forwardRef) {
                 e.preventDefault();
                 lastItem.focus();
             }
+            if (e.key === ' ' || e.key === 'Spacebar') ;
+            if (e.key === 'Enter') ;
         }
-        currentCalendarRef.addEventListener('keydown', onKeyPressListener);
+        currentCalendarRef.addEventListener('keydown', onKeyPressListener, { capture: true });
         return function () {
-            currentCalendarRef.removeEventListener('keydown', onKeyPressListener);
+            currentCalendarRef.removeEventListener('keydown', onKeyPressListener, { capture: true });
         };
-    }, [calendarRef, view]);
-    return (React.createElement("div", { ref: function (el) {
+    }, [calendarRef, view, hasFocus, monthInView]);
+    return (React.createElement("div", { onFocus: function () {
+            !hasFocus && setHasFocus(true);
+        }, onBlur: function (e) {
+            if (e.currentTarget.contains(e.target)) ;
+            else {
+                setHasFocus(false);
+            }
+        }, ref: function (el) {
             calendarRef.current = el;
             typeof forwardRef === 'function' && forwardRef(el);
         }, style: styles.root.arc, className: computedClass },

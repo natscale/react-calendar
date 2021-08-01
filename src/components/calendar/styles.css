@@ -287,9 +287,9 @@
   border-bottom: 1px solid currentColor;
 }
 
-.arc_view-days-of-month .arc_view_cell.arc_selected button:focus {
+/* .arc_view-days-of-month .arc_view_cell.arc_selected button:focus {
   outline: none;
-}
+} */
 
 .arc_view-days-of-month .arc_view_cell.arc_selected .arc_view_cell_value {
   background-color: var(--arc-color-bg-dom-selected);

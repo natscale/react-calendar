@@ -1,6 +1,7 @@
 import React from 'react';
 import type { CalendarProps } from '../../utils/types';
 import { giveRangeDays } from '../../utils/date-utils';
+import './styles.css';
 declare const Calendar: React.ForwardRefExoticComponent<CalendarProps & React.RefAttributes<HTMLDivElement>>;
 export default Calendar;
 export declare const giveDaysInRange: typeof giveRangeDays;
