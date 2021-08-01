@@ -1074,6 +1074,7 @@ function DayOfMonthSelectorComponent(_a) {
         onChangenSelectedRangeEnd,
         onChange,
         onChangenNewSelectedRangeStart,
+        onPartialRangeSelect,
         fixedRangeLength,
         isDisabled,
         skipDisabledDatesInRange,
@@ -1082,6 +1083,7 @@ function DayOfMonthSelectorComponent(_a) {
         allowFewerDatesThanRange,
         selectedMultiDates,
         onChangenSelectedMultiDates,
+        onEachMultiSelect,
         onChangenSelectedDate,
     ]);
     return (React.createElement("div", { style: dayOfMonthStyles['arc_view-days-of-month'], className: "arc_view-days-of-month", role: "grid" }, daysOfMMonthViewMatrix.map(function (row, index) { return (React.createElement("div", { style: dayOfMonthStyles.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: dayOfMonthStyles.arc_view_cell, onMouseEnter: function () {
