@@ -2,7 +2,15 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import type { DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
 
-import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
+import {
+  addDays,
+  getDaysOfMonthViewMetrix,
+  getNextDate,
+  isBefore,
+  isEqual,
+  isValid,
+  toString,
+} from '../../utils/date-utils';
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
 
 interface Props {
@@ -46,6 +54,7 @@ interface Props {
   onChange?: (value: Value) => unknown | Promise<unknown>;
   onPartialRangeSelect?: (value: Value) => unknown | Promise<unknown>;
   onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
+  highlightedDate: Date | undefined;
 }
 
 const dayOfMonthStyles = {
@@ -103,6 +112,7 @@ function DayOfMonthSelectorComponent({
   onEachMultiSelect,
   highlights,
   disableToday,
+  highlightedDate,
 }: Props) {
   const [highlightsMap] = useState<Record<string, 1>>(() => {
     if (Array.isArray(highlights)) {
@@ -289,6 +299,19 @@ function DayOfMonthSelectorComponent({
     ],
   );
 
+  const isHighlightedDate = useCallback(
+    (cell: DayOfMonthCell) => {
+      if (isValid(highlightedDate)) {
+        highlightedDate?.setHours(0, 0, 0, 0);
+        cell.date.setHours(0, 0, 0, 0);
+        console.log('dates: ', highlightedDate, cell.date);
+        return isEqual(highlightedDate, cell.date);
+      }
+      return false;
+    },
+    [highlightedDate],
+  );
+
   return (
     <div style={dayOfMonthStyles['arc_view-days-of-month']} className="arc_view-days-of-month" role="grid">
       {daysOfMMonthViewMatrix.map((row, index) => (
@@ -316,7 +339,7 @@ function DayOfMonthSelectorComponent({
                 cell.isRangeEnd ? ' arc_range_end' : ''
               }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}
             >
-              <DayOfMonth cell={cell} onDateClicked={onDateClicked} />
+              <DayOfMonth isHighlighted={isHighlightedDate(cell)} cell={cell} onDateClicked={onDateClicked} />
             </div>
           ))}
         </div>

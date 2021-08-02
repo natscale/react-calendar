@@ -1,7 +1,11 @@
 import React, { memo } from 'react';
 
 interface Props {
+  isNormalView: boolean;
+  isRangeView: boolean;
+  isMultiDateView: boolean;
   onTodayClick: () => void;
+  // onSelectedDateClick: () => void;
   onRangeStartClick: () => void;
   onRangeEndClick: () => void;
   onToggleDatesClick: () => void;
@@ -9,31 +13,48 @@ interface Props {
 
 const shortcut = {
   root: {
-    height: '13%',
     display: 'flex',
-    width: '100%',
-    margin: '4% 0 0 0',
+    justifyContent: 'center',
+    padding: '1%',
+    gap: '1rem',
+    height: '40px',
+    alignItems: 'center',
   },
   button: {
-    width: '100%',
+    padding: '0 3%',
+    height: '80%',
   },
 };
 
-function ShortcutBarComponent({ onTodayClick, onRangeStartClick, onRangeEndClick, onToggleDatesClick }: Props) {
+function ShortcutBarComponent({
+  isNormalView,
+  isRangeView,
+  isMultiDateView,
+  onTodayClick,
+  onRangeStartClick,
+  onRangeEndClick,
+  onToggleDatesClick,
+}: Props) {
   return (
-    <div style={shortcut.root} className="arc_shortcuts_view">
+    <div style={shortcut.root} className={'arc_shortcuts_view'}>
       <button style={shortcut.button} onClick={onTodayClick}>
         Today
       </button>
-      <button style={shortcut.button} onClick={onRangeStartClick}>
-        Range St.
-      </button>
-      <button style={shortcut.button} onClick={onRangeEndClick}>
-        Range Ed.
-      </button>
-      <button style={shortcut.button} onClick={onToggleDatesClick}>
-        Toggle Dts.
-      </button>
+      {isRangeView && (
+        <button style={shortcut.button} onClick={onRangeStartClick}>
+          Range Start
+        </button>
+      )}
+      {isRangeView && (
+        <button style={shortcut.button} onClick={onRangeEndClick}>
+          Range End
+        </button>
+      )}
+      {(isMultiDateView || isNormalView) && (
+        <button style={shortcut.button} onClick={onToggleDatesClick}>
+          Selected Dates
+        </button>
+      )}
     </div>
   );
 }

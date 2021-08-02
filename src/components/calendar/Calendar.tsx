@@ -32,13 +32,15 @@ import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
 const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {
     arc: {
+      fontSize: `${fontSize}px`,
+      display: 'inline-flex',
+      flexDirection: 'column',
+    },
+    arc_cal: {
       width: `${size!}px`,
       height: `${size!}px`,
-      fontSize: `${fontSize}px`,
-      display: 'flex',
-      alignItems: 'flex-start',
-      flexDirection: 'column',
       boxSizing: 'border-box',
+      padding: '5% 0',
     },
     arc_view: { height: '88%', width: '100%' },
   },
@@ -69,7 +71,7 @@ function CalendarWithRef(
     onChange,
     lockView = false,
     disableFuture = false,
-    size = 280,
+    size = 276,
     fontSize = 16,
     disablePast = false,
     disableToday = false,
@@ -347,16 +349,22 @@ function CalendarWithRef(
     [startOfTheWeek, weekendIndexes],
   );
 
-  const updateDateView = useCallback((date: Date | undefined) => {
-    if (isValid(date)) {
-      setMonthInView(date.getMonth() as MonthIndices);
-      setYearInView(date.getFullYear());
-    }
-  }, []);
-
   const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
+  const [highlightedDate, setHighlightedDate] = useState<Date | undefined>(undefined);
 
-  const goToToday = useCallback(() => updateDateView(new Date()), [today]);
+  const updateDateView = useCallback(
+    (date: Date | undefined) => {
+      if (isValid(date)) {
+        setMonthInView(date.getMonth() as MonthIndices);
+        setYearInView(date.getFullYear());
+        setHighlightedDate(date);
+      }
+    },
+    [setMonthInView, setYearInView, setHighlightedDate],
+  );
+
+  const goToToday = useCallback(() => updateDateView(today), [today]);
+  const goToSelectedDate = useCallback(() => updateDateView(selectedDate), [selectedDate]);
   const goToRangeStart = useCallback(() => updateDateView(selectedRangeStart), [selectedRangeStart]);
   const goToRangeEnd = useCallback(() => updateDateView(selectedRangeEnd), [selectedRangeEnd]);
   const toggleDate = useCallback(() => {
@@ -368,76 +376,84 @@ function CalendarWithRef(
   }, [toggleDateIndex]);
 
   return (
-    <div ref={ref} style={styles.root.arc} className={computedClass}>
-      <Header
-        onClickPrev={onPrevClick}
-        onClickNext={onNextClick}
-        onChangeViewType={changeView}
-        viewType={view}
-        viewingMonth={monthInView}
-        viewingYear={yearInView}
-        yearMatrixStart={yearMatrixRangeStart}
-        yearMatrixEnd={yearMatrixRangeEnd}
-      />
-      <div style={styles.root.arc_view} className="arc_view">
-        {view === 'months' && <MonthSelector onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />}
-        {view === 'years' && (
-          <YearSelector
-            onChangeViewType={changeView}
-            onChangeViewingYear={changeYearInView}
-            yearMatrixStart={yearMatrixRangeStart}
-            yearMatrixEnd={yearMatrixRangeEnd}
-          />
-        )}
-        {view === 'month_dates' && (
-          <>
-            <WeekDaysRow weekStartIndex={startOfTheWeek} weekendIndices={weekendIndexes} />
-            <DayOfMonthSelector
-              isRangeSelectModeOn={isRangeSelectModeOn}
-              setIsRangeSelectModeOn={setIsRangeSelectModeOn}
-              skipDisabledDatesInRange={!!skipDisabledDatesInRange}
-              allowFewerDatesThanRange={!!allowFewerDatesThanRange}
-              selectedDate={selectedDate}
-              selectedRangeStart={selectedRangeStart}
-              selectedRangeEnd={selectedRangeEnd}
-              lockView={!!lockView}
-              newSelectedRangeStart={newSelectedRangeStart}
-              weekStartIndex={startOfTheWeek}
+    <div style={styles.root.arc} className={computedClass}>
+      <div ref={ref} style={styles.root.arc_cal} className="arc_cal">
+        <Header
+          onClickPrev={onPrevClick}
+          onClickNext={onNextClick}
+          onChangeViewType={changeView}
+          viewType={view}
+          viewingMonth={monthInView}
+          viewingYear={yearInView}
+          yearMatrixStart={yearMatrixRangeStart}
+          yearMatrixEnd={yearMatrixRangeEnd}
+        />
+        <div style={styles.root.arc_view} className="arc_view">
+          {view === 'months' && (
+            <MonthSelector onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />
+          )}
+          {view === 'years' && (
+            <YearSelector
+              onChangeViewType={changeView}
               onChangeViewingYear={changeYearInView}
-              onChangeViewingMonth={changeMonthInView}
-              onChangenSelectedMultiDates={setSelectedMultiDates}
-              onChangenNewSelectedRangeEnd={setNewSelectedRangeEnd}
-              onChangenNewSelectedRangeStart={setNewSelectedRangeStart}
-              onChangenSelectedRangeEnd={setSelectedRangeEnd}
-              onChangenSelectedRangeStart={setSelectedRangeStart}
-              onChangenSelectedDate={setSelectedDate}
-              onPartialRangeSelect={onPartialRangeSelect}
-              onEachMultiSelect={onEachMultiSelect}
-              newSelectedRangeEnd={newSelectedRangeEnd}
-              isRangeSelectorView={isRangeSelectorView}
-              fixedRangeLength={fixedRangeLength}
-              isFixedRangeView={isFixedRangeView}
-              isDisabled={checkDisabledForADate}
-              checkIfWeekend={checkIfWeekend}
-              selectedMultiDates={selectedMultiDates}
-              isMultiSelectorView={isMultiSelectorView}
-              viewingMonth={monthInView}
-              today={today}
-              maxAllowedDate={maxAllowedDate}
-              minAllowedDate={minAllowedDate}
-              weekendIndices={weekendIndexes}
-              skipWeekendsInRange={!!skipWeekendsInRange}
-              onChange={onChange}
-              viewingYear={yearInView}
-              disableFuture={disableFuture}
-              disablePast={disablePast}
-              highlights={highlights}
-              disableToday={disableToday}
+              yearMatrixStart={yearMatrixRangeStart}
+              yearMatrixEnd={yearMatrixRangeEnd}
             />
-          </>
-        )}
+          )}
+          {view === 'month_dates' && (
+            <>
+              <WeekDaysRow weekStartIndex={startOfTheWeek} weekendIndices={weekendIndexes} />
+              <DayOfMonthSelector
+                highlightedDate={highlightedDate}
+                isRangeSelectModeOn={isRangeSelectModeOn}
+                setIsRangeSelectModeOn={setIsRangeSelectModeOn}
+                skipDisabledDatesInRange={!!skipDisabledDatesInRange}
+                allowFewerDatesThanRange={!!allowFewerDatesThanRange}
+                selectedDate={selectedDate}
+                selectedRangeStart={selectedRangeStart}
+                selectedRangeEnd={selectedRangeEnd}
+                lockView={!!lockView}
+                newSelectedRangeStart={newSelectedRangeStart}
+                weekStartIndex={startOfTheWeek}
+                onChangeViewingYear={changeYearInView}
+                onChangeViewingMonth={changeMonthInView}
+                onChangenSelectedMultiDates={setSelectedMultiDates}
+                onChangenNewSelectedRangeEnd={setNewSelectedRangeEnd}
+                onChangenNewSelectedRangeStart={setNewSelectedRangeStart}
+                onChangenSelectedRangeEnd={setSelectedRangeEnd}
+                onChangenSelectedRangeStart={setSelectedRangeStart}
+                onChangenSelectedDate={setSelectedDate}
+                onPartialRangeSelect={onPartialRangeSelect}
+                onEachMultiSelect={onEachMultiSelect}
+                newSelectedRangeEnd={newSelectedRangeEnd}
+                isRangeSelectorView={isRangeSelectorView}
+                fixedRangeLength={fixedRangeLength}
+                isFixedRangeView={isFixedRangeView}
+                isDisabled={checkDisabledForADate}
+                checkIfWeekend={checkIfWeekend}
+                selectedMultiDates={selectedMultiDates}
+                isMultiSelectorView={isMultiSelectorView}
+                viewingMonth={monthInView}
+                today={today}
+                maxAllowedDate={maxAllowedDate}
+                minAllowedDate={minAllowedDate}
+                weekendIndices={weekendIndexes}
+                skipWeekendsInRange={!!skipWeekendsInRange}
+                onChange={onChange}
+                viewingYear={yearInView}
+                disableFuture={disableFuture}
+                disablePast={disablePast}
+                highlights={highlights}
+                disableToday={disableToday}
+              />
+            </>
+          )}
+        </div>
       </div>
       <ShortcutBar
+        isNormalView={isNormalView}
+        isRangeView={isRangeSelectorView}
+        isMultiDateView={isMultiSelectorView}
         onTodayClick={goToToday}
         onRangeStartClick={goToRangeStart}
         onRangeEndClick={goToRangeEnd}
