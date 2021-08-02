@@ -5,7 +5,7 @@ import type { DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
 
-interface Props {
+export interface Props {
   onChangeViewingYear: (year: number) => unknown;
   onChangeViewingMonth: (month: MonthIndices) => unknown;
   onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;

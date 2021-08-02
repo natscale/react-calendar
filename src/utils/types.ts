@@ -73,7 +73,6 @@ export interface CheckIfDateIsDisabledHOFParams {
 export interface CSSProps {
   root: {
     arc: CSSProperties;
-    arc_view: CSSProperties;
   };
 }
 

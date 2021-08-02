@@ -1,6 +1,6 @@
 import React from 'react';
 import { DayOfMonthCell } from '../calendar/Calendar';
-interface Props {
+export interface Props {
     cell: DayOfMonthCell;
     onDateClicked: (cell: DayOfMonthCell) => unknown;
 }

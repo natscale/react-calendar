@@ -1,6 +1,6 @@
 import React from 'react';
 import { MonthCell } from '../calendar/Calendar';
-interface Props {
+export interface Props {
     cell: MonthCell;
     onMonthClicked: (cell: MonthCell) => unknown;
 }

@@ -1,19 +1,21 @@
 import React from 'react';
-import type { MonthIndices, Value, WeekdayIndices } from '../../utils/types';
-export interface Props {
-    onChangeViewingYear: (year: number) => unknown;
-    onChangeViewingMonth: (month: MonthIndices) => unknown;
+import type { WeekdayIndices, Value } from '../../utils/types';
+declare type ContainerProps = {
+    viewDate: Date | undefined;
+    className: string;
+    useDarkMode: boolean;
+    isSecondary: boolean;
+    size: number;
+    fontSize: number;
     onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
     onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
     onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
     onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
     onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
     onChangenSelectedDate: (dates: Date) => unknown;
-    viewingMonth: MonthIndices;
     allowFewerDatesThanRange: boolean;
     skipDisabledDatesInRange: boolean;
     skipWeekendsInRange: boolean;
-    viewingYear: number;
     weekStartIndex: WeekdayIndices;
     fixedRangeLength: number;
     selectedDate: Date | undefined;
@@ -41,7 +43,8 @@ export interface Props {
     onChange?: (value: Value) => unknown | Promise<unknown>;
     onPartialRangeSelect?: (value: Value) => unknown | Promise<unknown>;
     onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
-}
-declare function DayOfMonthSelectorComponent({ selectedDate, selectedRangeStart, selectedRangeEnd, newSelectedRangeStart, weekStartIndex, onChangeViewingYear, onChangeViewingMonth, newSelectedRangeEnd, isRangeSelectorView, skipDisabledDatesInRange, setIsRangeSelectModeOn, fixedRangeLength, isFixedRangeView, isRangeSelectModeOn, isDisabled, onChangenSelectedMultiDates, selectedMultiDates, isMultiSelectorView, today, viewingMonth, onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd, onChangenSelectedRangeStart, onChangenSelectedDate, weekendIndices, onChange, viewingYear, allowFewerDatesThanRange, disableFuture, disablePast, lockView, checkIfWeekend, onPartialRangeSelect, onEachMultiSelect, highlights, disableToday, }: Props): JSX.Element;
-export declare const DayOfMonthSelector: React.MemoExoticComponent<typeof DayOfMonthSelectorComponent>;
+    value?: Value;
+    isNormalView: boolean;
+};
+export default function CalendarContainer(props: ContainerProps): React.ReactElement<ContainerProps>;
 export {};

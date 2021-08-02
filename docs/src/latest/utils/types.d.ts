@@ -65,7 +65,6 @@ export interface CheckIfDateIsDisabledHOFParams {
 export interface CSSProps {
     root: {
         arc: CSSProperties;
-        arc_view: CSSProperties;
     };
 }
 export declare type Value = Date | Date[] | [Date, Date];

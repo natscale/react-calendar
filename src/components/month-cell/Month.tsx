@@ -4,7 +4,7 @@ import { MonthCell } from '../calendar/Calendar';
 
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
 
-interface Props {
+export interface Props {
   cell: MonthCell;
   onMonthClicked: (cell: MonthCell) => unknown;
 }
