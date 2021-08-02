@@ -3,6 +3,7 @@ import type { WeekdayIndices, Value } from '../../utils/types';
 declare type ContainerProps = {
     viewDate: Date | undefined;
     className: string;
+    isDualMode: boolean;
     useDarkMode: boolean;
     isSecondary: boolean;
     size: number;

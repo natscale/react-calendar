@@ -24,6 +24,7 @@ import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector'
 type ContainerProps = {
   viewDate: Date | undefined;
   className: string;
+  isDualMode: boolean;
   useDarkMode: boolean;
   isSecondary: boolean;
   size: number;
@@ -218,9 +219,9 @@ export default function CalendarContainer(props: ContainerProps): React.ReactEle
   const computedClass = useMemo(
     () =>
       typeof props.className === 'string'
-        ? `arc ${props.useDarkMode ? 'dark' : ''} ` + props.className
-        : `arc ${props.useDarkMode ? 'dark' : ''}`,
-    [props.className, props.useDarkMode],
+        ? `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}` + props.className
+        : `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}`,
+    [props.className, props.useDarkMode, props.isDualMode],
   );
 
   const calendarRef = useRef<HTMLDivElement | null>(null);

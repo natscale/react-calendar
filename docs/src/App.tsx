@@ -187,6 +187,7 @@ export function App(): React.ReactElement {
         <div>
           <div className="calendar">
             <Calendar
+              showDualCalendar
               isRangeSelector
               disableToday
               value={[new Date(2021, 0, 8), new Date(2021, 0, 20)]}

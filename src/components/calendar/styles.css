@@ -73,6 +73,17 @@
   background-color: var(--arc-color-bg-light);
 }
 
+.arc.arc_dual {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.arc + .arc.arc_dual {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 .arc * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: var(--arc-color-transparent);

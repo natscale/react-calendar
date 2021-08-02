@@ -113,6 +113,10 @@ export interface CalendarProps {
    */
   value?: Value;
   /**
+   * Renders dual calendars
+   */
+  showDualCalendar?: boolean;
+  /**
    * Renders a multiple dates selector view
    */
   isMultiSelector?: boolean;
