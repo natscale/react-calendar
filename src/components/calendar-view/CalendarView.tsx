@@ -21,7 +21,7 @@ import { YearSelector } from '../year-selector/YearSelector';
 import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
 import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
 
-type ContainerProps = {
+type CalendarViewProps = {
   viewDate: Date | undefined;
   className: string;
   isDualMode: boolean;
@@ -85,7 +85,7 @@ const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize)
   },
 });
 
-export default function CalendarContainer(props: ContainerProps): React.ReactElement<ContainerProps> {
+export default function Calendarview(props: CalendarViewProps): React.ReactElement<CalendarViewProps> {
   const styles = useMemo(() => getStyles(props.size, props.fontSize), [props.size, props.fontSize]);
 
   // View States

@@ -15,7 +15,7 @@ import {
 } from '../../utils/date-utils';
 
 import './styles.css';
-import CalendarContainer from '../calendar-container/CalendarContainer';
+import Calendarview from '../calendar-view/CalendarView';
 
 const emptyArray: Date[] = [];
 
@@ -192,7 +192,7 @@ function CalendarWithRef(
     <div className="arc_root" style={{ display: 'flex' }} ref={forwardRef}>
       {isDualMode ? (
         <>
-          <CalendarContainer
+          <Calendarview
             isDualMode={isDualMode}
             isSecondary={false}
             value={value}
@@ -239,7 +239,7 @@ function CalendarWithRef(
             highlights={highlights}
             disableToday={disableToday}
           />
-          <CalendarContainer
+          <Calendarview
             isDualMode={isDualMode}
             isSecondary={true}
             value={value}
@@ -288,7 +288,7 @@ function CalendarWithRef(
           />
         </>
       ) : (
-        <CalendarContainer
+        <Calendarview
           isDualMode={isDualMode}
           isSecondary={false}
           value={value}
