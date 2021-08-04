@@ -20,6 +20,8 @@ import Calendarview from '../calendar-view/CalendarView';
 
 const emptyArray: Date[] = [];
 
+const styles = { display: 'inline-flex' };
+
 function CalendarWithRef(
   {
     value,
@@ -189,153 +191,111 @@ function CalendarWithRef(
     [startOfTheWeek, weekendIndexes],
   );
 
+  const commonProps = useMemo(
+    () => ({
+      isDualMode: isDualMode,
+      value: value,
+      viewDate: initialViewDate,
+      useDarkMode: useDarkMode,
+      className: className,
+      isNormalView: isNormalView,
+      size: size,
+      fontSize: fontSize,
+      weekStartIndex: startOfTheWeek,
+      weekendIndices: weekendIndexes,
+      isRangeSelectModeOn: isRangeSelectModeOn,
+      setIsRangeSelectModeOn: setIsRangeSelectModeOn,
+      skipDisabledDatesInRange: !!skipDisabledDatesInRange,
+      allowFewerDatesThanRange: !!allowFewerDatesThanRange,
+      selectedDate: selectedDate,
+      selectedRangeStart: selectedRangeStart,
+      selectedRangeEnd: selectedRangeEnd,
+      lockView: !!lockView,
+      newSelectedRangeStart: newSelectedRangeStart,
+      onChangenSelectedMultiDates: setSelectedMultiDates,
+      onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd,
+      onChangenNewSelectedRangeStart: setNewSelectedRangeStart,
+      onChangenSelectedRangeEnd: setSelectedRangeEnd,
+      onChangenSelectedRangeStart: setSelectedRangeStart,
+      onChangenSelectedDate: setSelectedDate,
+      onPartialRangeSelect: onPartialRangeSelect,
+      onEachMultiSelect: onEachMultiSelect,
+      newSelectedRangeEnd: newSelectedRangeEnd,
+      isRangeSelectorView: isRangeSelectorView,
+      fixedRangeLength: fixedRangeLength,
+      isFixedRangeView: isFixedRangeView,
+      isDisabled: checkDisabledForADate,
+      checkIfWeekend: checkIfWeekend,
+      selectedMultiDates: selectedMultiDates,
+      isMultiSelectorView: isMultiSelectorView,
+      today: today,
+      maxAllowedDate: maxAllowedDate,
+      minAllowedDate: minAllowedDate,
+      skipWeekendsInRange: !!skipWeekendsInRange,
+      onChange: onChange,
+      disableFuture: disableFuture,
+      disablePast: disablePast,
+      highlights: highlights,
+      disableToday: disableToday,
+    }),
+    [
+      allowFewerDatesThanRange,
+      checkDisabledForADate,
+      checkIfWeekend,
+      className,
+      disableFuture,
+      disablePast,
+      disableToday,
+      fixedRangeLength,
+      fontSize,
+      highlights,
+      initialViewDate,
+      isDualMode,
+      isFixedRangeView,
+      isMultiSelectorView,
+      isNormalView,
+      isRangeSelectModeOn,
+      isRangeSelectorView,
+      lockView,
+      maxAllowedDate,
+      minAllowedDate,
+      newSelectedRangeEnd,
+      newSelectedRangeStart,
+      onChange,
+      onEachMultiSelect,
+      onPartialRangeSelect,
+      selectedDate,
+      selectedMultiDates,
+      selectedRangeEnd,
+      selectedRangeStart,
+      size,
+      skipDisabledDatesInRange,
+      skipWeekendsInRange,
+      startOfTheWeek,
+      today,
+      useDarkMode,
+      value,
+      weekendIndexes,
+    ],
+  );
+
+  const computedClass = useMemo(
+    () =>
+      typeof className === 'string'
+        ? `arc_root${useDarkMode ? ' arc_dark' : ''}${isDualMode ? ' arc_dual' : ''}` + ` ${className}`
+        : `arc_root${useDarkMode ? ' arc_dark' : ''}${isDualMode ? ' arc_dual' : ''}`,
+    [className, useDarkMode, isDualMode],
+  );
+
   return (
-    <div className="arc_root" style={{ display: 'inline-flex' }} ref={forwardRef}>
+    <div className={computedClass} style={styles} ref={forwardRef}>
       {isDualMode ? (
         <>
-          <Calendarview
-            isDualMode={isDualMode}
-            isSecondary={false}
-            value={value}
-            viewDate={initialViewDate}
-            useDarkMode={useDarkMode}
-            className={className}
-            isNormalView={isNormalView}
-            size={size}
-            fontSize={fontSize}
-            weekStartIndex={startOfTheWeek}
-            weekendIndices={weekendIndexes}
-            isRangeSelectModeOn={isRangeSelectModeOn}
-            setIsRangeSelectModeOn={setIsRangeSelectModeOn}
-            skipDisabledDatesInRange={!!skipDisabledDatesInRange}
-            allowFewerDatesThanRange={!!allowFewerDatesThanRange}
-            selectedDate={selectedDate}
-            selectedRangeStart={selectedRangeStart}
-            selectedRangeEnd={selectedRangeEnd}
-            lockView={!!lockView}
-            newSelectedRangeStart={newSelectedRangeStart}
-            onChangenSelectedMultiDates={setSelectedMultiDates}
-            onChangenNewSelectedRangeEnd={setNewSelectedRangeEnd}
-            onChangenNewSelectedRangeStart={setNewSelectedRangeStart}
-            onChangenSelectedRangeEnd={setSelectedRangeEnd}
-            onChangenSelectedRangeStart={setSelectedRangeStart}
-            onChangenSelectedDate={setSelectedDate}
-            onPartialRangeSelect={onPartialRangeSelect}
-            onEachMultiSelect={onEachMultiSelect}
-            newSelectedRangeEnd={newSelectedRangeEnd}
-            isRangeSelectorView={isRangeSelectorView}
-            fixedRangeLength={fixedRangeLength}
-            isFixedRangeView={isFixedRangeView}
-            isDisabled={checkDisabledForADate}
-            checkIfWeekend={checkIfWeekend}
-            selectedMultiDates={selectedMultiDates}
-            isMultiSelectorView={isMultiSelectorView}
-            today={today}
-            maxAllowedDate={maxAllowedDate}
-            minAllowedDate={minAllowedDate}
-            skipWeekendsInRange={!!skipWeekendsInRange}
-            onChange={onChange}
-            disableFuture={disableFuture}
-            disablePast={disablePast}
-            highlights={highlights}
-            disableToday={disableToday}
-          />
-          <Calendarview
-            isDualMode={isDualMode}
-            isSecondary={true}
-            value={value}
-            viewDate={initialViewDate}
-            useDarkMode={useDarkMode}
-            className={className}
-            isNormalView={isNormalView}
-            size={size}
-            fontSize={fontSize}
-            weekStartIndex={startOfTheWeek}
-            weekendIndices={weekendIndexes}
-            isRangeSelectModeOn={isRangeSelectModeOn}
-            setIsRangeSelectModeOn={setIsRangeSelectModeOn}
-            skipDisabledDatesInRange={!!skipDisabledDatesInRange}
-            allowFewerDatesThanRange={!!allowFewerDatesThanRange}
-            selectedDate={selectedDate}
-            selectedRangeStart={selectedRangeStart}
-            selectedRangeEnd={selectedRangeEnd}
-            lockView={!!lockView}
-            newSelectedRangeStart={newSelectedRangeStart}
-            onChangenSelectedMultiDates={setSelectedMultiDates}
-            onChangenNewSelectedRangeEnd={setNewSelectedRangeEnd}
-            onChangenNewSelectedRangeStart={setNewSelectedRangeStart}
-            onChangenSelectedRangeEnd={setSelectedRangeEnd}
-            onChangenSelectedRangeStart={setSelectedRangeStart}
-            onChangenSelectedDate={setSelectedDate}
-            onPartialRangeSelect={onPartialRangeSelect}
-            onEachMultiSelect={onEachMultiSelect}
-            newSelectedRangeEnd={newSelectedRangeEnd}
-            isRangeSelectorView={isRangeSelectorView}
-            fixedRangeLength={fixedRangeLength}
-            isFixedRangeView={isFixedRangeView}
-            isDisabled={checkDisabledForADate}
-            checkIfWeekend={checkIfWeekend}
-            selectedMultiDates={selectedMultiDates}
-            isMultiSelectorView={isMultiSelectorView}
-            today={today}
-            maxAllowedDate={maxAllowedDate}
-            minAllowedDate={minAllowedDate}
-            skipWeekendsInRange={!!skipWeekendsInRange}
-            onChange={onChange}
-            disableFuture={disableFuture}
-            disablePast={disablePast}
-            highlights={highlights}
-            disableToday={disableToday}
-          />
+          <Calendarview isSecondary={false} {...commonProps} />
+          <Calendarview isSecondary={true} {...commonProps} />
         </>
       ) : (
-        <Calendarview
-          isDualMode={isDualMode}
-          isSecondary={false}
-          value={value}
-          viewDate={initialViewDate}
-          useDarkMode={useDarkMode}
-          className={className}
-          isNormalView={isNormalView}
-          size={size}
-          fontSize={fontSize}
-          weekStartIndex={startOfTheWeek}
-          weekendIndices={weekendIndexes}
-          isRangeSelectModeOn={isRangeSelectModeOn}
-          setIsRangeSelectModeOn={setIsRangeSelectModeOn}
-          skipDisabledDatesInRange={!!skipDisabledDatesInRange}
-          allowFewerDatesThanRange={!!allowFewerDatesThanRange}
-          selectedDate={selectedDate}
-          selectedRangeStart={selectedRangeStart}
-          selectedRangeEnd={selectedRangeEnd}
-          lockView={!!lockView}
-          newSelectedRangeStart={newSelectedRangeStart}
-          onChangenSelectedMultiDates={setSelectedMultiDates}
-          onChangenNewSelectedRangeEnd={setNewSelectedRangeEnd}
-          onChangenNewSelectedRangeStart={setNewSelectedRangeStart}
-          onChangenSelectedRangeEnd={setSelectedRangeEnd}
-          onChangenSelectedRangeStart={setSelectedRangeStart}
-          onChangenSelectedDate={setSelectedDate}
-          onPartialRangeSelect={onPartialRangeSelect}
-          onEachMultiSelect={onEachMultiSelect}
-          newSelectedRangeEnd={newSelectedRangeEnd}
-          isRangeSelectorView={isRangeSelectorView}
-          fixedRangeLength={fixedRangeLength}
-          isFixedRangeView={isFixedRangeView}
-          isDisabled={checkDisabledForADate}
-          checkIfWeekend={checkIfWeekend}
-          selectedMultiDates={selectedMultiDates}
-          isMultiSelectorView={isMultiSelectorView}
-          today={today}
-          maxAllowedDate={maxAllowedDate}
-          minAllowedDate={minAllowedDate}
-          skipWeekendsInRange={!!skipWeekendsInRange}
-          onChange={onChange}
-          disableFuture={disableFuture}
-          disablePast={disablePast}
-          highlights={highlights}
-          disableToday={disableToday}
-        />
+        <Calendarview isSecondary={false} {...commonProps} />
       )}
     </div>
   );

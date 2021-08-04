@@ -216,14 +216,6 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
     startingYearForCurrRange,
   ]);
 
-  const computedClass = useMemo(
-    () =>
-      typeof props.className === 'string'
-        ? `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}` + ` ${props.className}`
-        : `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}`,
-    [props.className, props.useDarkMode, props.isDualMode],
-  );
-
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const cells = useRef<HTMLButtonElement[]>([]);
   const [hasFocus, setHasFocus] = useState(false);
@@ -396,7 +388,7 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
         }
       }}
       style={styles.root.arc}
-      className={computedClass}
+      className="arc"
       ref={calendarRef}
     >
       <Header
