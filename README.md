@@ -4,9 +4,9 @@
 
 A no dependencies, `lightweight` and feature-rich ⚡ calendar component for react.
 
-![screencast](http://g.recordit.co/b18G7DbivR.gif)
+![Calendar View 1](docs/images/view-1.png)
 
-![screencast](http://g.recordit.co/LTdGQEDkOU.gif)
+![Calendar View 2](docs/images/view-2.png)
 
 ## :books: Table of Contents
 
