@@ -46,7 +46,7 @@
   --arc-color-bg-disabled-weekend-cross: var(--arc-color-accent-light);
 }
 
-.arc.arc_root.arc_dark {
+.arc_root.arc_dark {
   /* General Theme */
   --arc-color-transparent: rgba(0, 0, 0, 0);
   --arc-color-text-dark: #fff;
@@ -64,36 +64,39 @@
   --arc-color-accent-lighter: #524747;
 }
 
-.arc_root.arc_dual {
+.arc_root {
+  background-color: var(--arc-color-bg-light);
   border: 1px solid var(--arc-color-border-root);
+  font-size: 1rem;
   border-radius: 8px;
+  position: relative;
 }
 
 .arc {
-  border: 1px solid var(--arc-color-border-root);
-  border-radius: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 1rem;
-  background-color: var(--arc-color-bg-light);
-}
-
-.arc_root.arc_dual .arc {
-  border: none;
-  border-radius: 0;
+  position: relative;
 }
 
 .arc_root.arc_dual .arc + .arc {
   margin-left: 12px;
 }
 
-.arc * {
+.arc_root.arc_dual .arc + .arc::before {
+  background-color: var(--arc-color-border);
+  left: -12px;
+  content: '';
+  width: 12px;
+  height: 1px;
+  top: 25%;
+  position: absolute;
+}
+
+.arc_root * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: var(--arc-color-transparent);
   font-family: inherit;
 }
 
-.arc button {
+.arc_root button {
   border: none;
   margin: 0;
   padding: 0;
@@ -108,7 +111,7 @@
   -webkit-appearance: none;
 }
 
-.arc button::-moz-focus-inner {
+.arc_root button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }

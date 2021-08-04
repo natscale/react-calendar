@@ -190,7 +190,7 @@ export function App(): React.ReactElement {
               showDualCalendar
               isRangeSelector
               disableToday
-              value={[new Date(2021, 0, 8), new Date(2021, 0, 20)]}
+              value={[new Date(2021, 0, 22), new Date(2021, 1, 10)]}
               onChange={onChangethree}
             />
           </div>
