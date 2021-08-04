@@ -182,7 +182,7 @@ export function App(): React.ReactElement {
       </div>
       <div>
         <div>
-          <p>Range Select View</p>
+          <p>Dual Calendar View</p>
         </div>
         <div>
           <div className="calendar">
