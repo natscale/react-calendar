@@ -219,7 +219,7 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
   const computedClass = useMemo(
     () =>
       typeof props.className === 'string'
-        ? `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}` + props.className
+        ? `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}` + ` ${props.className}`
         : `arc${props.useDarkMode ? ' dark' : ''}${props.isDualMode ? ' arc_dual' : ''}`,
     [props.className, props.useDarkMode, props.isDualMode],
   );

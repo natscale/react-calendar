@@ -1218,7 +1218,7 @@ function Calendarview(props) {
     ]);
     var computedClass = useMemo(function () {
         return typeof props.className === 'string'
-            ? "arc" + (props.useDarkMode ? ' dark' : '') + (props.isDualMode ? ' arc_dual' : '') + props.className
+            ? "arc" + (props.useDarkMode ? ' dark' : '') + (props.isDualMode ? ' arc_dual' : '') + (" " + props.className)
             : "arc" + (props.useDarkMode ? ' dark' : '') + (props.isDualMode ? ' arc_dual' : '');
     }, [props.className, props.useDarkMode, props.isDualMode]);
     var calendarRef = useRef(null);
