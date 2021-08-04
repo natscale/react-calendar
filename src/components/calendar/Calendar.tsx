@@ -15,6 +15,7 @@ import {
 } from '../../utils/date-utils';
 
 import './styles.css';
+
 import Calendarview from '../calendar-view/CalendarView';
 
 const emptyArray: Date[] = [];
@@ -189,7 +190,7 @@ function CalendarWithRef(
   );
 
   return (
-    <div className="arc_root" style={{ display: 'flex' }} ref={forwardRef}>
+    <div className="arc_root" style={{ display: 'inline-flex' }} ref={forwardRef}>
       {isDualMode ? (
         <>
           <Calendarview
