@@ -34,13 +34,13 @@ const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize)
     arc: {
       fontSize: `${fontSize}px`,
       display: 'inline-flex',
-      flexDirection: 'column',
+      // flexDirection: 'column',
     },
     arc_cal: {
       width: `${size!}px`,
       height: `${size!}px`,
       boxSizing: 'border-box',
-      padding: '5% 0',
+      padding: '0 0 0 5%',
     },
     arc_view: { height: '88%', width: '100%' },
   },
@@ -363,6 +363,7 @@ function CalendarWithRef(
     [setMonthInView, setYearInView, setHighlightedDate],
   );
 
+  const resetHighlightedDate = useCallback(() => setHighlightedDate(undefined), [setHighlightedDate]);
   const goToToday = useCallback(() => updateDateView(today), [today]);
   const goToSelectedDate = useCallback(() => updateDateView(selectedDate), [selectedDate]);
   const goToRangeStart = useCallback(() => updateDateView(selectedRangeStart), [selectedRangeStart]);
@@ -377,6 +378,17 @@ function CalendarWithRef(
 
   return (
     <div style={styles.root.arc} className={computedClass}>
+      <ShortcutBar
+        barSize={size}
+        isNormalView={isNormalView}
+        isRangeView={isRangeSelectorView}
+        isMultiDateView={isMultiSelectorView}
+        onTodayClick={goToToday}
+        onRangeStartClick={goToRangeStart}
+        onRangeEndClick={goToRangeEnd}
+        onToggleDatesClick={toggleDate}
+        onBlur={resetHighlightedDate}
+      />
       <div ref={ref} style={styles.root.arc_cal} className="arc_cal">
         <Header
           onClickPrev={onPrevClick}
@@ -450,15 +462,6 @@ function CalendarWithRef(
           )}
         </div>
       </div>
-      <ShortcutBar
-        isNormalView={isNormalView}
-        isRangeView={isRangeSelectorView}
-        isMultiDateView={isMultiSelectorView}
-        onTodayClick={goToToday}
-        onRangeStartClick={goToRangeStart}
-        onRangeEndClick={goToRangeEnd}
-        onToggleDatesClick={toggleDate}
-      />
     </div>
   );
 }

@@ -15,6 +15,7 @@
   --arc-color-accent-light: rgba(240 62 62 / 48%);
   --arc-color-accent-lighter: rgba(240 62 62 / 7%);
   /* Context Specific */
+  --arc-shorcut-button-hover: #e8e8e8;
   --arc-color-border-root: var(--arc-color-border);
   --arc-color-bg-text-hover-header-button: var(--arc-color-text-hover);
   --arc-color-text-today: var(--arc-color-primary);
@@ -79,6 +80,12 @@
   font-family: inherit;
 }
 
+
+.arc_cal {
+  border-left: 1px solid var(--arc-color-border-root);
+}
+
+
 .arc button {
   border: none;
   margin: 0;
@@ -129,28 +136,28 @@
 }
 
 .arc_shortcuts_view {
-  border-top: 1px solid #e7e7e7;
   font-size: 0.7rem;
 }
 
 .arc_shortcuts_view button {
   cursor: pointer;
   border-right: 1px solid #e7e7e7;
+  background-color: #f6f6f6;
+}
+
+.arc_shortcuts_view button {
+  cursor: pointer;
+  border-radius: 25px;
 }
 
 .arc_shortcuts_view button:last-of-type {
-  border-right: none;
 }
 
 .arc_shortcuts_view button:hover {
-  background-color: var(--arc-color-bg-text-hover-header-button);
+  background-color: var(--arc-shorcut-button-hover);
 }
 
 .arc_shortcuts_view button:active {
-  transform: translateY(1px);
-}
-
-.arc_header button:active {
   transform: translateY(1px);
 }
 
