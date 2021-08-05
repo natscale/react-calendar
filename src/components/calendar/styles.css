@@ -8,12 +8,12 @@
   --arc-color-border: #f3f3f3;
   --arc-color-text-hover: rgb(248, 249, 250);
   /* General Theme Main Colors */
-  --arc-color-primary: rgb(28 126 214);
-  --arc-color-primary-light: rgba(28 126 214 / 40%);
-  --arc-color-primary-lighter: rgba(28 126 214 / 10%);
-  --arc-color-accent: rgb(240 62 62);
-  --arc-color-accent-light: rgba(240 62 62 / 48%);
-  --arc-color-accent-lighter: rgba(240 62 62 / 7%);
+  --arc-color-primary: hsl(208deg 77% 47%);
+  --arc-color-primary-light: hsla(208deg 77% 47%/40%);
+  --arc-color-primary-lighter: hsla(208deg 77% 47%/8%);
+  --arc-color-accent: hsl(0deg 77% 47%);
+  --arc-color-accent-light: hsla(0deg 77% 47%/40%);
+  --arc-color-accent-lighter: hsla(0deg 77% 47%/8%);
   /* Context Specific */
   --arc-color-border-root: var(--arc-color-border);
   --arc-color-bg-text-hover-header-button: var(--arc-color-text-hover);
