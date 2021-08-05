@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { YearCell } from '../calendar/Calendar';
 
-interface Props {
+export interface Props {
   cell: YearCell;
   onYearClicked: (cell: YearCell) => unknown;
 }

@@ -73,7 +73,6 @@ export interface CheckIfDateIsDisabledHOFParams {
 export interface CSSProps {
   root: {
     arc: CSSProperties;
-    arc_view: CSSProperties;
   };
 }
 
@@ -113,6 +112,10 @@ export interface CalendarProps {
    * Only applicable if selectRange is false
    */
   value?: Value;
+  /**
+   * Renders dual calendars
+   */
+  showDualCalendar?: boolean;
   /**
    * Renders a multiple dates selector view
    */

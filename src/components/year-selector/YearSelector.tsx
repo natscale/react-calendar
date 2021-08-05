@@ -5,7 +5,7 @@ import { YearCell } from '../../utils/types';
 import { getYearsViewMetrix } from '../../utils/date-utils';
 import { Year } from '../year-cell/Year';
 
-interface Props {
+export interface Props {
   onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
   onChangeViewingYear: (year: number) => unknown;
   yearMatrixStart: number;

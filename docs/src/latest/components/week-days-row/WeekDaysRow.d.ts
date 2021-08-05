@@ -1,6 +1,6 @@
 import React from 'react';
 import { WeekdayIndices } from '../../utils/types';
-interface Props {
+export interface Props {
     weekStartIndex: WeekdayIndices;
     weekendIndices: WeekdayIndices[];
 }
