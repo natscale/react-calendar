@@ -1,12 +1,10 @@
 # @natscale/react-calendar ![language](https://img.shields.io/badge/language-javascript-blue.svg) ![liscence](https://img.shields.io/npm/l/@natscale/react-calendar) ![version](https://img.shields.io/npm/v/@natscale/react-calendar) ![download](https://img.shields.io/npm/dt/@natscale/react-calendar)
 
-> A calendar component for react
-
 A no dependencies, `lightweight` and feature-rich ⚡ calendar component for react.
 
-![Calendar View 1](docs/images/view-1.png)
+> Note - The library is still under active development so the API might change before the first stable release. We do not recommend to use it in production.
 
-![Calendar View 2](docs/images/view-2.png)
+![Calendar View 1](docs/images/view-1.png)
 
 ## :books: Table of Contents
 
