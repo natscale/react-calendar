@@ -6,6 +6,10 @@ A no dependencies, `lightweight` and feature-rich ⚡ calendar component for rea
 
 ![Calendar View 1](docs/images/view-1.png)
 
+[See Online Demo](natscale.github.io/react-calendar/).
+
+> The demo page above is just a test page to be able to share the development progress with other people while it's in the beta phase. We are working on an official website for it.
+
 ## :books: Table of Contents
 
 - [Installation](#package-installation)
