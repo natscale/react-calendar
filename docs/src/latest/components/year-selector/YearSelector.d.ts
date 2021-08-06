@@ -1,5 +1,5 @@
 import React from 'react';
-interface Props {
+export interface Props {
     onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
     onChangeViewingYear: (year: number) => unknown;
     yearMatrixStart: number;

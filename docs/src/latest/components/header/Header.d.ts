@@ -1,6 +1,6 @@
 import React from 'react';
 import { MonthIndices } from '../../utils/types';
-interface Props {
+export interface Props {
     onClickPrev: () => any;
     onClickNext: () => any;
     onChangeViewType: (view: 'month_dates' | 'months' | 'years') => any;

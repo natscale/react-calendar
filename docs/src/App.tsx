@@ -139,6 +139,8 @@ export function App(): React.ReactElement {
 
   const [width, setWidth] = useState<number>(400);
 
+  const [fontSize, setFontSize] = useState<number>(16);
+
   const [fiveteen, setFiveteen] = useState<object>({});
 
   const onChangeFiveteen = useCallback(
@@ -182,14 +184,15 @@ export function App(): React.ReactElement {
       </div>
       <div>
         <div>
-          <p>Range Select View</p>
+          <p>Dual Calendar View</p>
         </div>
         <div>
           <div className="calendar">
             <Calendar
+              showDualCalendar
               isRangeSelector
               disableToday
-              value={[new Date(2021, 0, 8), new Date(2021, 0, 20)]}
+              value={[new Date(2021, 0, 22), new Date(2021, 1, 10)]}
               onChange={onChangethree}
             />
           </div>
@@ -230,9 +233,25 @@ export function App(): React.ReactElement {
           <div className="calendar">
             <Calendar
               initialViewDate={new Date(2020, 5, 6)}
-              highlights={[new Date(2020, 5, 6), new Date(2020, 5, 12), new Date(2020, 5, 16), new Date(2020, 5, 24)]}
+              highlights={[
+                new Date(2021, new Date().getMonth(), 6),
+                new Date(2021, new Date().getMonth(), 12),
+                new Date(2021, new Date().getMonth(), 14),
+                new Date(2021, new Date().getMonth(), 16),
+                new Date(2021, new Date().getMonth(), 24),
+              ]}
               onChange={onChangeFourteen}
             />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <p>Hide Adjacent Dates</p>
+        </div>
+        <div>
+          <div className="calendar">
+            <Calendar hideAdjacentDates />
           </div>
         </div>
       </div>
@@ -328,7 +347,7 @@ export function App(): React.ReactElement {
       </div>
       <div>
         <div>
-          <p>Can disable highlighting Weekends</p>
+          <p>Can turn off highlighting Weekends</p>
         </div>
         <div>
           <div className="calendar">
@@ -462,11 +481,15 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div style={{ width: '300px', marginTop: '24px', marginBottom: '24px' }}>
-            <p style={{ marginBottom: '16px' }}>Use slider to update size</p>
+            <p style={{ marginBottom: '16px' }}>Use slider to update calendar size</p>
             <Slider step={50} min={350} max={1200} value={width} onChange={(value) => setWidth(value)} />
           </div>
+          <div style={{ width: '300px', marginTop: '24px', marginBottom: '24px' }}>
+            <p style={{ marginBottom: '16px' }}>Use slider to update font size</p>
+            <Slider step={1} min={14} max={22} value={fontSize} onChange={(value) => setFontSize(value)} />
+          </div>
           <div>
-            <Calendar fontSize={20} size={width} isRangeSelector />
+            <Calendar fontSize={fontSize} size={width} isRangeSelector />
           </div>
         </div>
       </div>

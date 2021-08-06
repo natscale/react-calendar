@@ -4,7 +4,7 @@ import { WeekdayIndices } from '../../utils/types';
 
 import { getWeekDaysIndexToLabelMapForAStartOfTheWeek } from '../../utils/date-utils';
 
-interface Props {
+export interface Props {
   weekStartIndex: WeekdayIndices;
   weekendIndices: WeekdayIndices[];
 }

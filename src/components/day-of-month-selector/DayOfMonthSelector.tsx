@@ -13,7 +13,7 @@ import {
 } from '../../utils/date-utils';
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
 
-interface Props {
+export interface Props {
   onChangeViewingYear: (year: number) => unknown;
   onChangeViewingMonth: (month: MonthIndices) => unknown;
   onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
@@ -44,6 +44,7 @@ interface Props {
   disableFuture: boolean;
   disablePast: boolean;
   disableToday: boolean;
+  hideAdjacentDates: boolean;
   lockView: boolean;
   maxAllowedDate?: Date;
   minAllowedDate?: Date;
@@ -95,6 +96,7 @@ function DayOfMonthSelectorComponent({
   isMultiSelectorView,
   today,
   viewingMonth,
+  hideAdjacentDates,
   onChangenNewSelectedRangeEnd,
   onChangenNewSelectedRangeStart,
   onChangenSelectedRangeEnd,
@@ -287,6 +289,7 @@ function DayOfMonthSelectorComponent({
       onChangenSelectedRangeEnd,
       onChange,
       onChangenNewSelectedRangeStart,
+      onPartialRangeSelect,
       fixedRangeLength,
       isDisabled,
       skipDisabledDatesInRange,
@@ -295,6 +298,7 @@ function DayOfMonthSelectorComponent({
       allowFewerDatesThanRange,
       selectedMultiDates,
       onChangenSelectedMultiDates,
+      onEachMultiSelect,
       onChangenSelectedDate,
     ],
   );
@@ -326,7 +330,7 @@ function DayOfMonthSelectorComponent({
                   }
                 }
               }}
-              key={cell.dayOfMonth}
+              key={toString(cell.date)}
               className={`arc_view_cell${cell.activeMonthInView ? ' arc_active' : ''}${
                 cell.isWeekend ? ' arc_wknd' : ''
               }${cell.isToday ? ' arc_today' : ''}${cell.isFirstRow ? ' arc_fr' : ''}${
@@ -339,7 +343,9 @@ function DayOfMonthSelectorComponent({
                 cell.isRangeEnd ? ' arc_range_end' : ''
               }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}
             >
-              <DayOfMonth isHighlighted={isHighlightedDate(cell)} cell={cell} onDateClicked={onDateClicked} />
+              {!cell.activeMonthInView && hideAdjacentDates ? null : (
+                <DayOfMonth isHighlighted={isHighlightedDate(cell)} cell={cell} onDateClicked={onDateClicked} />
+              )}
             </div>
           ))}
         </div>

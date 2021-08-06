@@ -1,4 +1,4 @@
-.arc {
+.arc_root {
   /* General Theme */
   --arc-color-transparent: rgba(0, 0, 0, 0);
   --arc-color-text-dark: #353535;
@@ -8,12 +8,12 @@
   --arc-color-border: #f3f3f3;
   --arc-color-text-hover: rgb(248, 249, 250);
   /* General Theme Main Colors */
-  --arc-color-primary: rgb(28 126 214);
-  --arc-color-primary-light: rgba(28 126 214 / 40%);
-  --arc-color-primary-lighter: rgba(28 126 214 / 10%);
-  --arc-color-accent: rgb(240 62 62);
-  --arc-color-accent-light: rgba(240 62 62 / 48%);
-  --arc-color-accent-lighter: rgba(240 62 62 / 7%);
+  --arc-color-primary: hsl(208deg 77% 47%);
+  --arc-color-primary-light: hsla(208deg 77% 47%/40%);
+  --arc-color-primary-lighter: hsla(208deg 77% 47%/8%);
+  --arc-color-accent: hsl(0deg 77% 47%);
+  --arc-color-accent-light: hsla(0deg 77% 47%/40%);
+  --arc-color-accent-lighter: hsla(0deg 77% 47%/8%);
   /* Context Specific */
   --arc-shorcut-button-hover: #e8e8e8;
   --arc-color-border-root: var(--arc-color-border);
@@ -47,7 +47,7 @@
   --arc-color-bg-disabled-weekend-cross: var(--arc-color-accent-light);
 }
 
-.arc.dark {
+.arc_root.arc_dark {
   /* General Theme */
   --arc-color-transparent: rgba(0, 0, 0, 0);
   --arc-color-text-dark: #fff;
@@ -65,28 +65,39 @@
   --arc-color-accent-lighter: #524747;
 }
 
-.arc {
-  border: 1px solid var(--arc-color-border-root);
-  border-radius: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-    'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 1rem;
+.arc_root {
   background-color: var(--arc-color-bg-light);
+  border: 1px solid var(--arc-color-border-root);
+  font-size: 1rem;
+  border-radius: 8px;
+  position: relative;
 }
 
-.arc * {
+.arc {
+  position: relative;
+}
+
+.arc_root.arc_dual .arc + .arc {
+  margin-left: 12px;
+}
+
+.arc_root.arc_dual .arc + .arc::before {
+  background-color: var(--arc-color-border);
+  left: -12px;
+  content: '';
+  width: 12px;
+  height: 1px;
+  top: 25%;
+  position: absolute;
+}
+
+.arc_root * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: var(--arc-color-transparent);
   font-family: inherit;
 }
 
-
-.arc_cal {
-  border-left: 1px solid var(--arc-color-border-root);
-}
-
-
-.arc button {
+.arc_root button {
   border: none;
   margin: 0;
   padding: 0;
@@ -101,7 +112,7 @@
   -webkit-appearance: none;
 }
 
-.arc button::-moz-focus-inner {
+.arc_root button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
@@ -123,7 +134,7 @@
 }
 
 .arc_header span {
-  font-size: 0.84em;
+  font-size: 0.85em;
   color: var(--arc-color-text-dark);
 }
 

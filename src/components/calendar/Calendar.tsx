@@ -1,17 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import type { CalendarProps, CSSProps, MonthIndices } from '../../utils/types';
+import type { CalendarProps } from '../../utils/types';
 
 import {
-  getStartOfRangeForAYear,
-  getPreviousYear,
-  getPreviousMonth,
-  getPreviousRangeStartingYear,
-  getNextYear,
-  getNextMonth,
-  getNextRangeStartingYear,
-  getYearRangeLimits,
   getWeekendInfo,
   isValid,
   isBefore,
@@ -22,31 +14,13 @@ import {
   validateAndReturnDateFormatter,
 } from '../../utils/date-utils';
 
-import { Header } from '../header/Header';
-import { MonthSelector } from '../month-selector/MonthSelector';
-import { YearSelector } from '../year-selector/YearSelector';
-import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
-import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
-import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
+import './styles.css';
 
-const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
-  root: {
-    arc: {
-      fontSize: `${fontSize}px`,
-      display: 'inline-flex',
-      // flexDirection: 'column',
-    },
-    arc_cal: {
-      width: `${size!}px`,
-      height: `${size!}px`,
-      boxSizing: 'border-box',
-      padding: '0 0 0 5%',
-    },
-    arc_view: { height: '88%', width: '100%' },
-  },
-});
+import Calendarview from '../calendar-view/CalendarView';
 
 const emptyArray: Date[] = [];
+
+const styles = { display: 'inline-flex' };
 
 function CalendarWithRef(
   {
@@ -75,14 +49,16 @@ function CalendarWithRef(
     fontSize = 16,
     disablePast = false,
     disableToday = false,
+    showDualCalendar = false,
+    hideAdjacentDates = false,
   }: CalendarProps,
-  ref: React.Ref<HTMLDivElement>,
+  forwardRef: React.Ref<HTMLDivElement>,
 ): React.ReactElement<CalendarProps> {
-  const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
-
   const [today] = useState(new Date());
 
   const [isRangeSelectorView] = useState(!!isRangeSelector);
+
+  const [isDualMode] = useState(isRangeSelectorView && !!showDualCalendar);
 
   const [isMultiSelectorView] = useState(!isRangeSelectorView && !!isMultiSelector);
 
@@ -170,139 +146,6 @@ function CalendarWithRef(
 
   const [newSelectedRangeEnd, setNewSelectedRangeEnd] = useState<Date | undefined>(selectedRangeEnd);
 
-  // View States
-  const [view, setView] = useState<'years' | 'months' | 'month_dates'>('month_dates');
-
-  const [monthInView, setMonthInView] = useState<MonthIndices>(
-    (isValid(initialViewDate)
-      ? initialViewDate.getMonth()
-      : isNormalView && isValid(value as Date)
-      ? (value as Date).getMonth()
-      : isRangeSelectorView && selectedRangeStart
-      ? selectedRangeStart.getMonth()
-      : isMultiSelectorView && Array.isArray(value) && isValid(value[0])
-      ? value[0].getMonth()
-      : isValid(minAllowedDate)
-      ? minAllowedDate.getMonth()
-      : isValid(maxAllowedDate)
-      ? maxAllowedDate.getMonth()
-      : today.getMonth()) as MonthIndices,
-  );
-
-  const [yearInView, setYearInView] = useState(
-    isValid(initialViewDate)
-      ? initialViewDate.getFullYear()
-      : isNormalView && isValid(value as Date)
-      ? (value as Date).getFullYear()
-      : isRangeSelectorView && selectedRangeStart
-      ? selectedRangeStart.getFullYear()
-      : isMultiSelectorView && Array.isArray(value) && isValid(value[0])
-      ? value[0].getFullYear()
-      : isValid(minAllowedDate)
-      ? minAllowedDate.getFullYear()
-      : isValid(maxAllowedDate)
-      ? maxAllowedDate.getFullYear()
-      : today.getFullYear(),
-  );
-
-  useEffect(() => {
-    if (isValid(initialViewDate)) {
-      setMonthInView(initialViewDate.getMonth() as MonthIndices);
-      setYearInView(initialViewDate.getFullYear());
-      // set date in focus
-    }
-  }, [initialViewDate]);
-
-  const changeMonthInView = useCallback(
-    (month: MonthIndices) => {
-      !lockView && setMonthInView(month);
-    },
-    [lockView, setMonthInView],
-  );
-
-  const changeYearInView = useCallback(
-    (year: number) => {
-      !lockView && setYearInView(year);
-    },
-    [lockView, setYearInView],
-  );
-
-  const changeView = useCallback(
-    (view: 'years' | 'months' | 'month_dates') => {
-      !lockView && setView(view);
-    },
-    [lockView, setView],
-  );
-
-  const [startingYearForCurrRange, setStartingYearForCurrRange] = useState(getStartOfRangeForAYear(yearInView));
-
-  useEffect(() => {
-    setStartingYearForCurrRange(getStartOfRangeForAYear(yearInView));
-  }, [yearInView, setStartingYearForCurrRange]);
-
-  // 1 - 20, 21 - 40
-  const [yearMatrixRangeStart, yearMatrixRangeEnd] = useMemo(() => {
-    return getYearRangeLimits(startingYearForCurrRange);
-  }, [startingYearForCurrRange]);
-
-  // callback handlers
-  const onPrevClick = useCallback(() => {
-    if (view === 'month_dates') {
-      const isPrevMonthFromLastYear = monthInView === 0;
-      if (isPrevMonthFromLastYear) {
-        setYearInView(getPreviousYear(yearInView));
-      }
-      changeMonthInView(getPreviousMonth(monthInView));
-    }
-    if (view === 'years') {
-      setStartingYearForCurrRange(getPreviousRangeStartingYear(startingYearForCurrRange));
-    }
-    if (view === 'months') {
-      changeYearInView(yearInView !== 1 ? yearInView - 1 : 1);
-    }
-  }, [
-    changeMonthInView,
-    monthInView,
-    changeYearInView,
-    yearInView,
-    view,
-    setStartingYearForCurrRange,
-    startingYearForCurrRange,
-  ]);
-
-  const onNextClick = useCallback(() => {
-    if (view === 'month_dates') {
-      const isCurrentMonthLast = monthInView === 11;
-      if (isCurrentMonthLast) {
-        changeYearInView(getNextYear(yearInView));
-      }
-      changeMonthInView(getNextMonth(monthInView));
-    }
-    if (view === 'years') {
-      setStartingYearForCurrRange(getNextRangeStartingYear(startingYearForCurrRange));
-    }
-
-    if (view === 'months') {
-      changeYearInView(getNextYear(yearInView));
-    }
-  }, [
-    changeMonthInView,
-    monthInView,
-    changeYearInView,
-    yearInView,
-    view,
-    setStartingYearForCurrRange,
-    startingYearForCurrRange,
-  ]);
-
-  const computedClass = useMemo(
-    () =>
-      typeof className === 'string'
-        ? `arc ${useDarkMode ? 'dark' : ''} ` + className
-        : `arc ${useDarkMode ? 'dark' : ''}`,
-    [className, useDarkMode],
-  );
-
   // max allowed Date
   const [maxDate] = useState(() => {
     return isValid(maxAllowedDate) ? maxAllowedDate : today;
@@ -349,6 +192,104 @@ function CalendarWithRef(
     [startOfTheWeek, weekendIndexes],
   );
 
+  const commonProps = useMemo(
+    () => ({
+      isDualMode: isDualMode,
+      value: value,
+      viewDate: initialViewDate,
+      useDarkMode: useDarkMode,
+      className: className,
+      hideAdjacentDates: !!hideAdjacentDates,
+      isNormalView: isNormalView,
+      size: size,
+      fontSize: fontSize,
+      weekStartIndex: startOfTheWeek,
+      weekendIndices: weekendIndexes,
+      isRangeSelectModeOn: isRangeSelectModeOn,
+      setIsRangeSelectModeOn: setIsRangeSelectModeOn,
+      skipDisabledDatesInRange: !!skipDisabledDatesInRange,
+      allowFewerDatesThanRange: !!allowFewerDatesThanRange,
+      selectedDate: selectedDate,
+      selectedRangeStart: selectedRangeStart,
+      selectedRangeEnd: selectedRangeEnd,
+      lockView: !!lockView,
+      newSelectedRangeStart: newSelectedRangeStart,
+      onChangenSelectedMultiDates: setSelectedMultiDates,
+      onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd,
+      onChangenNewSelectedRangeStart: setNewSelectedRangeStart,
+      onChangenSelectedRangeEnd: setSelectedRangeEnd,
+      onChangenSelectedRangeStart: setSelectedRangeStart,
+      onChangenSelectedDate: setSelectedDate,
+      onPartialRangeSelect: onPartialRangeSelect,
+      onEachMultiSelect: onEachMultiSelect,
+      newSelectedRangeEnd: newSelectedRangeEnd,
+      isRangeSelectorView: isRangeSelectorView,
+      fixedRangeLength: fixedRangeLength,
+      isFixedRangeView: isFixedRangeView,
+      isDisabled: checkDisabledForADate,
+      checkIfWeekend: checkIfWeekend,
+      selectedMultiDates: selectedMultiDates,
+      isMultiSelectorView: isMultiSelectorView,
+      today: today,
+      maxAllowedDate: maxAllowedDate,
+      minAllowedDate: minAllowedDate,
+      skipWeekendsInRange: !!skipWeekendsInRange,
+      onChange: onChange,
+      disableFuture: disableFuture,
+      disablePast: disablePast,
+      highlights: highlights,
+      disableToday: disableToday,
+    }),
+    [
+      allowFewerDatesThanRange,
+      checkDisabledForADate,
+      checkIfWeekend,
+      className,
+      disableFuture,
+      disablePast,
+      hideAdjacentDates,
+      disableToday,
+      fixedRangeLength,
+      fontSize,
+      highlights,
+      initialViewDate,
+      isDualMode,
+      isFixedRangeView,
+      isMultiSelectorView,
+      isNormalView,
+      isRangeSelectModeOn,
+      isRangeSelectorView,
+      lockView,
+      maxAllowedDate,
+      minAllowedDate,
+      newSelectedRangeEnd,
+      newSelectedRangeStart,
+      onChange,
+      onEachMultiSelect,
+      onPartialRangeSelect,
+      selectedDate,
+      selectedMultiDates,
+      selectedRangeEnd,
+      selectedRangeStart,
+      size,
+      skipDisabledDatesInRange,
+      skipWeekendsInRange,
+      startOfTheWeek,
+      today,
+      useDarkMode,
+      value,
+      weekendIndexes,
+    ],
+  );
+
+  const computedClass = useMemo(
+    () =>
+      typeof className === 'string'
+        ? `arc_root${useDarkMode ? ' arc_dark' : ''}${isDualMode ? ' arc_dual' : ''}` + ` ${className}`
+        : `arc_root${useDarkMode ? ' arc_dark' : ''}${isDualMode ? ' arc_dual' : ''}`,
+    [className, useDarkMode, isDualMode],
+  );
+
   const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
   const [highlightedDate, setHighlightedDate] = useState<Date | undefined>(undefined);
 
@@ -377,91 +318,15 @@ function CalendarWithRef(
   }, [toggleDateIndex]);
 
   return (
-    <div style={styles.root.arc} className={computedClass}>
-      <ShortcutBar
-        barSize={size}
-        isNormalView={isNormalView}
-        isRangeView={isRangeSelectorView}
-        isMultiDateView={isMultiSelectorView}
-        onTodayClick={goToToday}
-        onRangeStartClick={goToRangeStart}
-        onRangeEndClick={goToRangeEnd}
-        onToggleDatesClick={toggleDate}
-        onBlur={resetHighlightedDate}
-      />
-      <div ref={ref} style={styles.root.arc_cal} className="arc_cal">
-        <Header
-          onClickPrev={onPrevClick}
-          onClickNext={onNextClick}
-          onChangeViewType={changeView}
-          viewType={view}
-          viewingMonth={monthInView}
-          viewingYear={yearInView}
-          yearMatrixStart={yearMatrixRangeStart}
-          yearMatrixEnd={yearMatrixRangeEnd}
-        />
-        <div style={styles.root.arc_view} className="arc_view">
-          {view === 'months' && (
-            <MonthSelector onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />
-          )}
-          {view === 'years' && (
-            <YearSelector
-              onChangeViewType={changeView}
-              onChangeViewingYear={changeYearInView}
-              yearMatrixStart={yearMatrixRangeStart}
-              yearMatrixEnd={yearMatrixRangeEnd}
-            />
-          )}
-          {view === 'month_dates' && (
-            <>
-              <WeekDaysRow weekStartIndex={startOfTheWeek} weekendIndices={weekendIndexes} />
-              <DayOfMonthSelector
-                highlightedDate={highlightedDate}
-                isRangeSelectModeOn={isRangeSelectModeOn}
-                setIsRangeSelectModeOn={setIsRangeSelectModeOn}
-                skipDisabledDatesInRange={!!skipDisabledDatesInRange}
-                allowFewerDatesThanRange={!!allowFewerDatesThanRange}
-                selectedDate={selectedDate}
-                selectedRangeStart={selectedRangeStart}
-                selectedRangeEnd={selectedRangeEnd}
-                lockView={!!lockView}
-                newSelectedRangeStart={newSelectedRangeStart}
-                weekStartIndex={startOfTheWeek}
-                onChangeViewingYear={changeYearInView}
-                onChangeViewingMonth={changeMonthInView}
-                onChangenSelectedMultiDates={setSelectedMultiDates}
-                onChangenNewSelectedRangeEnd={setNewSelectedRangeEnd}
-                onChangenNewSelectedRangeStart={setNewSelectedRangeStart}
-                onChangenSelectedRangeEnd={setSelectedRangeEnd}
-                onChangenSelectedRangeStart={setSelectedRangeStart}
-                onChangenSelectedDate={setSelectedDate}
-                onPartialRangeSelect={onPartialRangeSelect}
-                onEachMultiSelect={onEachMultiSelect}
-                newSelectedRangeEnd={newSelectedRangeEnd}
-                isRangeSelectorView={isRangeSelectorView}
-                fixedRangeLength={fixedRangeLength}
-                isFixedRangeView={isFixedRangeView}
-                isDisabled={checkDisabledForADate}
-                checkIfWeekend={checkIfWeekend}
-                selectedMultiDates={selectedMultiDates}
-                isMultiSelectorView={isMultiSelectorView}
-                viewingMonth={monthInView}
-                today={today}
-                maxAllowedDate={maxAllowedDate}
-                minAllowedDate={minAllowedDate}
-                weekendIndices={weekendIndexes}
-                skipWeekendsInRange={!!skipWeekendsInRange}
-                onChange={onChange}
-                viewingYear={yearInView}
-                disableFuture={disableFuture}
-                disablePast={disablePast}
-                highlights={highlights}
-                disableToday={disableToday}
-              />
-            </>
-          )}
-        </div>
-      </div>
+    <div className={computedClass} style={styles} ref={forwardRef}>
+      {isDualMode ? (
+        <>
+          <Calendarview isSecondary={false} {...commonProps} />
+          <Calendarview isSecondary={true} {...commonProps} />
+        </>
+      ) : (
+        <Calendarview isSecondary={false} {...commonProps} />
+      )}
     </div>
   );
 }

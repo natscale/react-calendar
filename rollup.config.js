@@ -23,8 +23,16 @@ export default [
       del({ targets: ['docs/src/dist'], runOnce: true, hook: 'buildEnd' }),
     ],
     output: [
-      { file: pkg.main, format: 'cjs', plugins: [terser()] },
-      { file: pkg.module, format: 'esm', plugins: [terser()] },
+      {
+        file: pkg.main,
+        format: 'cjs',
+        plugins: [terser({ compress: true, mangle: true, format: { comments: false } })],
+      },
+      {
+        file: pkg.module,
+        format: 'esm',
+        plugins: [terser({ compress: true, mangle: true, format: { comments: false } })],
+      },
       {
         file: 'docs/src/latest/main.js',
         format: 'es',

@@ -65,12 +65,14 @@ export interface CheckIfDateIsDisabledHOFParams {
 export interface CSSProps {
     root: {
         arc: CSSProperties;
-        arc_cal: CSSProperties;
-        arc_view: CSSProperties;
     };
 }
 export declare type Value = Date | Date[] | [Date, Date];
 export interface CalendarProps {
+    /**
+     * Hides the prev and next month dates
+     */
+    hideAdjacentDates?: boolean;
     /**
      * Dark mode
      */
@@ -104,6 +106,10 @@ export interface CalendarProps {
      * Only applicable if selectRange is false
      */
     value?: Value;
+    /**
+     * Renders dual calendars
+     */
+    showDualCalendar?: boolean;
     /**
      * Renders a multiple dates selector view
      */
