@@ -70,6 +70,10 @@ export interface CSSProps {
 export declare type Value = Date | Date[] | [Date, Date];
 export interface CalendarProps {
     /**
+     * Hides the prev and next month dates
+     */
+    hideAdjacentDates?: boolean;
+    /**
      * Dark mode
      */
     useDarkMode?: boolean;

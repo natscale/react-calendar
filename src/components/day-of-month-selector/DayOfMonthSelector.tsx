@@ -36,6 +36,7 @@ export interface Props {
   disableFuture: boolean;
   disablePast: boolean;
   disableToday: boolean;
+  hideAdjacentDates: boolean;
   lockView: boolean;
   maxAllowedDate?: Date;
   minAllowedDate?: Date;
@@ -86,6 +87,7 @@ function DayOfMonthSelectorComponent({
   isMultiSelectorView,
   today,
   viewingMonth,
+  hideAdjacentDates,
   onChangenNewSelectedRangeEnd,
   onChangenNewSelectedRangeStart,
   onChangenSelectedRangeEnd,
@@ -318,7 +320,9 @@ function DayOfMonthSelectorComponent({
                 cell.isRangeEnd ? ' arc_range_end' : ''
               }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}
             >
-              <DayOfMonth cell={cell} onDateClicked={onDateClicked} />
+              {!cell.activeMonthInView && hideAdjacentDates ? null : (
+                <DayOfMonth cell={cell} onDateClicked={onDateClicked} />
+              )}
             </div>
           ))}
         </div>
