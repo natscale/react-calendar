@@ -1,13 +1,8 @@
 import React, { memo, useMemo } from 'react';
 
-import { WeekdayIndices } from '../../utils/types';
+import { WeekdayIndices, WeekdayRowProps } from '../../utils/types';
 
 import { getWeekDaysIndexToLabelMapForAStartOfTheWeek } from '../../utils/date-utils';
-
-export interface Props {
-  weekStartIndex: WeekdayIndices;
-  weekendIndices: WeekdayIndices[];
-}
 
 const weekdaysRow = {
   arc_view_weekdays: {
@@ -34,7 +29,7 @@ const weekdaysRow = {
   },
 };
 
-function WeekDaysRowComponent({ weekStartIndex, weekendIndices }: Props) {
+function WeekDaysRowComponent({ startOfWeek: weekStartIndex, weekends: weekendIndices }: WeekdayRowProps) {
   // week days as per the start day of the week
   const { order: weekDayOrder, map: weekDayMap } = useMemo(() => {
     return getWeekDaysIndexToLabelMapForAStartOfTheWeek(weekStartIndex);

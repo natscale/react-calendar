@@ -1,53 +1,9 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import type { DayOfMonthCell, MonthIndices, Value, WeekdayIndices } from '../../utils/types';
+import type { DayOfMonthCell, DayOfMonthSelectorProps } from '../../utils/types';
 
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
-
-export interface Props {
-  onChangeViewingYear: (year: number) => unknown;
-  onChangeViewingMonth: (month: MonthIndices) => unknown;
-  onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
-  onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
-  onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
-  onChangenSelectedDate: (dates: Date) => unknown;
-  viewingMonth: MonthIndices;
-  allowFewerDatesThanRange: boolean;
-  skipDisabledDatesInRange: boolean;
-  skipWeekendsInRange: boolean;
-  viewingYear: number;
-  weekStartIndex: WeekdayIndices;
-  fixedRangeLength: number;
-  selectedDate: Date | undefined;
-  selectedRangeStart: Date | undefined;
-  selectedRangeEnd: Date | undefined;
-  newSelectedRangeStart: Date | undefined;
-  newSelectedRangeEnd: Date | undefined;
-  isRangeSelectorView: boolean;
-  isFixedRangeView: boolean;
-  weekendIndices: WeekdayIndices[];
-  selectedMultiDates: Record<string, Date | undefined>;
-  isMultiSelectorView: boolean;
-  isRangeSelectModeOn: boolean;
-  setIsRangeSelectModeOn: (on: boolean) => void;
-  disableFuture: boolean;
-  disablePast: boolean;
-  disableToday: boolean;
-  hideAdjacentDates: boolean;
-  lockView: boolean;
-  maxAllowedDate?: Date;
-  minAllowedDate?: Date;
-  highlights: Date[];
-  isDisabled: (date: Date) => boolean;
-  checkIfWeekend: (date: Date) => boolean;
-  today: Date;
-  onChange?: (value: Value) => unknown | Promise<unknown>;
-  onPartialRangeSelect?: (value: Value) => unknown | Promise<unknown>;
-  onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
-}
 
 const dayOfMonthStyles = {
   'arc_view-days-of-month': {
@@ -71,14 +27,14 @@ function DayOfMonthSelectorComponent({
   selectedRangeStart,
   selectedRangeEnd,
   newSelectedRangeStart,
-  weekStartIndex,
+  startOfWeek: weekStartIndex,
   onChangeViewingYear,
   onChangeViewingMonth,
   newSelectedRangeEnd,
   isRangeSelectorView,
   skipDisabledDatesInRange,
-  setIsRangeSelectModeOn,
-  fixedRangeLength,
+  onChangeRangeSelectMode: setIsRangeSelectModeOn,
+  fixedRange: fixedRangeLength,
   isFixedRangeView,
   isRangeSelectModeOn,
   isDisabled,
@@ -86,16 +42,16 @@ function DayOfMonthSelectorComponent({
   selectedMultiDates,
   isMultiSelectorView,
   today,
-  viewingMonth,
+  monthInView: viewingMonth,
   hideAdjacentDates,
   onChangenNewSelectedRangeEnd,
   onChangenNewSelectedRangeStart,
   onChangenSelectedRangeEnd,
   onChangenSelectedRangeStart,
   onChangenSelectedDate,
-  weekendIndices,
+  weekends: weekendIndices,
   onChange,
-  viewingYear,
+  yearInView: viewingYear,
   allowFewerDatesThanRange,
   disableFuture,
   disablePast,
@@ -105,7 +61,7 @@ function DayOfMonthSelectorComponent({
   onEachMultiSelect,
   highlights,
   disableToday,
-}: Props) {
+}: DayOfMonthSelectorProps) {
   const [highlightsMap] = useState<Record<string, 1>>(() => {
     if (Array.isArray(highlights)) {
       return highlights

@@ -1,20 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { memo } from 'react';
 
-import { MonthIndices } from '../../utils/types';
+import { HeaderProps } from '../../utils/types';
 
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
-
-export interface Props {
-  onClickPrev: () => any;
-  onClickNext: () => any;
-  onChangeViewType: (view: 'month_dates' | 'months' | 'years') => any;
-  viewType: 'month_dates' | 'months' | 'years';
-  viewingMonth: MonthIndices;
-  viewingYear: number;
-  yearMatrixStart: number;
-  yearMatrixEnd: number;
-}
 
 const header = {
   root: {
@@ -41,11 +30,11 @@ function HeaderComponent({
   onChangeViewType,
   onClickNext,
   viewType,
-  viewingMonth,
-  viewingYear,
+  monthInView: viewingMonth,
+  yearInView: viewingYear,
   yearMatrixEnd,
   yearMatrixStart,
-}: Props) {
+}: HeaderProps) {
   return (
     <header style={header.root} className="arc_header">
       <button style={header.arc_header_nav} className="arc_header_nav arc_header_nav-prev" onClick={onClickPrev}>

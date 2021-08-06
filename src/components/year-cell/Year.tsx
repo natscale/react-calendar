@@ -1,11 +1,6 @@
 import React, { memo } from 'react';
 
-import { YearCell } from '../calendar/Calendar';
-
-export interface Props {
-  cell: YearCell;
-  onYearClicked: (cell: YearCell) => unknown;
-}
+import { YearCellProps } from '../calendar/Calendar';
 
 const arc_view_cell_value = {
   width: '100%',
@@ -23,7 +18,7 @@ const arc_view_cell_value_button = {
   justifyContent: 'center',
 };
 
-function Component({ cell, onYearClicked }: Props) {
+function Component({ cell, onYearClicked }: YearCellProps) {
   return (
     <div style={arc_view_cell_value}>
       <button

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useMemo, useState } from 'react';
 
-import type { CalendarProps } from '../../utils/types';
+import type { CalendarProps, CalendarViewProps } from '../../utils/types';
 
 import {
   getWeekendInfo,
@@ -31,7 +31,6 @@ function CalendarWithRef(
     useDarkMode = false,
     weekends,
     highlights = emptyArray,
-    skipWeekendsInRange = false,
     viewDate: initialViewDate,
     allowFewerDatesThanRange = false,
     startOfWeek = 1,
@@ -192,9 +191,9 @@ function CalendarWithRef(
     [startOfTheWeek, weekendIndexes],
   );
 
-  const commonProps = useMemo(
+  const commonProps = useMemo<Omit<CalendarViewProps, 'isSecondary'>>(
     () => ({
-      isDualMode: isDualMode,
+      showDualCalendar: isDualMode,
       value: value,
       viewDate: initialViewDate,
       useDarkMode: useDarkMode,
@@ -203,10 +202,10 @@ function CalendarWithRef(
       isNormalView: isNormalView,
       size: size,
       fontSize: fontSize,
-      weekStartIndex: startOfTheWeek,
-      weekendIndices: weekendIndexes,
+      startOfWeek: startOfTheWeek,
+      weekends: weekendIndexes,
       isRangeSelectModeOn: isRangeSelectModeOn,
-      setIsRangeSelectModeOn: setIsRangeSelectModeOn,
+      onChangeRangeSelectMode: setIsRangeSelectModeOn,
       skipDisabledDatesInRange: !!skipDisabledDatesInRange,
       allowFewerDatesThanRange: !!allowFewerDatesThanRange,
       selectedDate: selectedDate,
@@ -224,7 +223,7 @@ function CalendarWithRef(
       onEachMultiSelect: onEachMultiSelect,
       newSelectedRangeEnd: newSelectedRangeEnd,
       isRangeSelectorView: isRangeSelectorView,
-      fixedRangeLength: fixedRangeLength,
+      fixedRange: fixedRangeLength,
       isFixedRangeView: isFixedRangeView,
       isDisabled: checkDisabledForADate,
       checkIfWeekend: checkIfWeekend,
@@ -233,7 +232,6 @@ function CalendarWithRef(
       today: today,
       maxAllowedDate: maxAllowedDate,
       minAllowedDate: minAllowedDate,
-      skipWeekendsInRange: !!skipWeekendsInRange,
       onChange: onChange,
       disableFuture: disableFuture,
       disablePast: disablePast,
@@ -273,7 +271,6 @@ function CalendarWithRef(
       selectedRangeStart,
       size,
       skipDisabledDatesInRange,
-      skipWeekendsInRange,
       startOfTheWeek,
       today,
       useDarkMode,

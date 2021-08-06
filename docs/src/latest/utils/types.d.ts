@@ -123,10 +123,6 @@ export interface CalendarProps {
      */
     skipDisabledDatesInRange?: boolean;
     /**
-     * Skip weekends
-     */
-    skipWeekendsInRange?: boolean;
-    /**
      * Skip disabled dates when doing fixed range selection
      */
     allowFewerDatesThanRange?: boolean;
@@ -186,3 +182,70 @@ export interface CalendarProps {
      */
     onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
 }
+declare type CommonProps = Required<Pick<CalendarProps, 'lockView' | 'isDisabled' | 'highlights' | 'disableFuture' | 'disablePast' | 'disableToday' | 'weekends' | 'fixedRange' | 'startOfWeek' | 'skipDisabledDatesInRange' | 'allowFewerDatesThanRange' | 'fontSize' | 'size' | 'hideAdjacentDates' | 'useDarkMode' | 'showDualCalendar' | 'className'>> & Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange' | 'value' | 'maxAllowedDate' | 'minAllowedDate' | 'viewDate'>;
+export interface CalendarViewProps extends CommonProps {
+    onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
+    onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
+    onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
+    onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
+    onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
+    onChangenSelectedDate: (dates: Date) => unknown;
+    onChangeRangeSelectMode: (on: boolean) => void;
+    checkIfWeekend: (date: Date) => boolean;
+    isSecondary: boolean;
+    isRangeSelectorView: boolean;
+    isFixedRangeView: boolean;
+    isMultiSelectorView: boolean;
+    isRangeSelectModeOn: boolean;
+    isNormalView: boolean;
+    selectedDate: Date | undefined;
+    selectedRangeStart: Date | undefined;
+    selectedRangeEnd: Date | undefined;
+    newSelectedRangeStart: Date | undefined;
+    newSelectedRangeEnd: Date | undefined;
+    today: Date;
+    selectedMultiDates: Record<string, Date | undefined>;
+}
+export interface DayOfMonthSelectorProps extends Pick<CalendarViewProps, 'onChangenNewSelectedRangeEnd' | 'onChangenNewSelectedRangeStart' | 'onChangenSelectedRangeStart' | 'onChangenSelectedRangeEnd' | 'onChangenSelectedMultiDates' | 'onChangenSelectedDate' | 'startOfWeek' | 'fixedRange' | 'selectedDate' | 'selectedRangeStart' | 'selectedRangeEnd' | 'newSelectedRangeStart' | 'newSelectedRangeEnd' | 'isRangeSelectorView' | 'isFixedRangeView' | 'weekends' | 'selectedMultiDates' | 'isMultiSelectorView' | 'isRangeSelectModeOn' | 'onChangeRangeSelectMode' | 'disableFuture' | 'disablePast' | 'disableToday' | 'hideAdjacentDates' | 'lockView' | 'highlights' | 'isDisabled' | 'checkIfWeekend' | 'today' | 'onChange' | 'onPartialRangeSelect' | 'onEachMultiSelect' | 'maxAllowedDate' | 'minAllowedDate' | 'allowFewerDatesThanRange' | 'skipDisabledDatesInRange'> {
+    onChangeViewingYear: (year: number) => unknown;
+    onChangeViewingMonth: (month: MonthIndices) => unknown;
+    monthInView: MonthIndices;
+    yearInView: number;
+}
+export interface MonthSelectorProps {
+    onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
+    onChangeViewingMonth: (month: MonthIndices) => unknown;
+}
+export interface YearSelectorProps {
+    onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
+    onChangeViewingYear: (year: number) => unknown;
+    yearMatrixStart: number;
+    yearMatrixEnd: number;
+}
+export interface WeekdayRowProps {
+    startOfWeek: WeekdayIndices;
+    weekends: WeekdayIndices[];
+}
+export interface HeaderProps {
+    onClickPrev: () => any;
+    onClickNext: () => any;
+    onChangeViewType: (view: 'month_dates' | 'months' | 'years') => any;
+    viewType: 'month_dates' | 'months' | 'years';
+    monthInView: MonthIndices;
+    yearInView: number;
+    yearMatrixStart: number;
+    yearMatrixEnd: number;
+}
+export interface DayOfMonthCellProps {
+    cell: DayOfMonthCell;
+    onDateClicked: (cell: DayOfMonthCell) => unknown;
+}
+export interface MonthCellProps {
+    cell: MonthCell;
+    onMonthClicked: (cell: MonthCell) => unknown;
+}
+export interface YearCellProps {
+    cell: YearCell;
+    onYearClicked: (cell: YearCell) => unknown;
+}
+export {};

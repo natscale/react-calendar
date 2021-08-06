@@ -1,16 +1,9 @@
 import React, { memo, useMemo } from 'react';
 
-import { YearCell } from '../../utils/types';
+import { YearCell, YearSelectorProps } from '../../utils/types';
 
 import { getYearsViewMetrix } from '../../utils/date-utils';
 import { Year } from '../year-cell/Year';
-
-export interface Props {
-  onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
-  onChangeViewingYear: (year: number) => unknown;
-  yearMatrixStart: number;
-  yearMatrixEnd: number;
-}
 
 const years = {
   root: { height: '100%' },
@@ -21,7 +14,7 @@ const years = {
   },
 };
 
-function YearSelectorComponent({ onChangeViewType, onChangeViewingYear, yearMatrixStart }: Props) {
+function YearSelectorComponent({ onChangeViewType, onChangeViewingYear, yearMatrixStart }: YearSelectorProps) {
   // TODO add highlight slected dates years
   const yearsMatrix = useMemo<YearCell[][]>(() => {
     return getYearsViewMetrix(yearMatrixStart, {});

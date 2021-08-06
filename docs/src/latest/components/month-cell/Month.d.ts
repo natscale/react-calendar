@@ -1,9 +1,5 @@
 import React from 'react';
-import { MonthCell } from '../calendar/Calendar';
-export interface Props {
-    cell: MonthCell;
-    onMonthClicked: (cell: MonthCell) => unknown;
-}
-declare function Component({ cell, onMonthClicked }: Props): JSX.Element;
+import { MonthCellProps } from '../calendar/Calendar';
+declare function Component({ cell, onMonthClicked }: MonthCellProps): JSX.Element;
 export declare const Month: React.MemoExoticComponent<typeof Component>;
 export {};

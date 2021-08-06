@@ -1,14 +1,9 @@
 import React, { memo, useMemo } from 'react';
 
-import { MonthCell, MonthIndices } from '../../utils/types';
+import { MonthCell, MonthSelectorProps } from '../../utils/types';
 
 import { getMonthViewMetrix } from '../../utils/date-utils';
 import { Month } from '../month-cell/Month';
-
-interface Props {
-  onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
-  onChangeViewingMonth: (month: MonthIndices) => unknown;
-}
 
 const months = {
   root: { height: '100%' },
@@ -20,7 +15,7 @@ const months = {
   },
 };
 
-function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: Props) {
+function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: MonthSelectorProps) {
   const monthsViewMatrix = useMemo<MonthCell[][]>(() => {
     return getMonthViewMetrix({});
   }, []);

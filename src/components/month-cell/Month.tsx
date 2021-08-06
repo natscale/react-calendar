@@ -1,13 +1,8 @@
 import React, { memo } from 'react';
 
-import { MonthCell } from '../calendar/Calendar';
+import { MonthCellProps } from '../calendar/Calendar';
 
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
-
-export interface Props {
-  cell: MonthCell;
-  onMonthClicked: (cell: MonthCell) => unknown;
-}
 
 const arc_view_cell_value = {
   width: '100%',
@@ -25,7 +20,7 @@ const arc_view_cell_value_button = {
   justifyContent: 'center',
 };
 
-function Component({ cell, onMonthClicked }: Props) {
+function Component({ cell, onMonthClicked }: MonthCellProps) {
   return (
     <div style={arc_view_cell_value}>
       <button

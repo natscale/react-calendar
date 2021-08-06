@@ -1,9 +1,5 @@
 import React from 'react';
-import { WeekdayIndices } from '../../utils/types';
-export interface Props {
-    weekStartIndex: WeekdayIndices;
-    weekendIndices: WeekdayIndices[];
-}
-declare function WeekDaysRowComponent({ weekStartIndex, weekendIndices }: Props): JSX.Element;
+import { WeekdayRowProps } from '../../utils/types';
+declare function WeekDaysRowComponent({ startOfWeek: weekStartIndex, weekends: weekendIndices }: WeekdayRowProps): JSX.Element;
 export declare const WeekDaysRow: React.MemoExoticComponent<typeof WeekDaysRowComponent>;
 export {};

@@ -1,11 +1,6 @@
 import React, { memo } from 'react';
 
-import { DayOfMonthCell } from '../calendar/Calendar';
-
-export interface Props {
-  cell: DayOfMonthCell;
-  onDateClicked: (cell: DayOfMonthCell) => unknown;
-}
+import { DayOfMonthCellProps } from '../calendar/Calendar';
 
 const arc_view_cell = {
   width: '100%',
@@ -28,7 +23,7 @@ const arc_view_cell_value_button = {
   height: '100%',
 };
 
-function Component({ cell, onDateClicked }: Props) {
+function Component({ cell, onDateClicked }: DayOfMonthCellProps) {
   return (
     <div style={arc_view_cell}>
       <div style={arc_view_cell_value} className="arc_view_cell_value">
