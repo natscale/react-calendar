@@ -50,6 +50,7 @@ function CalendarWithRef(
     disablePast = false,
     disableToday = false,
     showDualCalendar = false,
+    hideAdjacentDates = false,
   }: CalendarProps,
   forwardRef: React.Ref<HTMLDivElement>,
 ): React.ReactElement<CalendarProps> {
@@ -198,6 +199,7 @@ function CalendarWithRef(
       viewDate: initialViewDate,
       useDarkMode: useDarkMode,
       className: className,
+      hideAdjacentDates: !!hideAdjacentDates,
       isNormalView: isNormalView,
       size: size,
       fontSize: fontSize,
@@ -245,6 +247,7 @@ function CalendarWithRef(
       className,
       disableFuture,
       disablePast,
+      hideAdjacentDates,
       disableToday,
       fixedRangeLength,
       fontSize,

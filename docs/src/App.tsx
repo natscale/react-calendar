@@ -247,6 +247,16 @@ export function App(): React.ReactElement {
       </div>
       <div>
         <div>
+          <p>Hide Adjacent Dates</p>
+        </div>
+        <div>
+          <div className="calendar">
+            <Calendar hideAdjacentDates />
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
           <p>Can disable custom dates (here disabled if (date % 4 === 0))</p>
         </div>
         <div>

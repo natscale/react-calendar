@@ -5,6 +5,7 @@ declare type CalendarViewProps = {
     className: string;
     isDualMode: boolean;
     useDarkMode: boolean;
+    hideAdjacentDates: boolean;
     isSecondary: boolean;
     size: number;
     fontSize: number;

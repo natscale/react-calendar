@@ -26,6 +26,7 @@ type CalendarViewProps = {
   className: string;
   isDualMode: boolean;
   useDarkMode: boolean;
+  hideAdjacentDates: boolean;
   isSecondary: boolean;
   size: number;
   fontSize: number;
@@ -418,6 +419,7 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
               isRangeSelectModeOn={props.isRangeSelectModeOn}
               setIsRangeSelectModeOn={props.setIsRangeSelectModeOn}
               skipDisabledDatesInRange={props.skipDisabledDatesInRange}
+              hideAdjacentDates={props.hideAdjacentDates}
               allowFewerDatesThanRange={props.allowFewerDatesThanRange}
               selectedDate={props.selectedDate}
               selectedRangeStart={props.selectedRangeStart}
