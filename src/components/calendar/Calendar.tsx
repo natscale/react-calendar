@@ -290,33 +290,6 @@ function CalendarWithRef(
     [className, useDarkMode, isDualMode],
   );
 
-  const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
-  const [highlightedDate, setHighlightedDate] = useState<Date | undefined>(undefined);
-
-  const updateDateView = useCallback(
-    (date: Date | undefined) => {
-      if (isValid(date)) {
-        setMonthInView(date.getMonth() as MonthIndices);
-        setYearInView(date.getFullYear());
-        setHighlightedDate(date);
-      }
-    },
-    [setMonthInView, setYearInView, setHighlightedDate],
-  );
-
-  const resetHighlightedDate = useCallback(() => setHighlightedDate(undefined), [setHighlightedDate]);
-  const goToToday = useCallback(() => updateDateView(today), [today]);
-  const goToSelectedDate = useCallback(() => updateDateView(selectedDate), [selectedDate]);
-  const goToRangeStart = useCallback(() => updateDateView(selectedRangeStart), [selectedRangeStart]);
-  const goToRangeEnd = useCallback(() => updateDateView(selectedRangeEnd), [selectedRangeEnd]);
-  const toggleDate = useCallback(() => {
-    const values = Object.values(selectedMultiDates).sort((a, b) =>
-      isValid(a) && isValid(b) ? a.getTime() - b.getTime() : 0,
-    );
-    updateDateView(values[toggleDateIndex]);
-    setToggleDateIndex(toggleDateIndex < values.length - 1 ? toggleDateIndex + 1 : 0);
-  }, [toggleDateIndex]);
-
   return (
     <div className={computedClass} style={styles} ref={forwardRef}>
       {isDualMode ? (

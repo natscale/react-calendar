@@ -416,6 +416,7 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
           <>
             <WeekDaysRow weekStartIndex={props.weekStartIndex} weekendIndices={props.weekendIndices} />
             <DayOfMonthSelector
+              highlightedDate={undefined}
               isRangeSelectModeOn={props.isRangeSelectModeOn}
               setIsRangeSelectModeOn={props.setIsRangeSelectModeOn}
               skipDisabledDatesInRange={props.skipDisabledDatesInRange}

@@ -1,23 +1,19 @@
 import React, { memo } from 'react';
 import { ShortcutButton } from '../shortuct-button/ShortcutButton';
+import { ShortcutButtonModel } from './ShortcutButtonModel';
 
 interface Props {
-  isNormalView: boolean;
-  isRangeView: boolean;
-  isMultiDateView: boolean;
+  viewType: string;
   barSize: number;
-  onTodayClick: () => void;
-  // onSelectedDateClick: () => void;
-  onRangeStartClick: () => void;
-  onRangeEndClick: () => void;
-  onToggleDatesClick: () => void;
-  onBlur: () => void;
+  shortcutButtons?: Array<ShortcutButtonModel>;
+  updateView: (date: Date | undefined) => void;
+  onBlurDefault: () => void;
 }
 
 const getShortcutStyles = (size: number) => ({
   root: {
     display: 'flex',
-    padding: '7px',
+    padding: '2%',
     gap: '1rem',
     height: `${size}px`,
     alignItems: 'center',
@@ -27,35 +23,29 @@ const getShortcutStyles = (size: number) => ({
   },
 });
 
-function ShortcutBarComponent({
-  isNormalView,
-  isRangeView,
-  isMultiDateView,
-  barSize,
-  onTodayClick,
-  onRangeStartClick,
-  onRangeEndClick,
-  onToggleDatesClick,
-  onBlur,
-}: Props) {
+function ShortcutBarComponent({ viewType, barSize, shortcutButtons, updateView, onBlurDefault }: Props) {
   const shortcut = getShortcutStyles(barSize);
+  const onButtonClick = (btn: ShortcutButtonModel) => {
+    btn.goToDate ? updateView(btn.goToDate) : btn.onButtonClick ? btn.onButtonClick() : () => 0;
+  };
+
   return (
     <div style={shortcut.root} className={'arc_shortcuts_view'}>
-      <ShortcutButton buttonText={'Today'} onButtonClick={onTodayClick} onBlur={onBlur} />
-      {isRangeView && <ShortcutButton buttonText={'Range Start'} onButtonClick={onRangeStartClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {isRangeView && <ShortcutButton buttonText={'Range End'} onButtonClick={onRangeEndClick} onBlur={onBlur} />}
-      {(isMultiDateView || isNormalView) && (
-        <ShortcutButton buttonText={'Selected Dates'} onButtonClick={onToggleDatesClick} onBlur={onBlur} />
-      )}
+      {shortcutButtons &&
+        shortcutButtons.map((btn: ShortcutButtonModel, index: number) => {
+          {
+            if (!btn.viewTypes || btn.viewTypes.find((type) => type === viewType)) {
+              return (
+                <ShortcutButton
+                  key={index}
+                  buttonText={btn.buttonText}
+                  onButtonClick={() => onButtonClick(btn)}
+                  onBlur={btn.onBlur ? btn.onBlur : onBlurDefault}
+                />
+              );
+            }
+          }
+        })}
     </div>
   );
 }

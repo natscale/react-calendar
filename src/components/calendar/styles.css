@@ -1,3 +1,7 @@
+.arc_shortcuts_view {
+  --arc-shorcut-button-hover: #e8e8e8;
+}
+
 .arc_root {
   /* General Theme */
   --arc-color-transparent: rgba(0, 0, 0, 0);
@@ -15,7 +19,6 @@
   --arc-color-accent-light: hsla(0deg 77% 47%/40%);
   --arc-color-accent-lighter: hsla(0deg 77% 47%/8%);
   /* Context Specific */
-  --arc-shorcut-button-hover: #e8e8e8;
   --arc-color-border-root: var(--arc-color-border);
   --arc-color-bg-text-hover-header-button: var(--arc-color-text-hover);
   --arc-color-text-today: var(--arc-color-primary);
@@ -147,28 +150,43 @@
 }
 
 .arc_shortcuts_view {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
-.arc_shortcuts_view button {
-  cursor: pointer;
-  border-right: 1px solid #e7e7e7;
-  background-color: #f6f6f6;
+.arc_shortcut_cal_root {
+  border: 1px solid #e8e8e8;
 }
 
-.arc_shortcuts_view button {
+.arc_shortcut_cal_root .arc_root {
+  border: none;
+  margin: 0;
+}
+
+.arc_shortcut_cal_root .arc_shortcuts_view {
+  border-right: 1px solid #e8e8e8;
+}
+
+.arc_shortcut_button {
+  border: none;
+  /*margin: 0;*/
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
   cursor: pointer;
   border-radius: 25px;
+  background-color: #f6f6f6;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
 }
-
-.arc_shortcuts_view button:last-of-type {
-}
-
-.arc_shortcuts_view button:hover {
+.arc_shortcut_button:hover {
   background-color: var(--arc-shorcut-button-hover);
 }
 
-.arc_shortcuts_view button:active {
+.arc_shortcut_button:active {
   transform: translateY(1px);
 }
 

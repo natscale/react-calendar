@@ -1,9 +1,9 @@
 import type { Value } from './latest/components/react-calendar/calendar';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Slider from 'rc-slider';
 
-import { Calendar, giveDaysInRange, giveFormatter } from './latest/main';
+import { Calendar, CalendarWithShortcuts, giveFormatter } from './latest/main';
 
 import { Popover } from 'react-tiny-popover';
 
@@ -92,6 +92,8 @@ export function App(): React.ReactElement {
     [setNine],
   );
 
+  useEffect(() => console.log('nine is: ', nine), [nine]);
+
   const [ten, setTen] = useState<object>({});
 
   const onChangeTen = useCallback(
@@ -155,15 +157,72 @@ export function App(): React.ReactElement {
   const maxDate = new Date(2021, 7, 28);
   const minDate = new Date(2021, 7, 4);
 
+  const goToSpecificDate = () => setViewDate(new Date(2016, 1, 13));
+  const goToLastYear = () => new Date(2020, 1, 13);
+
+  const newShortcutButtons = [
+    {
+      buttonText: 'Move To Date',
+      viewTypes: ['Normal', 'Multiple', 'Range'],
+      onButtonClick: goToSpecificDate,
+    },
+    {
+      buttonText: ' Last Year',
+      viewTypes: ['Normal', 'Multiple', 'Range'],
+      goToDate: new Date(2020, 1, 13),
+    },
+  ];
+
   return (
     <div className="demo">
+      <div>
+        <div>
+          <p>Default With Shortcuts</p>
+        </div>
+        <div>
+          <div className="calendar">
+            <CalendarWithShortcuts>
+              <Calendar onChange={onChangenine} shortcutButtons={newShortcutButtons} />
+            </CalendarWithShortcuts>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <p>Range With Shortcuts</p>
+        </div>
+        <div>
+          <div className="calendar">
+            <CalendarWithShortcuts>
+              <Calendar onChange={onChangenine} shortcutButtons={newShortcutButtons} isRangeSelector />
+            </CalendarWithShortcuts>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <p>Multi With Shortcuts</p>
+        </div>
+        <div>
+          <div className="calendar">
+            <CalendarWithShortcuts>
+              <Calendar
+                value={[new Date(2021, 6, 22), new Date(2021, 7, 25), new Date(2021, 8, 9)]}
+                isMultiSelector
+                disableToday
+                onChange={onChangeone}
+              />
+            </CalendarWithShortcuts>
+          </div>
+        </div>
+      </div>
       <div>
         <div>
           <p>Default</p>
         </div>
         <div>
           <div className="calendar">
-            <Calendar onChange={onChangenine} />
+            <Calendar onChange={onChangenine} shortcutButtons={newShortcutButtons} />
           </div>
         </div>
       </div>
@@ -174,7 +233,7 @@ export function App(): React.ReactElement {
         <div>
           <div className="calendar">
             <Calendar
-              value={[new Date(2021, 6, 22), new Date(2021, 6, 25), new Date(2021, 6, 9)]}
+              value={[new Date(2021, 6, 22), new Date(2021, 7, 25), new Date(2021, 8, 9)]}
               isMultiSelector
               disableToday
               onChange={onChangeone}

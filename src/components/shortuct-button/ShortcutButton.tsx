@@ -15,7 +15,7 @@ const shortcut = {
 
 function ShortcutButtonComponent({ buttonText, onButtonClick, onBlur }: Props) {
   return (
-    <button style={shortcut.root} onClick={onButtonClick} onBlur={onBlur}>
+    <button style={shortcut.root} className="arc_shortcut_button" onClick={onButtonClick} onBlur={onBlur}>
       {buttonText}
     </button>
   );

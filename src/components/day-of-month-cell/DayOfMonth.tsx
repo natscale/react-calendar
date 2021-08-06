@@ -40,8 +40,6 @@ function Component({ isHighlighted, cell, onDateClicked }: Props) {
     isHighlighted ? arc_view_cell_value_button_focused : undefined,
   ) as React.CSSProperties;
 
-  console.log(isHighlighted);
-
   return (
     <div style={arc_view_cell}>
       <div style={arc_view_cell_value} className="arc_view_cell_value">

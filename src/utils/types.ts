@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { ShortcutButtonModel } from '../components/shortuct-bar/ShortcutButtonModel';
 
 export type MonthIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -196,4 +197,8 @@ export interface CalendarProps {
    * This callback will be called for each date in a multiselect calendar
    */
   onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
+
+  shortcutButtons?: Array<ShortcutButtonModel>;
+
+  // highlightedDate?: Date;
 }

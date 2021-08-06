@@ -308,7 +308,6 @@ function DayOfMonthSelectorComponent({
       if (isValid(highlightedDate)) {
         highlightedDate?.setHours(0, 0, 0, 0);
         cell.date.setHours(0, 0, 0, 0);
-        console.log('dates: ', highlightedDate, cell.date);
         return isEqual(highlightedDate, cell.date);
       }
       return false;
