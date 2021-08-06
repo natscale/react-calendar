@@ -3,7 +3,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import type { DayOfMonthCell, DayOfMonthSelectorProps } from '../../utils/types';
 
 import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, isValid, toString } from '../../utils/date-utils';
-import { DayOfMonth } from '../day-of-month-cell/DayOfMonth';
+import { DayOfMonth } from '../day-of-month-cell/DayOfMonthCell';
 
 const dayOfMonthStyles = {
   'arc_view-days-of-month': {

@@ -3,7 +3,7 @@ import React, { memo, useMemo } from 'react';
 import { YearCell, YearSelectorProps } from '../../utils/types';
 
 import { getYearsViewMetrix } from '../../utils/date-utils';
-import { Year } from '../year-cell/Year';
+import { Year } from '../year-cell/YearCell';
 
 const years = {
   root: { height: '100%' },

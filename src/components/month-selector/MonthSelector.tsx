@@ -3,7 +3,7 @@ import React, { memo, useMemo } from 'react';
 import { MonthCell, MonthSelectorProps } from '../../utils/types';
 
 import { getMonthViewMetrix } from '../../utils/date-utils';
-import { Month } from '../month-cell/Month';
+import { Month } from '../month-cell/MonthCell';
 
 const months = {
   root: { height: '100%' },
