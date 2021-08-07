@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { memo, useMemo, useState, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useMemo, useCallback, useState, useEffect, useRef } from 'react';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -91,7 +91,13 @@ function addDays(date, numberOfDaysToAdd, options) {
  * Converts a date to string
  */
 function toString(date) {
-    return "" + date.getFullYear() + date.getMonth() + date.getDate();
+    return (date.getFullYear() < 10 ? '0' + date.getFullYear() : date.getFullYear()) + "_" + (date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()) + "_" + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+}
+/**
+ * MAkes a date from a string
+ */
+function fromString(date) {
+    return new Date(Number(date.substr(0, 4)), Number(date.substr(5, 2)), Number(date.substr(8, 2)));
 }
 /**
  * Returns true if toCheck date is before the date
@@ -542,12 +548,12 @@ function checkIfDateIsDisabledHOF(params) {
                 return true;
             }
         }
-        if (applyMax) {
+        if (applyMax && maxDate) {
             if (isBefore(dateToCheck, maxDate)) {
                 return true;
             }
         }
-        if (applyMin) {
+        if (applyMin && minDate) {
             if (isBefore(minDate, dateToCheck)) {
                 return true;
             }
@@ -766,14 +772,14 @@ var arc_view_cell_value_button$2 = {
     alignItems: 'center',
     justifyContent: 'center',
 };
-function Component$2(_a) {
+function Component$3(_a) {
     var cell = _a.cell, onMonthClicked = _a.onMonthClicked;
     return (React.createElement("div", { style: arc_view_cell_value$2 },
         React.createElement("button", { style: arc_view_cell_value_button$2, onClick: function () {
                 onMonthClicked(cell);
             } }, NATIVE_INDEX_TO_LABEL_MONTHS_MAP[cell.month])));
 }
-var Month = memo(Component$2);
+var Month = memo(Component$3);
 
 var months = {
     root: { height: '100%' },
@@ -810,14 +816,14 @@ var arc_view_cell_value_button$1 = {
     alignItems: 'center',
     justifyContent: 'center',
 };
-function Component$1(_a) {
+function Component$2(_a) {
     var cell = _a.cell, onYearClicked = _a.onYearClicked;
     return (React.createElement("div", { style: arc_view_cell_value$1 },
         React.createElement("button", { style: arc_view_cell_value_button$1, onClick: function () {
                 onYearClicked(cell);
             } }, cell.year)));
 }
-var Year = memo(Component$1);
+var Year = memo(Component$2);
 
 var years = {
     root: { height: '100%' },
@@ -900,13 +906,13 @@ var arc_view_cell_value_button = {
     width: '100%',
     height: '100%',
 };
-function Component(_a) {
+function Component$1(_a) {
     var cell = _a.cell, onDateClicked = _a.onDateClicked;
     return (React.createElement("div", { style: arc_view_cell },
         React.createElement("div", { style: arc_view_cell_value, className: "arc_view_cell_value" },
             React.createElement("button", { style: arc_view_cell_value_button, disabled: cell.isDisabled, tabIndex: cell.isDisabled ? -1 : 0, onClick: function () { return onDateClicked(cell); } }, cell.dayOfMonth))));
 }
-var DayOfMonth = memo(Component);
+var DayOfMonth = memo(Component$1);
 
 var dayOfMonthStyles = {
     'arc_view-days-of-month': {
@@ -925,18 +931,7 @@ var dayOfMonthStyles = {
     },
 };
 function DayOfMonthSelectorComponent(_a) {
-    var selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, weekStartIndex = _a.startOfWeek, onChangeViewingYear = _a.onChangeViewingYear, onChangeViewingMonth = _a.onChangeViewingMonth, newSelectedRangeEnd = _a.newSelectedRangeEnd, isRangeSelectorView = _a.isRangeSelectorView, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, setIsRangeSelectModeOn = _a.onChangeRangeSelectMode, fixedRangeLength = _a.fixedRange, isFixedRangeView = _a.isFixedRangeView, isRangeSelectModeOn = _a.isRangeSelectModeOn, isDisabled = _a.isDisabled, onChangenSelectedMultiDates = _a.onChangenSelectedMultiDates, selectedMultiDates = _a.selectedMultiDates, isMultiSelectorView = _a.isMultiSelectorView, today = _a.today, viewingMonth = _a.monthInView, hideAdjacentDates = _a.hideAdjacentDates, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd = _a.onChangenSelectedRangeEnd, onChangenSelectedRangeStart = _a.onChangenSelectedRangeStart, onChangenSelectedDate = _a.onChangenSelectedDate, weekendIndices = _a.weekends, onChange = _a.onChange, viewingYear = _a.yearInView, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, lockView = _a.lockView, checkIfWeekend = _a.checkIfWeekend, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, highlights = _a.highlights, disableToday = _a.disableToday;
-    var highlightsMap = useState(function () {
-        if (Array.isArray(highlights)) {
-            return highlights
-                .filter(function (d) { return isValid(d); })
-                .reduce(function (acc, curr) {
-                acc[toString(curr)] = 1;
-                return acc;
-            }, {});
-        }
-        return {};
-    })[0];
+    var selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, weekStartIndex = _a.startOfWeek, newSelectedRangeEnd = _a.newSelectedRangeEnd, isRangeSelectorView = _a.isRangeSelectorView, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, setIsRangeSelectModeOn = _a.onChangeRangeSelectMode, fixedRangeLength = _a.fixedRange, isFixedRangeView = _a.isFixedRangeView, isRangeSelectModeOn = _a.isRangeSelectModeOn, isDisabled = _a.isDisabled, selectedMultiDates = _a.selectedMultiDates, isMultiSelectorView = _a.isMultiSelectorView, today = _a.today, viewingMonth = _a.monthInView, hideAdjacentDates = _a.hideAdjacentDates, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, weekendIndices = _a.weekends, onChange = _a.onChange, viewingYear = _a.yearInView, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, lockView = _a.lockView, checkIfWeekend = _a.checkIfWeekend, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, highlightsMap = _a.highlightsMap, disableToday = _a.disableToday;
     var daysOfMMonthViewMatrix = useMemo(function () {
         return getDaysOfMonthViewMetrix({
             selectedDate: selectedDate,
@@ -992,18 +987,18 @@ function DayOfMonthSelectorComponent(_a) {
                 // check if it is the first click or seconds
                 var previouslySelectedDate = new Date(newSelectedRangeStart.getFullYear(), newSelectedRangeStart.getMonth(), newSelectedRangeStart.getDate());
                 if (isBefore(previouslySelectedDate, clickedDate)) {
-                    onChangenSelectedRangeStart(clickedDate);
-                    onChangenSelectedRangeEnd(previouslySelectedDate);
                     var startDate = clickedDate;
                     var endDate = previouslySelectedDate;
-                    onChange && onChange([startDate, endDate]);
+                    if (typeof onChange === 'function') {
+                        onChange([startDate, endDate]);
+                    }
                 }
                 else {
-                    onChangenSelectedRangeStart(previouslySelectedDate);
-                    onChangenSelectedRangeEnd(clickedDate);
                     var startDate = previouslySelectedDate;
                     var endDate = clickedDate;
-                    onChange && onChange([startDate, endDate]);
+                    if (typeof onChange === 'function') {
+                        onChange([startDate, endDate]);
+                    }
                 }
                 onChangenNewSelectedRangeEnd(undefined);
                 setIsRangeSelectModeOn(false);
@@ -1016,8 +1011,7 @@ function DayOfMonthSelectorComponent(_a) {
                 onPartialRangeSelect && onPartialRangeSelect(clickedDate);
             }
         }
-        else if (isFixedRangeView) {
-            onChangenSelectedRangeStart(clickedDate);
+        else if (isRangeSelectorView && isFixedRangeView) {
             var _a = addDays(clickedDate, fixedRangeLength, {
                 isDisabled: isDisabled,
                 skipDisabledDatesInRange: skipDisabledDatesInRange,
@@ -1027,13 +1021,11 @@ function DayOfMonthSelectorComponent(_a) {
                         ? getNextDate(today)
                         : undefined,
             }), endDate = _a.endDate, limitReached = _a.limitReached;
-            if (limitReached && !allowFewerDatesThanRange) {
-                onChangenSelectedRangeStart(undefined);
-                onChangenSelectedRangeEnd(undefined);
-            }
+            if (limitReached && !allowFewerDatesThanRange) ;
             else {
-                onChangenSelectedRangeEnd(endDate);
-                onChange && onChange([clickedDate, endDate]);
+                if (typeof onChange === 'function') {
+                    onChange([clickedDate, endDate]);
+                }
             }
         }
         else if (isMultiSelectorView) {
@@ -1045,7 +1037,6 @@ function DayOfMonthSelectorComponent(_a) {
             else {
                 newselectedMultiDates_1[stringkey] = clickedDate;
             }
-            onChangenSelectedMultiDates(newselectedMultiDates_1);
             onEachMultiSelect && onEachMultiSelect(clickedDate);
             onChange &&
                 onChange(Object.keys(newselectedMultiDates_1)
@@ -1053,25 +1044,20 @@ function DayOfMonthSelectorComponent(_a) {
                     .map(function (dk) { return newselectedMultiDates_1[dk]; }));
         }
         else {
-            onChangenSelectedDate(clickedDate);
-            onChange && onChange(clickedDate);
+            if (typeof onChange === 'function') {
+                onChange(clickedDate);
+            }
         }
-        onChangeViewingMonth(cell.month);
-        onChangeViewingYear(cell.year);
     }, [
         lockView,
         viewingMonth,
         isRangeSelectorView,
         isFixedRangeView,
         isMultiSelectorView,
-        onChangeViewingMonth,
-        onChangeViewingYear,
         isRangeSelectModeOn,
         newSelectedRangeStart,
         onChangenNewSelectedRangeEnd,
         setIsRangeSelectModeOn,
-        onChangenSelectedRangeStart,
-        onChangenSelectedRangeEnd,
         onChange,
         onChangenNewSelectedRangeStart,
         onPartialRangeSelect,
@@ -1082,9 +1068,7 @@ function DayOfMonthSelectorComponent(_a) {
         today,
         allowFewerDatesThanRange,
         selectedMultiDates,
-        onChangenSelectedMultiDates,
         onEachMultiSelect,
-        onChangenSelectedDate,
     ]);
     return (React.createElement("div", { style: dayOfMonthStyles['arc_view-days-of-month'], className: "arc_view-days-of-month", role: "grid" }, daysOfMMonthViewMatrix.map(function (row, index) { return (React.createElement("div", { style: dayOfMonthStyles.arc_view_row, className: "arc_view_row", key: index }, row.map(function (cell) { return (React.createElement("div", { style: dayOfMonthStyles.arc_view_cell, onMouseEnter: function () {
             if (isRangeSelectorView) {
@@ -1111,63 +1095,82 @@ var getStyles = function (size, fontSize) { return ({
         },
     },
 }); };
-function Calendarview(props) {
-    var styles = useMemo(function () { return getStyles(props.size, props.fontSize); }, [props.size, props.fontSize]);
+function Component(_a) {
+    var size = _a.size, fontSize = _a.fontSize, isNormalView = _a.isNormalView, isMultiSelectorView = _a.isMultiSelectorView, isRangeSelectorView = _a.isRangeSelectorView, viewDate = _a.viewDate, selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedMultiDates = _a.selectedMultiDates, minAllowedDate = _a.minAllowedDate, maxAllowedDate = _a.maxAllowedDate, today = _a.today, isSecondary = _a.isSecondary, lockView = _a.lockView, startOfWeek = _a.startOfWeek, weekends = _a.weekends, isRangeSelectModeOn = _a.isRangeSelectModeOn, onChangeRangeSelectMode = _a.onChangeRangeSelectMode, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, hideAdjacentDates = _a.hideAdjacentDates, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, newSelectedRangeEnd = _a.newSelectedRangeEnd, fixedRange = _a.fixedRange, isFixedRangeView = _a.isFixedRangeView, isDisabled = _a.isDisabled, checkIfWeekend = _a.checkIfWeekend, onChange = _a.onChange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, highlightsMap = _a.highlightsMap, disableToday = _a.disableToday;
+    var styles = useMemo(function () { return getStyles(size, fontSize); }, [size, fontSize]);
     // View States
-    var _a = useState('month_dates'), view = _a[0], setView = _a[1];
-    var _b = useState(function () {
-        var value = (isValid(props.viewDate)
-            ? props.viewDate.getMonth()
-            : props.isNormalView && isValid(props.value)
-                ? props.value.getMonth()
-                : props.isRangeSelectorView && props.selectedRangeStart
-                    ? props.selectedRangeStart.getMonth()
-                    : props.isMultiSelectorView && Array.isArray(props.value) && isValid(props.value[0])
-                        ? props.value[0].getMonth()
-                        : isValid(props.minAllowedDate)
-                            ? props.minAllowedDate.getMonth()
-                            : isValid(props.maxAllowedDate)
-                                ? props.maxAllowedDate.getMonth()
-                                : props.today.getMonth());
-        return props.isSecondary ? getNextMonth(value) : value;
-    }), monthInView = _b[0], setMonthInView = _b[1];
-    var _c = useState(isValid(props.viewDate)
-        ? props.viewDate.getFullYear()
-        : props.isNormalView && isValid(props.value)
-            ? props.value.getFullYear()
-            : props.isRangeSelectorView && props.selectedRangeStart
-                ? props.selectedRangeStart.getFullYear()
-                : props.isMultiSelectorView && Array.isArray(props.value) && isValid(props.value[0])
-                    ? props.value[0].getFullYear()
-                    : isValid(props.minAllowedDate)
-                        ? props.minAllowedDate.getFullYear()
-                        : isValid(props.maxAllowedDate)
-                            ? props.maxAllowedDate.getFullYear()
-                            : props.today.getFullYear()), yearInView = _c[0], setYearInView = _c[1];
+    var _b = useState('month_dates'), view = _b[0], setView = _b[1];
+    var _c = useState(function () {
+        var val = getAttrInViewFromDate({
+            isNormalView: isNormalView,
+            isMultiSelectorView: isMultiSelectorView,
+            isRangeSelectorView: isRangeSelectorView,
+            selectedDate: selectedDate,
+            selectedRangeStart: selectedRangeStart,
+            selectedMultiDates: selectedMultiDates,
+            viewDate: viewDate ? fromString(viewDate) : undefined,
+            minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
+            maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
+            today: today,
+            isSecondary: isSecondary,
+        }).month;
+        return val;
+    }), monthInView = _c[0], setMonthInView = _c[1];
+    var _d = useState(getAttrInViewFromDate({
+        isNormalView: isNormalView,
+        isMultiSelectorView: isMultiSelectorView,
+        isRangeSelectorView: isRangeSelectorView,
+        selectedDate: selectedDate,
+        selectedRangeStart: selectedRangeStart,
+        selectedMultiDates: selectedMultiDates,
+        viewDate: viewDate ? fromString(viewDate) : undefined,
+        minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
+        maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
+        today: today,
+        isSecondary: isSecondary,
+    }).year), yearInView = _d[0], setYearInView = _d[1];
+    // updating view because view prop change
     useEffect(function () {
-        if (isValid(props.viewDate)) {
-            setMonthInView(props.viewDate.getMonth());
-            setYearInView(props.viewDate.getFullYear());
-            // set date in focus
+        if (viewDate && isValid(fromString(viewDate))) {
+            setMonthInView(fromString(viewDate).getMonth());
+            setYearInView(fromString(viewDate).getFullYear());
         }
-    }, [props.viewDate]);
+    }, [viewDate]);
+    // updating view when selected date change
+    useEffect(function () {
+        if (isValid(selectedDate)) {
+            setMonthInView(selectedDate.getMonth());
+            setYearInView(selectedDate.getFullYear());
+        }
+    }, [selectedDate]);
+    // updating view when first multi is selected, after that
+    // we don't update
+    useEffect(function () {
+        var dates = Object.keys(selectedMultiDates)
+            .map(function (str) { return selectedMultiDates[str]; })
+            .filter(function (d) { return isValid(d); });
+        if (dates.length === 1 && dates[0]) {
+            setMonthInView(dates[0].getMonth());
+            setYearInView(dates[0].getFullYear());
+        }
+    }, [selectedMultiDates]);
     var changeMonthInView = useCallback(function (month) {
-        !props.lockView && setMonthInView(month);
-    }, [props.lockView, setMonthInView]);
+        !lockView && setMonthInView(month);
+    }, [lockView, setMonthInView]);
     var changeYearInView = useCallback(function (year) {
-        !props.lockView && setYearInView(year);
-    }, [props.lockView, setYearInView]);
+        !lockView && setYearInView(year);
+    }, [lockView, setYearInView]);
     var changeView = useCallback(function (view) {
-        !props.lockView && setView(view);
-    }, [props.lockView, setView]);
-    var _d = useState(getStartOfRangeForAYear(yearInView)), startingYearForCurrRange = _d[0], setStartingYearForCurrRange = _d[1];
+        !lockView && setView(view);
+    }, [lockView, setView]);
+    var _e = useState(getStartOfRangeForAYear(yearInView)), startingYearForCurrRange = _e[0], setStartingYearForCurrRange = _e[1];
     useEffect(function () {
         setStartingYearForCurrRange(getStartOfRangeForAYear(yearInView));
     }, [yearInView, setStartingYearForCurrRange]);
     // 1 - 20, 21 - 40
-    var _e = useMemo(function () {
+    var _f = useMemo(function () {
         return getYearRangeLimits(startingYearForCurrRange);
-    }, [startingYearForCurrRange]), yearMatrixRangeStart = _e[0], yearMatrixRangeEnd = _e[1];
+    }, [startingYearForCurrRange]), yearMatrixRangeStart = _f[0], yearMatrixRangeEnd = _f[1];
     // callback handlers
     var onPrevClick = useCallback(function () {
         if (view === 'month_dates') {
@@ -1217,7 +1220,7 @@ function Calendarview(props) {
     ]);
     var calendarRef = useRef(null);
     var cells = useRef([]);
-    var _f = useState(false), hasFocus = _f[0], setHasFocus = _f[1];
+    var _g = useState(false), hasFocus = _g[0], setHasFocus = _g[1];
     useEffect(function () {
         if (!hasFocus) {
             return;
@@ -1360,8 +1363,28 @@ function Calendarview(props) {
             view === 'months' && React.createElement(MonthSelector, { onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView }),
             view === 'years' && (React.createElement(YearSelector, { onChangeViewType: changeView, onChangeViewingYear: changeYearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd })),
             view === 'month_dates' && (React.createElement(React.Fragment, null,
-                React.createElement(WeekDaysRow, { startOfWeek: props.startOfWeek, weekends: props.weekends }),
-                React.createElement(DayOfMonthSelector, { isRangeSelectModeOn: props.isRangeSelectModeOn, onChangeRangeSelectMode: props.onChangeRangeSelectMode, skipDisabledDatesInRange: props.skipDisabledDatesInRange, hideAdjacentDates: props.hideAdjacentDates, allowFewerDatesThanRange: props.allowFewerDatesThanRange, selectedDate: props.selectedDate, selectedRangeStart: props.selectedRangeStart, selectedRangeEnd: props.selectedRangeEnd, lockView: props.lockView, newSelectedRangeStart: props.newSelectedRangeStart, startOfWeek: props.startOfWeek, onChangeViewingYear: changeYearInView, onChangeViewingMonth: changeMonthInView, onChangenSelectedMultiDates: props.onChangenSelectedMultiDates, onChangenNewSelectedRangeEnd: props.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart: props.onChangenNewSelectedRangeStart, onChangenSelectedRangeEnd: props.onChangenSelectedRangeEnd, onChangenSelectedRangeStart: props.onChangenSelectedRangeStart, onChangenSelectedDate: props.onChangenSelectedDate, onPartialRangeSelect: props.onPartialRangeSelect, onEachMultiSelect: props.onEachMultiSelect, newSelectedRangeEnd: props.newSelectedRangeEnd, isRangeSelectorView: props.isRangeSelectorView, fixedRange: props.fixedRange, isFixedRangeView: props.isFixedRangeView, isDisabled: props.isDisabled, checkIfWeekend: props.checkIfWeekend, selectedMultiDates: props.selectedMultiDates, isMultiSelectorView: props.isMultiSelectorView, monthInView: monthInView, today: props.today, maxAllowedDate: props.maxAllowedDate, minAllowedDate: props.minAllowedDate, weekends: props.weekends, onChange: props.onChange, yearInView: yearInView, disableFuture: props.disableFuture, disablePast: props.disablePast, highlights: props.highlights, disableToday: props.disableToday }))))));
+                React.createElement(WeekDaysRow, { startOfWeek: startOfWeek, weekends: weekends }),
+                React.createElement(DayOfMonthSelector, { isRangeSelectModeOn: isRangeSelectModeOn, onChangeRangeSelectMode: onChangeRangeSelectMode, skipDisabledDatesInRange: skipDisabledDatesInRange, hideAdjacentDates: hideAdjacentDates, allowFewerDatesThanRange: allowFewerDatesThanRange, selectedDate: selectedDate, selectedRangeStart: selectedRangeStart, selectedRangeEnd: selectedRangeEnd, lockView: lockView, newSelectedRangeStart: newSelectedRangeStart, startOfWeek: startOfWeek, onChangenNewSelectedRangeEnd: onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart: onChangenNewSelectedRangeStart, onPartialRangeSelect: onPartialRangeSelect, onEachMultiSelect: onEachMultiSelect, newSelectedRangeEnd: newSelectedRangeEnd, isRangeSelectorView: isRangeSelectorView, fixedRange: fixedRange, isFixedRangeView: isFixedRangeView, isDisabled: isDisabled, checkIfWeekend: checkIfWeekend, selectedMultiDates: selectedMultiDates, isMultiSelectorView: isMultiSelectorView, monthInView: monthInView, today: today, maxAllowedDate: maxAllowedDate, minAllowedDate: minAllowedDate, weekends: weekends, onChange: onChange, yearInView: yearInView, disableFuture: disableFuture, disablePast: disablePast, highlightsMap: highlightsMap, disableToday: disableToday }))))));
+}
+var CalendarView = memo(Component);
+function getAttrInViewFromDate(props) {
+    var firstOfMulti = props.isMultiSelectorView &&
+        props.selectedMultiDates &&
+        props.selectedMultiDates[Object.keys(props.selectedMultiDates)[0]];
+    var date = isValid(props.viewDate)
+        ? props.viewDate
+        : props.isNormalView && isValid(props.selectedDate)
+            ? props.selectedDate
+            : props.isRangeSelectorView && props.selectedRangeStart
+                ? props.selectedRangeStart
+                : firstOfMulti && isValid(firstOfMulti)
+                    ? firstOfMulti
+                    : isValid(props.minAllowedDate)
+                        ? props.minAllowedDate
+                        : isValid(props.maxAllowedDate)
+                            ? props.maxAllowedDate
+                            : props.today;
+    return { month: date.getMonth(), year: date.getFullYear() };
 }
 
 var emptyArray = [];
@@ -1369,38 +1392,70 @@ var styles = { display: 'inline-flex' };
 function CalendarWithRef(_a, forwardRef) {
     var value = _a.value, isMultiSelector = _a.isMultiSelector, _b = _a.className, className = _b === void 0 ? '' : _b, isRangeSelector = _a.isRangeSelector, _c = _a.useDarkMode, useDarkMode = _c === void 0 ? false : _c, weekends = _a.weekends, _d = _a.highlights, highlights = _d === void 0 ? emptyArray : _d, initialViewDate = _a.viewDate, _e = _a.allowFewerDatesThanRange, allowFewerDatesThanRange = _e === void 0 ? false : _e, _f = _a.startOfWeek, startOfWeek = _f === void 0 ? 1 : _f, maxAllowedDate = _a.maxAllowedDate, _g = _a.skipDisabledDatesInRange, skipDisabledDatesInRange = _g === void 0 ? false : _g, minAllowedDate = _a.minAllowedDate, fixedRange = _a.fixedRange, isDisabled = _a.isDisabled, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, onChange = _a.onChange, _h = _a.lockView, lockView = _h === void 0 ? false : _h, _j = _a.disableFuture, disableFuture = _j === void 0 ? false : _j, _k = _a.size, size = _k === void 0 ? 276 : _k, _l = _a.fontSize, fontSize = _l === void 0 ? 16 : _l, _m = _a.disablePast, disablePast = _m === void 0 ? false : _m, _o = _a.disableToday, disableToday = _o === void 0 ? false : _o, _p = _a.showDualCalendar, showDualCalendar = _p === void 0 ? false : _p, _q = _a.hideAdjacentDates, hideAdjacentDates = _q === void 0 ? false : _q;
     var today = useState(new Date())[0];
-    var isRangeSelectorView = useState(!!isRangeSelector)[0];
-    var isDualMode = useState(isRangeSelectorView && !!showDualCalendar)[0];
-    var isMultiSelectorView = useState(!isRangeSelectorView && !!isMultiSelector)[0];
-    var isFixedRangeView = useState(isRangeSelectorView && typeof fixedRange === 'number' && fixedRange > 0 ? true : false)[0];
-    var isNormalView = useState(!isRangeSelectorView && !isMultiSelectorView)[0];
-    // is range select mode on
-    var _r = useState(false), isRangeSelectModeOn = _r[0], setIsRangeSelectModeOn = _r[1];
+    var isRangeSelectorView = !!isRangeSelector;
+    var isDualMode = isRangeSelectorView && !!showDualCalendar;
+    var isMultiSelectorView = !isRangeSelectorView && !!isMultiSelector;
+    var isFixedRangeView = isRangeSelectorView && typeof fixedRange === 'number' && fixedRange > 0 ? true : false;
+    var isNormalView = !isRangeSelectorView && !isMultiSelectorView;
+    var startOfTheWeek = startOfWeek;
+    var fixedRangeLength = isFixedRangeView ? fixedRange : 1;
     if (isNormalView && Array.isArray(value)) {
         throw new Error('`value` should an instance of the Date class. Provided value is an Array.');
     }
-    var fixedRangeLength = useState(isFixedRangeView ? fixedRange : 1)[0];
-    // start day of the week
-    var startOfTheWeek = useState(startOfWeek)[0];
-    var weekendIndexes = useState(function () {
+    var highlightsMap = useMemo(function () {
+        if (Array.isArray(highlights)) {
+            return highlights
+                .filter(function (d) { return isValid(d); })
+                .reduce(function (acc, curr) {
+                acc[toString(curr)] = 1;
+                return acc;
+            }, {});
+        }
+        return {};
+    }, [highlights]);
+    var weekendIndexes = useMemo(function () {
         return Array.isArray(weekends) && (weekends.every(function (num) { return typeof num === 'number'; }) || weekends.length === 0)
             ? weekends
             : getWeekendInfo(startOfTheWeek);
-    })[0];
-    // selected single date
-    var _s = useState(function () {
-        if (isNormalView && isValid(value)) {
-            var year = value.getFullYear();
-            var month = value.getMonth();
-            var dateOfMonth = value.getDate();
-            return new Date(year, month, dateOfMonth);
-        }
-        else {
-            return undefined;
-        }
-    }), selectedDate = _s[0], setSelectedDate = _s[1];
-    // selected multi dates
-    var _t = useState(function () {
+    }, [startOfTheWeek, weekends]);
+    var maxDate = useMemo(function () {
+        return isValid(maxAllowedDate) ? toString(maxAllowedDate) : undefined;
+    }, [maxAllowedDate]);
+    var minDate = useMemo(function () {
+        return isValid(minAllowedDate) ? toString(minAllowedDate) : undefined;
+    }, [minAllowedDate]);
+    var viewDate = useMemo(function () {
+        return isValid(initialViewDate) ? toString(initialViewDate) : undefined;
+    }, [initialViewDate]);
+    var applyMaxConstraint = useMemo(function () {
+        return isValid(maxAllowedDate)
+            ? isValid(minAllowedDate)
+                ? isBefore(maxAllowedDate, minAllowedDate)
+                : true
+            : false;
+    }, [maxAllowedDate, minAllowedDate]);
+    var applyminConstraint = useMemo(function () {
+        return isValid(minAllowedDate)
+            ? isValid(maxAllowedDate)
+                ? isBefore(maxAllowedDate, minAllowedDate)
+                : true
+            : false;
+    }, [maxAllowedDate, minAllowedDate]);
+    var checkDisabledForADate = useMemo(function () {
+        return checkIfDateIsDisabledHOF({
+            disablePast: disablePast,
+            disableToday: disableToday,
+            disableFuture: disableFuture,
+            customDisabledCheck: isDisabled,
+            maxDate: maxDate ? fromString(maxDate) : undefined,
+            minDate: minDate ? fromString(minDate) : undefined,
+            applyMax: applyMaxConstraint,
+            applyMin: applyminConstraint,
+        });
+    }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
+    var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
+    var selectedDate = useMemo(function () { return (isNormalView && isValid(value) ? value : undefined); }, [isNormalView, value]);
+    var selectedMultiDates = useMemo(function () {
         if (isMultiSelectorView && Array.isArray(value) && value.every(isValid)) {
             return value.reduce(function (acc, currDate) {
                 if (isValid(currDate)) {
@@ -1412,9 +1467,9 @@ function CalendarWithRef(_a, forwardRef) {
         else {
             return {};
         }
-    }), selectedMultiDates = _t[0], setSelectedMultiDates = _t[1];
+    }, [isMultiSelectorView, value]);
     // selected range start date
-    var _u = useState(function () {
+    var selectedRangeStart = useMemo(function () {
         if (isRangeSelectorView && Array.isArray(value) && isValid(value[0])) {
             var year = value[0].getFullYear();
             var month = value[0].getMonth();
@@ -1424,8 +1479,8 @@ function CalendarWithRef(_a, forwardRef) {
         else {
             return undefined;
         }
-    }), selectedRangeStart = _u[0], setSelectedRangeStart = _u[1];
-    var _v = useState(function () {
+    }, [isRangeSelectorView, value]);
+    var selectedRangeEnd = useMemo(function () {
         if (isRangeSelectorView &&
             selectedRangeStart &&
             Array.isArray(value) &&
@@ -1440,48 +1495,13 @@ function CalendarWithRef(_a, forwardRef) {
             // TODO read from user's value prop
             return undefined;
         }
-    }), selectedRangeEnd = _v[0], setSelectedRangeEnd = _v[1];
-    var _w = useState(selectedRangeStart), newSelectedRangeStart = _w[0], setNewSelectedRangeStart = _w[1];
-    var _x = useState(selectedRangeEnd), newSelectedRangeEnd = _x[0], setNewSelectedRangeEnd = _x[1];
-    // max allowed Date
-    var maxDate = useState(function () {
-        return isValid(maxAllowedDate) ? maxAllowedDate : today;
-    })[0];
-    // min allowed Date
-    var minDate = useState(function () {
-        return isValid(minAllowedDate) ? minAllowedDate : today;
-    })[0];
-    var applyMaxConstraint = useState(function () {
-        return isValid(maxAllowedDate)
-            ? isValid(minAllowedDate)
-                ? isBefore(maxAllowedDate, minAllowedDate)
-                : true
-            : false;
-    })[0];
-    var applyminConstraint = useState(function () {
-        return isValid(minAllowedDate)
-            ? isValid(maxAllowedDate)
-                ? isBefore(maxAllowedDate, minAllowedDate)
-                : true
-            : false;
-    })[0];
-    var checkDisabledForADate = useMemo(function () {
-        return checkIfDateIsDisabledHOF({
-            disablePast: disablePast,
-            disableToday: disableToday,
-            disableFuture: disableFuture,
-            customDisabledCheck: isDisabled,
-            maxDate: maxDate,
-            minDate: minDate,
-            applyMax: applyMaxConstraint,
-            applyMin: applyminConstraint,
-        });
-    }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
-    var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
+    }, [isRangeSelectorView, selectedRangeStart, value]);
+    var _r = useState(false), isRangeSelectModeOn = _r[0], setIsRangeSelectModeOn = _r[1];
+    var _s = useState(selectedRangeStart), newSelectedRangeStart = _s[0], setNewSelectedRangeStart = _s[1];
+    var _t = useState(selectedRangeEnd), newSelectedRangeEnd = _t[0], setNewSelectedRangeEnd = _t[1];
     var commonProps = useMemo(function () { return ({
         showDualCalendar: isDualMode,
-        value: value,
-        viewDate: initialViewDate,
+        viewDate: viewDate,
         useDarkMode: useDarkMode,
         className: className,
         hideAdjacentDates: !!hideAdjacentDates,
@@ -1499,12 +1519,8 @@ function CalendarWithRef(_a, forwardRef) {
         selectedRangeEnd: selectedRangeEnd,
         lockView: !!lockView,
         newSelectedRangeStart: newSelectedRangeStart,
-        onChangenSelectedMultiDates: setSelectedMultiDates,
         onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd,
         onChangenNewSelectedRangeStart: setNewSelectedRangeStart,
-        onChangenSelectedRangeEnd: setSelectedRangeEnd,
-        onChangenSelectedRangeStart: setSelectedRangeStart,
-        onChangenSelectedDate: setSelectedDate,
         onPartialRangeSelect: onPartialRangeSelect,
         onEachMultiSelect: onEachMultiSelect,
         newSelectedRangeEnd: newSelectedRangeEnd,
@@ -1516,12 +1532,12 @@ function CalendarWithRef(_a, forwardRef) {
         selectedMultiDates: selectedMultiDates,
         isMultiSelectorView: isMultiSelectorView,
         today: today,
-        maxAllowedDate: maxAllowedDate,
-        minAllowedDate: minAllowedDate,
+        maxAllowedDate: maxDate,
+        minAllowedDate: minDate,
         onChange: onChange,
         disableFuture: disableFuture,
         disablePast: disablePast,
-        highlights: highlights,
+        highlightsMap: highlightsMap,
         disableToday: disableToday,
     }); }, [
         allowFewerDatesThanRange,
@@ -1534,8 +1550,8 @@ function CalendarWithRef(_a, forwardRef) {
         disableToday,
         fixedRangeLength,
         fontSize,
-        highlights,
-        initialViewDate,
+        highlightsMap,
+        viewDate,
         isDualMode,
         isFixedRangeView,
         isMultiSelectorView,
@@ -1543,8 +1559,8 @@ function CalendarWithRef(_a, forwardRef) {
         isRangeSelectModeOn,
         isRangeSelectorView,
         lockView,
-        maxAllowedDate,
-        minAllowedDate,
+        maxDate,
+        minDate,
         newSelectedRangeEnd,
         newSelectedRangeStart,
         onChange,
@@ -1559,7 +1575,6 @@ function CalendarWithRef(_a, forwardRef) {
         startOfTheWeek,
         today,
         useDarkMode,
-        value,
         weekendIndexes,
     ]);
     var computedClass = useMemo(function () {
@@ -1568,8 +1583,8 @@ function CalendarWithRef(_a, forwardRef) {
             : "arc_root" + (useDarkMode ? ' arc_dark' : '') + (isDualMode ? ' arc_dual' : '');
     }, [className, useDarkMode, isDualMode]);
     return (React.createElement("div", { className: computedClass, style: styles, ref: forwardRef }, isDualMode ? (React.createElement(React.Fragment, null,
-        React.createElement(Calendarview, __assign({ isSecondary: false }, commonProps)),
-        React.createElement(Calendarview, __assign({ isSecondary: true }, commonProps)))) : (React.createElement(Calendarview, __assign({ isSecondary: false }, commonProps)))));
+        React.createElement(CalendarView, __assign({ isSecondary: false }, commonProps)),
+        React.createElement(CalendarView, __assign({ isSecondary: true }, commonProps)))) : (React.createElement(CalendarView, __assign({ isSecondary: false }, commonProps)))));
 }
 var Calendar = React.forwardRef(CalendarWithRef);
 var giveDaysInRange = giveRangeDays;

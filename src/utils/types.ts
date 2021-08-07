@@ -64,8 +64,8 @@ export interface CheckIfDateIsDisabledHOFParams {
   disableToday: boolean;
   disableFuture: boolean;
   customDisabledCheck?: (date: Date) => boolean;
-  maxDate: Date;
-  minDate: Date;
+  maxDate?: Date;
+  minDate?: Date;
   applyMax: boolean;
   applyMin: boolean;
 }
@@ -199,7 +199,6 @@ type CommonProps = Required<
     CalendarProps,
     | 'lockView'
     | 'isDisabled'
-    | 'highlights'
     | 'disableFuture'
     | 'disablePast'
     | 'disableToday'
@@ -216,24 +215,11 @@ type CommonProps = Required<
     | 'className'
   >
 > &
-  Pick<
-    CalendarProps,
-    | 'onEachMultiSelect'
-    | 'onPartialRangeSelect'
-    | 'onChange'
-    | 'value'
-    | 'maxAllowedDate'
-    | 'minAllowedDate'
-    | 'viewDate'
-  >;
+  Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange'>;
 
 export interface CalendarViewProps extends CommonProps {
   onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
   onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
-  onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
-  onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
-  onChangenSelectedDate: (dates: Date) => unknown;
   onChangeRangeSelectMode: (on: boolean) => void;
   checkIfWeekend: (date: Date) => boolean;
   isSecondary: boolean;
@@ -249,6 +235,10 @@ export interface CalendarViewProps extends CommonProps {
   newSelectedRangeEnd: Date | undefined;
   today: Date;
   selectedMultiDates: Record<string, Date | undefined>;
+  highlightsMap: Record<string, 1>;
+  viewDate: string | undefined;
+  maxAllowedDate: string | undefined;
+  minAllowedDate: string | undefined;
 }
 
 export interface DayOfMonthSelectorProps
@@ -256,10 +246,6 @@ export interface DayOfMonthSelectorProps
     CalendarViewProps,
     | 'onChangenNewSelectedRangeEnd'
     | 'onChangenNewSelectedRangeStart'
-    | 'onChangenSelectedRangeStart'
-    | 'onChangenSelectedRangeEnd'
-    | 'onChangenSelectedMultiDates'
-    | 'onChangenSelectedDate'
     | 'startOfWeek'
     | 'fixedRange'
     | 'selectedDate'
@@ -279,7 +265,7 @@ export interface DayOfMonthSelectorProps
     | 'disableToday'
     | 'hideAdjacentDates'
     | 'lockView'
-    | 'highlights'
+    | 'highlightsMap'
     | 'isDisabled'
     | 'checkIfWeekend'
     | 'today'
@@ -291,8 +277,6 @@ export interface DayOfMonthSelectorProps
     | 'allowFewerDatesThanRange'
     | 'skipDisabledDatesInRange'
   > {
-  onChangeViewingYear: (year: number) => unknown;
-  onChangeViewingMonth: (month: MonthIndices) => unknown;
   monthInView: MonthIndices;
   yearInView: number;
 }

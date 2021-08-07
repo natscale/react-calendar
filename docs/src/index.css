@@ -69,3 +69,24 @@ code {
   --arc-color-primary-light: #e1c2f9;
   --arc-color-primary-lighter: #f9ecff;
 }
+
+.demo {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.view {
+  padding: 12px;
+}
+
+.props {
+  padding: 12px;
+}
+
+.props div + div {
+  margin-top: 16px;
+}
+
+.checkbox + .checkbox {
+  margin-left: 4px;
+}
