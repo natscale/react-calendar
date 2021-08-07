@@ -15,6 +15,10 @@ export declare function addDays(date: Date, numberOfDaysToAdd: number, options: 
  */
 export declare function toString(date: Date): string;
 /**
+ * MAkes a date from a string
+ */
+export declare function fromString(date: string): Date;
+/**
  * Returns true if toCheck date is before the date
  */
 export declare function isBefore(date: Date, toCheckDate: Date): boolean;
@@ -65,7 +69,7 @@ export declare function getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfTheW
  * Returns info about what indexes are weekend
  * @param startOfTheWeek index of the day to be considered as start of the week
  */
-export declare function getWeekendInfo(startOfTheWeek: number): WeekdayIndices[];
+export declare function getWeekendInfo(startOfTheWeek: WeekdayIndices): WeekdayIndices[];
 export declare function getStartOfRangeForAYear(year: number): number;
 /**
  * Returns matrix for the month select view.

@@ -57,8 +57,8 @@ export interface CheckIfDateIsDisabledHOFParams {
     disableToday: boolean;
     disableFuture: boolean;
     customDisabledCheck?: (date: Date) => boolean;
-    maxDate: Date;
-    minDate: Date;
+    maxDate?: Date;
+    minDate?: Date;
     applyMax: boolean;
     applyMin: boolean;
 }
@@ -182,14 +182,10 @@ export interface CalendarProps {
      */
     onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
 }
-declare type CommonProps = Required<Pick<CalendarProps, 'lockView' | 'isDisabled' | 'highlights' | 'disableFuture' | 'disablePast' | 'disableToday' | 'weekends' | 'fixedRange' | 'startOfWeek' | 'skipDisabledDatesInRange' | 'allowFewerDatesThanRange' | 'fontSize' | 'size' | 'hideAdjacentDates' | 'useDarkMode' | 'showDualCalendar' | 'className'>> & Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange' | 'value' | 'maxAllowedDate' | 'minAllowedDate' | 'viewDate'>;
+declare type CommonProps = Required<Pick<CalendarProps, 'lockView' | 'isDisabled' | 'disableFuture' | 'disablePast' | 'disableToday' | 'weekends' | 'fixedRange' | 'startOfWeek' | 'skipDisabledDatesInRange' | 'allowFewerDatesThanRange' | 'fontSize' | 'size' | 'hideAdjacentDates' | 'useDarkMode' | 'showDualCalendar' | 'className'>> & Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange'>;
 export interface CalendarViewProps extends CommonProps {
     onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
     onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
-    onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
-    onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
-    onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
-    onChangenSelectedDate: (dates: Date) => unknown;
     onChangeRangeSelectMode: (on: boolean) => void;
     checkIfWeekend: (date: Date) => boolean;
     isSecondary: boolean;
@@ -205,10 +201,12 @@ export interface CalendarViewProps extends CommonProps {
     newSelectedRangeEnd: Date | undefined;
     today: Date;
     selectedMultiDates: Record<string, Date | undefined>;
+    highlightsMap: Record<string, 1>;
+    viewDate: string | undefined;
+    maxAllowedDate: string | undefined;
+    minAllowedDate: string | undefined;
 }
-export interface DayOfMonthSelectorProps extends Pick<CalendarViewProps, 'onChangenNewSelectedRangeEnd' | 'onChangenNewSelectedRangeStart' | 'onChangenSelectedRangeStart' | 'onChangenSelectedRangeEnd' | 'onChangenSelectedMultiDates' | 'onChangenSelectedDate' | 'startOfWeek' | 'fixedRange' | 'selectedDate' | 'selectedRangeStart' | 'selectedRangeEnd' | 'newSelectedRangeStart' | 'newSelectedRangeEnd' | 'isRangeSelectorView' | 'isFixedRangeView' | 'weekends' | 'selectedMultiDates' | 'isMultiSelectorView' | 'isRangeSelectModeOn' | 'onChangeRangeSelectMode' | 'disableFuture' | 'disablePast' | 'disableToday' | 'hideAdjacentDates' | 'lockView' | 'highlights' | 'isDisabled' | 'checkIfWeekend' | 'today' | 'onChange' | 'onPartialRangeSelect' | 'onEachMultiSelect' | 'maxAllowedDate' | 'minAllowedDate' | 'allowFewerDatesThanRange' | 'skipDisabledDatesInRange'> {
-    onChangeViewingYear: (year: number) => unknown;
-    onChangeViewingMonth: (month: MonthIndices) => unknown;
+export interface DayOfMonthSelectorProps extends Pick<CalendarViewProps, 'onChangenNewSelectedRangeEnd' | 'onChangenNewSelectedRangeStart' | 'startOfWeek' | 'fixedRange' | 'selectedDate' | 'selectedRangeStart' | 'selectedRangeEnd' | 'newSelectedRangeStart' | 'newSelectedRangeEnd' | 'isRangeSelectorView' | 'isFixedRangeView' | 'weekends' | 'selectedMultiDates' | 'isMultiSelectorView' | 'isRangeSelectModeOn' | 'onChangeRangeSelectMode' | 'disableFuture' | 'disablePast' | 'disableToday' | 'hideAdjacentDates' | 'lockView' | 'highlightsMap' | 'isDisabled' | 'checkIfWeekend' | 'today' | 'onChange' | 'onPartialRangeSelect' | 'onEachMultiSelect' | 'maxAllowedDate' | 'minAllowedDate' | 'allowFewerDatesThanRange' | 'skipDisabledDatesInRange'> {
     monthInView: MonthIndices;
     yearInView: number;
 }

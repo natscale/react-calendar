@@ -62,7 +62,16 @@ export function addDays(
  * Converts a date to string
  */
 export function toString(date: Date): string {
-  return `${date.getFullYear()}${date.getMonth()}${date.getDate()}`;
+  return `${date.getFullYear() < 10 ? '0' + date.getFullYear() : date.getFullYear()}_${
+    date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()
+  }_${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`;
+}
+
+/**
+ * MAkes a date from a string
+ */
+export function fromString(date: string): Date {
+  return new Date(Number(date.substr(0, 4)), Number(date.substr(5, 2)), Number(date.substr(8, 2)));
 }
 
 /**
@@ -432,7 +441,7 @@ function getInfluencedWeekDayIndexOnFirstDateOfMonth(
  * Returns info about what indexes are weekend
  * @param startOfTheWeek index of the day to be considered as start of the week
  */
-export function getWeekendInfo(startOfTheWeek: number): WeekdayIndices[] {
+export function getWeekendInfo(startOfTheWeek: WeekdayIndices): WeekdayIndices[] {
   if (startOfTheWeek === 0) {
     return [6, 0];
   } else if (startOfTheWeek === 1) {
@@ -606,13 +615,13 @@ export function checkIfDateIsDisabledHOF(params: CheckIfDateIsDisabledHOFParams)
       }
     }
 
-    if (applyMax) {
+    if (applyMax && maxDate) {
       if (isBefore(dateToCheck, maxDate)) {
         return true;
       }
     }
 
-    if (applyMin) {
+    if (applyMin && minDate) {
       if (isBefore(minDate, dateToCheck)) {
         return true;
       }

@@ -12,11 +12,12 @@ import {
   checkIfWeekendHOF,
   giveRangeDays,
   validateAndReturnDateFormatter,
+  fromString,
 } from '../../utils/date-utils';
 
 import './styles.css';
 
-import Calendarview from '../calendar-view/CalendarView';
+import { CalendarView } from '../calendar-view/CalendarView';
 
 const emptyArray: Date[] = [];
 
@@ -55,50 +56,91 @@ function CalendarWithRef(
 ): React.ReactElement<CalendarProps> {
   const [today] = useState(new Date());
 
-  const [isRangeSelectorView] = useState(!!isRangeSelector);
+  const isRangeSelectorView = !!isRangeSelector;
+  const isDualMode = isRangeSelectorView && !!showDualCalendar;
+  const isMultiSelectorView = !isRangeSelectorView && !!isMultiSelector;
+  const isFixedRangeView = isRangeSelectorView && typeof fixedRange === 'number' && fixedRange > 0 ? true : false;
+  const isNormalView = !isRangeSelectorView && !isMultiSelectorView;
 
-  const [isDualMode] = useState(isRangeSelectorView && !!showDualCalendar);
-
-  const [isMultiSelectorView] = useState(!isRangeSelectorView && !!isMultiSelector);
-
-  const [isFixedRangeView] = useState(
-    isRangeSelectorView && typeof fixedRange === 'number' && fixedRange > 0 ? true : false,
-  );
-
-  const [isNormalView] = useState(!isRangeSelectorView && !isMultiSelectorView);
-
-  // is range select mode on
-  const [isRangeSelectModeOn, setIsRangeSelectModeOn] = useState(false);
+  const startOfTheWeek = startOfWeek;
+  const fixedRangeLength = isFixedRangeView ? (fixedRange as number) : 1;
 
   if (isNormalView && Array.isArray(value)) {
     throw new Error('`value` should an instance of the Date class. Provided value is an Array.');
   }
 
-  const [fixedRangeLength] = useState(isFixedRangeView ? (fixedRange as number) : 1);
+  const highlightsMap = useMemo<Record<string, 1>>(() => {
+    if (Array.isArray(highlights)) {
+      return highlights
+        .filter((d) => isValid(d))
+        .reduce((acc, curr) => {
+          acc[toString(curr)] = 1;
+          return acc;
+        }, {} as Record<string, 1>);
+    }
+    return {};
+  }, [highlights]);
 
-  // start day of the week
-  const [startOfTheWeek] = useState(startOfWeek);
-
-  const [weekendIndexes] = useState(() => {
+  const weekendIndexes = useMemo(() => {
     return Array.isArray(weekends) && (weekends.every((num) => typeof num === 'number') || weekends.length === 0)
       ? weekends
       : getWeekendInfo(startOfTheWeek);
-  });
+  }, [startOfTheWeek, weekends]);
 
-  // selected single date
-  const [selectedDate, setSelectedDate] = useState(() => {
-    if (isNormalView && isValid(value as Date)) {
-      const year = (value as Date).getFullYear();
-      const month = (value as Date).getMonth();
-      const dateOfMonth = (value as Date).getDate();
-      return new Date(year, month, dateOfMonth);
-    } else {
-      return undefined;
-    }
-  });
+  const maxDate = useMemo(() => {
+    return isValid(maxAllowedDate) ? toString(maxAllowedDate) : undefined;
+  }, [maxAllowedDate]);
 
-  // selected multi dates
-  const [selectedMultiDates, setSelectedMultiDates] = useState<Record<string, Date | undefined>>(() => {
+  const minDate = useMemo(() => {
+    return isValid(minAllowedDate) ? toString(minAllowedDate) : undefined;
+  }, [minAllowedDate]);
+
+  const viewDate = useMemo(() => {
+    return isValid(initialViewDate) ? toString(initialViewDate) : undefined;
+  }, [initialViewDate]);
+
+  const applyMaxConstraint = useMemo(() => {
+    return isValid(maxAllowedDate)
+      ? isValid(minAllowedDate)
+        ? isBefore(maxAllowedDate, minAllowedDate)
+        : true
+      : false;
+  }, [maxAllowedDate, minAllowedDate]);
+
+  const applyminConstraint = useMemo(() => {
+    return isValid(minAllowedDate)
+      ? isValid(maxAllowedDate)
+        ? isBefore(maxAllowedDate, minAllowedDate)
+        : true
+      : false;
+  }, [maxAllowedDate, minAllowedDate]);
+
+  const checkDisabledForADate = useMemo(
+    () =>
+      checkIfDateIsDisabledHOF({
+        disablePast,
+        disableToday,
+        disableFuture,
+        customDisabledCheck: isDisabled,
+        maxDate: maxDate ? fromString(maxDate) : undefined,
+        minDate: minDate ? fromString(minDate) : undefined,
+        applyMax: applyMaxConstraint,
+        applyMin: applyminConstraint,
+      }),
+    [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate],
+  );
+
+  const checkIfWeekend = useMemo(
+    () => checkIfWeekendHOF(weekendIndexes, startOfTheWeek),
+    [startOfTheWeek, weekendIndexes],
+  );
+
+  const selectedDate = useMemo(
+    () => (isNormalView && isValid(value as Date) ? (value as Date) : undefined),
+    [isNormalView, value],
+  );
+
+  const selectedMultiDates = useMemo<Record<string, Date | undefined>>(() => {
     if (isMultiSelectorView && Array.isArray(value) && value.every(isValid)) {
       return value.reduce((acc, currDate) => {
         if (isValid(currDate)) {
@@ -109,10 +151,10 @@ function CalendarWithRef(
     } else {
       return {} as Record<string, Date | undefined>;
     }
-  });
+  }, [isMultiSelectorView, value]);
 
   // selected range start date
-  const [selectedRangeStart, setSelectedRangeStart] = useState(() => {
+  const selectedRangeStart = useMemo(() => {
     if (isRangeSelectorView && Array.isArray(value) && isValid(value[0])) {
       const year = value[0].getFullYear();
       const month = value[0].getMonth();
@@ -121,9 +163,9 @@ function CalendarWithRef(
     } else {
       return undefined;
     }
-  });
+  }, [isRangeSelectorView, value]);
 
-  const [selectedRangeEnd, setSelectedRangeEnd] = useState(() => {
+  const selectedRangeEnd = useMemo(() => {
     if (
       isRangeSelectorView &&
       selectedRangeStart &&
@@ -139,63 +181,16 @@ function CalendarWithRef(
       // TODO read from user's value prop
       return undefined;
     }
-  });
+  }, [isRangeSelectorView, selectedRangeStart, value]);
 
+  const [isRangeSelectModeOn, setIsRangeSelectModeOn] = useState(false);
   const [newSelectedRangeStart, setNewSelectedRangeStart] = useState<Date | undefined>(selectedRangeStart);
-
   const [newSelectedRangeEnd, setNewSelectedRangeEnd] = useState<Date | undefined>(selectedRangeEnd);
-
-  // max allowed Date
-  const [maxDate] = useState(() => {
-    return isValid(maxAllowedDate) ? maxAllowedDate : today;
-  });
-
-  // min allowed Date
-  const [minDate] = useState(() => {
-    return isValid(minAllowedDate) ? minAllowedDate : today;
-  });
-
-  const [applyMaxConstraint] = useState(() => {
-    return isValid(maxAllowedDate)
-      ? isValid(minAllowedDate)
-        ? isBefore(maxAllowedDate, minAllowedDate)
-        : true
-      : false;
-  });
-
-  const [applyminConstraint] = useState(() => {
-    return isValid(minAllowedDate)
-      ? isValid(maxAllowedDate)
-        ? isBefore(maxAllowedDate, minAllowedDate)
-        : true
-      : false;
-  });
-
-  const checkDisabledForADate = useMemo(
-    () =>
-      checkIfDateIsDisabledHOF({
-        disablePast,
-        disableToday,
-        disableFuture,
-        customDisabledCheck: isDisabled,
-        maxDate,
-        minDate,
-        applyMax: applyMaxConstraint,
-        applyMin: applyminConstraint,
-      }),
-    [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate],
-  );
-
-  const checkIfWeekend = useMemo(
-    () => checkIfWeekendHOF(weekendIndexes, startOfTheWeek),
-    [startOfTheWeek, weekendIndexes],
-  );
 
   const commonProps = useMemo<Omit<CalendarViewProps, 'isSecondary'>>(
     () => ({
       showDualCalendar: isDualMode,
-      value: value,
-      viewDate: initialViewDate,
+      viewDate: viewDate,
       useDarkMode: useDarkMode,
       className: className,
       hideAdjacentDates: !!hideAdjacentDates,
@@ -213,12 +208,8 @@ function CalendarWithRef(
       selectedRangeEnd: selectedRangeEnd,
       lockView: !!lockView,
       newSelectedRangeStart: newSelectedRangeStart,
-      onChangenSelectedMultiDates: setSelectedMultiDates,
       onChangenNewSelectedRangeEnd: setNewSelectedRangeEnd,
       onChangenNewSelectedRangeStart: setNewSelectedRangeStart,
-      onChangenSelectedRangeEnd: setSelectedRangeEnd,
-      onChangenSelectedRangeStart: setSelectedRangeStart,
-      onChangenSelectedDate: setSelectedDate,
       onPartialRangeSelect: onPartialRangeSelect,
       onEachMultiSelect: onEachMultiSelect,
       newSelectedRangeEnd: newSelectedRangeEnd,
@@ -230,12 +221,12 @@ function CalendarWithRef(
       selectedMultiDates: selectedMultiDates,
       isMultiSelectorView: isMultiSelectorView,
       today: today,
-      maxAllowedDate: maxAllowedDate,
-      minAllowedDate: minAllowedDate,
+      maxAllowedDate: maxDate,
+      minAllowedDate: minDate,
       onChange: onChange,
       disableFuture: disableFuture,
       disablePast: disablePast,
-      highlights: highlights,
+      highlightsMap: highlightsMap,
       disableToday: disableToday,
     }),
     [
@@ -249,8 +240,8 @@ function CalendarWithRef(
       disableToday,
       fixedRangeLength,
       fontSize,
-      highlights,
-      initialViewDate,
+      highlightsMap,
+      viewDate,
       isDualMode,
       isFixedRangeView,
       isMultiSelectorView,
@@ -258,8 +249,8 @@ function CalendarWithRef(
       isRangeSelectModeOn,
       isRangeSelectorView,
       lockView,
-      maxAllowedDate,
-      minAllowedDate,
+      maxDate,
+      minDate,
       newSelectedRangeEnd,
       newSelectedRangeStart,
       onChange,
@@ -274,7 +265,6 @@ function CalendarWithRef(
       startOfTheWeek,
       today,
       useDarkMode,
-      value,
       weekendIndexes,
     ],
   );
@@ -291,11 +281,11 @@ function CalendarWithRef(
     <div className={computedClass} style={styles} ref={forwardRef}>
       {isDualMode ? (
         <>
-          <Calendarview isSecondary={false} {...commonProps} />
-          <Calendarview isSecondary={true} {...commonProps} />
+          <CalendarView isSecondary={false} {...commonProps} />
+          <CalendarView isSecondary={true} {...commonProps} />
         </>
       ) : (
-        <Calendarview isSecondary={false} {...commonProps} />
+        <CalendarView isSecondary={false} {...commonProps} />
       )}
     </div>
   );
