@@ -23,10 +23,11 @@ A no dependencies, `lightweight` and feature-rich ⚡ calendar component for rea
 - 🗓 **Multiple Dates**
 - 🗓 **Highlight Custom Dates**
 - 🗓 **Disable Custom Dates**
+- 🗓🗓 **Dual Calendar**
 - 🦄 **Easy to Theme**
 - ✅ **No Dependencies**
 - 💻 **SSR Compatible**
-- 🔩 **Easily Customizable**
+- 🔩 **Lots of Very Easy Customizations**
 - 🕊 **Lightweight** - _less than 20kb_
 
 ## :package: Installation
