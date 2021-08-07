@@ -58,12 +58,6 @@ code {
   --arc-color-accent-lighter: #f6f8e7;
 }
 
-.arc_root.brown {
-  --arc-color-accent: #bb6a06;
-  --arc-color-accent-light: #e8c498;
-  --arc-color-accent-lighter: #f8f0e5;
-}
-
 .arc_root.violet {
   --arc-color-primary: #8755ff;
   --arc-color-primary-light: #e1c2f9;

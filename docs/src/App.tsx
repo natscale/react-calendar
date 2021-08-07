@@ -54,14 +54,15 @@ export function App(): React.ReactElement {
     [setValue],
   );
 
-  const [applyCss, setApplyCss] = useState(false);
+  const [roundButtonStyles, setApplyRoundButtonCss] = useState(false);
+  const [theme, setTheme] = useState<'green' | 'violet' | 'normal'>('normal');
 
   return (
     <div className="demo">
       <div className="view">
         <div>
           <div className="calendar">
-            <Calendar {...props} value={value} onChange={onChange} />
+            <Calendar {...props} className={theme} value={value} onChange={onChange} />
           </div>
         </div>
       </div>
@@ -163,6 +164,20 @@ export function App(): React.ReactElement {
                 setProps({ ...props, fixedRange: Number(d.value), isRangeSelector: true });
               }
             }}
+          />
+        </div>
+        <div>
+          <Checkbox
+            toggle
+            onChange={() =>
+              setProps({
+                ...props,
+                skipDisabledDatesInRange: !props.skipDisabledDatesInRange,
+                ...(!props.skipDisabledDatesInRange ? { fixedRange: 5, isRangeSelector: true } : null),
+              })
+            }
+            checked={props.skipDisabledDatesInRange}
+            label="Skip Disabled Dates In Fixed Range"
           />
         </div>
       </div>
@@ -276,16 +291,48 @@ export function App(): React.ReactElement {
         </div>
         <div
           dangerouslySetInnerHTML={{
-            __html: applyCss
+            __html: roundButtonStyles
               ? '<style>.arc_view-days-of-month .arc_view_cell .arc_view_cell_value{border-radius: 50%;}</style>'
               : '<span></span>',
           }}
         ></div>
         <div>
-          <Button onClick={() => setApplyCss(!applyCss)}>{applyCss ? 'Remove' : 'Apply'} this CSS</Button>
+          <Checkbox
+            onChange={() => setApplyRoundButtonCss(!roundButtonStyles)}
+            checked={props.roundButtonStyles}
+            label={roundButtonStyles ? 'Remove this css' : 'Apply this css'}
+            this
+            CSS
+          />
           <pre style={{ color: 'rebeccapurple' }}>
             {`.arc_view-days-of-month .arc_view_cell .arc_view_cell_value {
   border-radius: 50%;
+}`}
+          </pre>
+        </div>
+        <div>
+          <h4>Easily Modify Theme Colors</h4>
+          <Checkbox
+            onChange={() => setTheme(theme !== 'green' ? 'green' : 'normal')}
+            checked={theme === 'green'}
+            label="Green"
+          />
+          <Checkbox
+            onChange={() => setTheme(theme !== 'violet' ? 'violet' : 'normal')}
+            checked={theme === 'violet'}
+            label="Violet"
+          />
+          <pre style={{ color: 'teal' }}>
+            {`.arc_root.green {
+  --arc-color-accent: #9fbb06;
+  --arc-color-accent-light: #ddea99;
+  --arc-color-accent-lighter: #f6f8e7;
+}
+
+.arc_root.violet {
+  --arc-color-primary: #8755ff;
+  --arc-color-primary-light: #e1c2f9;
+  --arc-color-primary-lighter: #f9ecff;
 }`}
           </pre>
         </div>
