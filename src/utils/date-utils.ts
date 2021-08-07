@@ -469,8 +469,8 @@ export function getStartOfRangeForAYear(year: number): number {
   if (year % 20 === 0) {
     return 20 * (year / 20 - 1) + 1;
   }
-  // logic derived from a few examples like 2021, 1981, 1973
-  return 20 * Number((year / 20).toFixed(0)) + 1;
+  // try with 2021, 1981, 1973, 3218
+  return 20 * Number(Math.floor(year / 20)) + 1;
 }
 
 /**
