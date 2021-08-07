@@ -7,8 +7,6 @@ import { Popover } from 'react-tiny-popover';
 
 import 'rc-slider/assets/index.css';
 
-const initialDual = [new Date(2021, 0, 22), new Date(2021, 1, 10)];
-
 const highlights = [
   new Date(2021, new Date().getMonth(), 6),
   new Date(2021, new Date().getMonth(), 12),
@@ -26,8 +24,8 @@ export function App(): React.ReactElement {
     hideAdjacentDates: false,
     useDarkMode: false,
     className: 'myckass',
-    size: 400,
-    fontSize: 16,
+    size: 276,
+    fontSize: 14,
     viewDate: Date,
     lockView: false,
     showDualCalendar: false,
@@ -55,6 +53,8 @@ export function App(): React.ReactElement {
     },
     [setValue],
   );
+
+  const [applyCss, setApplyCss] = useState(false);
 
   return (
     <div className="demo">
@@ -117,7 +117,13 @@ export function App(): React.ReactElement {
         <div>
           <Checkbox
             toggle
-            onChange={() => setProps({ ...props, isMultiSelector: !props.isMultiSelector })}
+            onChange={() =>
+              setProps({
+                ...props,
+                isMultiSelector: !props.isMultiSelector,
+                ...(!props.isMultiSelector ? { isRangeSelector: false, fixedRange: undefined } : null),
+              })
+            }
             checked={props.isMultiSelector}
             label="Multi Selector"
           />
@@ -154,11 +160,13 @@ export function App(): React.ReactElement {
               if (Number(d.value) < 1) {
                 setProps({ ...props, fixedRange: undefined });
               } else {
-                setProps({ ...props, fixedRange: Number(d.value) });
+                setProps({ ...props, fixedRange: Number(d.value), isRangeSelector: true });
               }
             }}
           />
         </div>
+      </div>
+      <div className="props">
         <div>
           <h4>Calendar Size</h4>
           <Input
@@ -191,8 +199,6 @@ export function App(): React.ReactElement {
             }}
           />
         </div>
-      </div>
-      <div className="props">
         <div>
           <h4>Start Of Week</h4>
           <Checkbox
@@ -267,6 +273,21 @@ export function App(): React.ReactElement {
           >
             Today
           </Button>
+        </div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: applyCss
+              ? '<style>.arc_view-days-of-month .arc_view_cell .arc_view_cell_value{border-radius: 50%;}</style>'
+              : '<span></span>',
+          }}
+        ></div>
+        <div>
+          <Button onClick={() => setApplyCss(!applyCss)}>{applyCss ? 'Remove' : 'Apply'} this CSS</Button>
+          <pre style={{ color: 'rebeccapurple' }}>
+            {`.arc_view-days-of-month .arc_view_cell .arc_view_cell_value {
+  border-radius: 50%;
+}`}
+          </pre>
         </div>
       </div>
     </div>
