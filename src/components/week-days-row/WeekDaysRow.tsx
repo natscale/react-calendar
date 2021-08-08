@@ -1,8 +1,9 @@
 import React, { memo, useMemo } from 'react';
 
-import { WeekdayIndices, WeekdayRowProps } from '../../utils/types';
+import { WeekdayRowProps } from '../../utils/types';
 
 import { getWeekDaysIndexToLabelMapForAStartOfTheWeek } from '../../utils/date-utils';
+import { NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP } from '../../utils/constants';
 
 const weekdaysRow = {
   arc_view_weekdays: {
@@ -29,29 +30,22 @@ const weekdaysRow = {
   },
 };
 
-function WeekDaysRowComponent({ startOfWeek: weekStartIndex, weekends: weekendIndices }: WeekdayRowProps) {
+function WeekDaysRowComponent({ startOfWeek, weekendMap }: WeekdayRowProps) {
   // week days as per the start day of the week
-  const { order: weekDayOrder, map: weekDayMap } = useMemo(() => {
-    return getWeekDaysIndexToLabelMapForAStartOfTheWeek(weekStartIndex);
-  }, [weekStartIndex]);
-
-  const weekendIndicesMap: Record<WeekdayIndices, 1> = useMemo(() => {
-    return weekendIndices.reduce((acc, curr) => {
-      acc[curr] = 1;
-      return acc;
-    }, {} as Record<WeekdayIndices, 1>);
-  }, [weekendIndices]);
+  const { order: weekDayOrder } = useMemo(() => {
+    return getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfWeek);
+  }, [startOfWeek]);
 
   return (
     <ul style={weekdaysRow.arc_view_weekdays} className="arc_view_weekdays">
-      {weekDayOrder.map((weekDay, weekdayIndex) => (
+      {weekDayOrder.map((weekDay) => (
         <li
           style={weekdaysRow.arc_view_weekdays_cell}
           key={weekDay}
-          className={`arc_view_weekdays_cell${weekendIndicesMap[weekdayIndex as WeekdayIndices] ? ' arc_wknd' : ''}`}
+          className={`arc_view_weekdays_cell${weekendMap[weekDay] ? ' arc_wknd' : ''}`}
         >
           <div style={weekdaysRow.arc_view_weekdays_cell_value}>
-            <span>{weekDayMap[weekdayIndex as WeekdayIndices]}</span>
+            <span>{NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[weekDay]}</span>
           </div>
         </li>
       ))}

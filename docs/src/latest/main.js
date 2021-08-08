@@ -311,9 +311,10 @@ function getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfTheWeek) {
     var order = Object.keys(NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP)
         .slice(startOfTheWeek, 7)
         .concat(Object.keys(NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP).slice(0, startOfTheWeek));
-    var map = order.reduce(function (acc, weekdayIndex, index) {
+    var map = order.reduce(function (acc, weekdayIndex) {
         // acc[0] = DEFAULT_WEEKDAY_INDEX[3]
-        acc[Number(index)] = NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[Number(weekdayIndex)];
+        acc[Number(weekdayIndex)] =
+            NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[Number(weekdayIndex)];
         return acc;
     }, {});
     return { map: map, order: order };
@@ -387,33 +388,6 @@ function getInfluencedWeekDayIndexOnFirstDateOfMonth(year, month, startOfTheWeek
     date.setMonth(month);
     date.setFullYear(year);
     return getInfluencedWeekDayIndexAsPerAStartDay(date.getDay(), startOfTheWeek);
-}
-/**
- * Returns info about what indexes are weekend
- * @param startOfTheWeek index of the day to be considered as start of the week
- */
-function getWeekendInfo(startOfTheWeek) {
-    if (startOfTheWeek === 0) {
-        return [6, 0];
-    }
-    else if (startOfTheWeek === 1) {
-        return [5, 6];
-    }
-    else if (startOfTheWeek === 2) {
-        return [4, 5];
-    }
-    else if (startOfTheWeek === 3) {
-        return [3, 4];
-    }
-    else if (startOfTheWeek === 4) {
-        return [2, 3];
-    }
-    else if (startOfTheWeek === 5) {
-        return [1, 2];
-    }
-    else {
-        return [0, 1];
-    }
 }
 // 1 - 20 (20 years in one range block)
 // 21 - 40
@@ -499,13 +473,13 @@ function validateAndReturnDateFormatter(format) {
         return string;
     };
 }
-function checkIfWeekendHOF(weekends, startDayOfWeek) {
+function checkIfWeekendHOF(weekends) {
     var weekendMap = weekends.reduce(function (acc, curr) {
         acc[curr] = 1;
         return acc;
     }, {});
     return function checkIfWeekend(date) {
-        return weekendMap[getInfluencedWeekDayIndexAsPerAStartDay(date.getDay(), startDayOfWeek)] === 1;
+        return weekendMap[date.getDay()] === 1;
     };
 }
 function checkIfDateIsDisabledHOF(params) {
@@ -871,20 +845,14 @@ var weekdaysRow = {
     },
 };
 function WeekDaysRowComponent(_a) {
-    var weekStartIndex = _a.startOfWeek, weekendIndices = _a.weekends;
+    var startOfWeek = _a.startOfWeek, weekendMap = _a.weekendMap;
     // week days as per the start day of the week
-    var _b = useMemo(function () {
-        return getWeekDaysIndexToLabelMapForAStartOfTheWeek(weekStartIndex);
-    }, [weekStartIndex]), weekDayOrder = _b.order, weekDayMap = _b.map;
-    var weekendIndicesMap = useMemo(function () {
-        return weekendIndices.reduce(function (acc, curr) {
-            acc[curr] = 1;
-            return acc;
-        }, {});
-    }, [weekendIndices]);
-    return (React.createElement("ul", { style: weekdaysRow.arc_view_weekdays, className: "arc_view_weekdays" }, weekDayOrder.map(function (weekDay, weekdayIndex) { return (React.createElement("li", { style: weekdaysRow.arc_view_weekdays_cell, key: weekDay, className: "arc_view_weekdays_cell" + (weekendIndicesMap[weekdayIndex] ? ' arc_wknd' : '') },
+    var weekDayOrder = useMemo(function () {
+        return getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfWeek);
+    }, [startOfWeek]).order;
+    return (React.createElement("ul", { style: weekdaysRow.arc_view_weekdays, className: "arc_view_weekdays" }, weekDayOrder.map(function (weekDay) { return (React.createElement("li", { style: weekdaysRow.arc_view_weekdays_cell, key: weekDay, className: "arc_view_weekdays_cell" + (weekendMap[weekDay] ? ' arc_wknd' : '') },
         React.createElement("div", { style: weekdaysRow.arc_view_weekdays_cell_value },
-            React.createElement("span", null, weekDayMap[weekdayIndex])))); })));
+            React.createElement("span", null, NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[weekDay])))); })));
 }
 var WeekDaysRow = memo(WeekDaysRowComponent);
 
@@ -1096,7 +1064,7 @@ var getStyles = function (size, fontSize) { return ({
     },
 }); };
 function Component(_a) {
-    var size = _a.size, fontSize = _a.fontSize, isNormalView = _a.isNormalView, isMultiSelectorView = _a.isMultiSelectorView, isRangeSelectorView = _a.isRangeSelectorView, viewDate = _a.viewDate, selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedMultiDates = _a.selectedMultiDates, minAllowedDate = _a.minAllowedDate, maxAllowedDate = _a.maxAllowedDate, today = _a.today, isSecondary = _a.isSecondary, lockView = _a.lockView, startOfWeek = _a.startOfWeek, weekends = _a.weekends, isRangeSelectModeOn = _a.isRangeSelectModeOn, onChangeRangeSelectMode = _a.onChangeRangeSelectMode, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, hideAdjacentDates = _a.hideAdjacentDates, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, newSelectedRangeEnd = _a.newSelectedRangeEnd, fixedRange = _a.fixedRange, isFixedRangeView = _a.isFixedRangeView, isDisabled = _a.isDisabled, checkIfWeekend = _a.checkIfWeekend, onChange = _a.onChange, disableFuture = _a.disableFuture, disablePast = _a.disablePast, highlightsMap = _a.highlightsMap, disableToday = _a.disableToday;
+    var size = _a.size, fontSize = _a.fontSize, isNormalView = _a.isNormalView, isMultiSelectorView = _a.isMultiSelectorView, isRangeSelectorView = _a.isRangeSelectorView, viewDate = _a.viewDate, selectedDate = _a.selectedDate, selectedRangeStart = _a.selectedRangeStart, selectedMultiDates = _a.selectedMultiDates, minAllowedDate = _a.minAllowedDate, maxAllowedDate = _a.maxAllowedDate, today = _a.today, isSecondary = _a.isSecondary, lockView = _a.lockView, startOfWeek = _a.startOfWeek, weekends = _a.weekends, isRangeSelectModeOn = _a.isRangeSelectModeOn, onChangeRangeSelectMode = _a.onChangeRangeSelectMode, skipDisabledDatesInRange = _a.skipDisabledDatesInRange, hideAdjacentDates = _a.hideAdjacentDates, allowFewerDatesThanRange = _a.allowFewerDatesThanRange, selectedRangeEnd = _a.selectedRangeEnd, newSelectedRangeStart = _a.newSelectedRangeStart, onChangenNewSelectedRangeEnd = _a.onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart = _a.onChangenNewSelectedRangeStart, onPartialRangeSelect = _a.onPartialRangeSelect, onEachMultiSelect = _a.onEachMultiSelect, newSelectedRangeEnd = _a.newSelectedRangeEnd, fixedRange = _a.fixedRange, isFixedRangeView = _a.isFixedRangeView, isDisabled = _a.isDisabled, checkIfWeekend = _a.checkIfWeekend, onChange = _a.onChange, disableFuture = _a.disableFuture, weekendMap = _a.weekendMap, disablePast = _a.disablePast, highlightsMap = _a.highlightsMap, disableToday = _a.disableToday;
     var styles = useMemo(function () { return getStyles(size, fontSize); }, [size, fontSize]);
     // View States
     var _b = useState('month_dates'), view = _b[0], setView = _b[1];
@@ -1363,7 +1331,7 @@ function Component(_a) {
             view === 'months' && React.createElement(MonthSelector, { onChangeViewType: changeView, onChangeViewingMonth: changeMonthInView }),
             view === 'years' && (React.createElement(YearSelector, { onChangeViewType: changeView, onChangeViewingYear: changeYearInView, yearMatrixStart: yearMatrixRangeStart, yearMatrixEnd: yearMatrixRangeEnd })),
             view === 'month_dates' && (React.createElement(React.Fragment, null,
-                React.createElement(WeekDaysRow, { startOfWeek: startOfWeek, weekends: weekends }),
+                React.createElement(WeekDaysRow, { startOfWeek: startOfWeek, weekendMap: weekendMap }),
                 React.createElement(DayOfMonthSelector, { isRangeSelectModeOn: isRangeSelectModeOn, onChangeRangeSelectMode: onChangeRangeSelectMode, skipDisabledDatesInRange: skipDisabledDatesInRange, hideAdjacentDates: hideAdjacentDates, allowFewerDatesThanRange: allowFewerDatesThanRange, selectedDate: selectedDate, selectedRangeStart: selectedRangeStart, selectedRangeEnd: selectedRangeEnd, lockView: lockView, newSelectedRangeStart: newSelectedRangeStart, startOfWeek: startOfWeek, onChangenNewSelectedRangeEnd: onChangenNewSelectedRangeEnd, onChangenNewSelectedRangeStart: onChangenNewSelectedRangeStart, onPartialRangeSelect: onPartialRangeSelect, onEachMultiSelect: onEachMultiSelect, newSelectedRangeEnd: newSelectedRangeEnd, isRangeSelectorView: isRangeSelectorView, fixedRange: fixedRange, isFixedRangeView: isFixedRangeView, isDisabled: isDisabled, checkIfWeekend: checkIfWeekend, selectedMultiDates: selectedMultiDates, isMultiSelectorView: isMultiSelectorView, monthInView: monthInView, today: today, maxAllowedDate: maxAllowedDate, minAllowedDate: minAllowedDate, weekends: weekends, onChange: onChange, yearInView: yearInView, disableFuture: disableFuture, disablePast: disablePast, highlightsMap: highlightsMap, disableToday: disableToday }))))));
 }
 var CalendarView = memo(Component);
@@ -1413,8 +1381,8 @@ function CalendarWithRef(_a, forwardRef) {
     var weekendIndexes = useMemo(function () {
         return Array.isArray(weekends) && (weekends.every(function (num) { return typeof num === 'number'; }) || weekends.length === 0)
             ? weekends
-            : getWeekendInfo(startOfTheWeek);
-    }, [startOfTheWeek, weekends]);
+            : [6, 0];
+    }, [weekends]);
     var maxDate = useMemo(function () {
         return isValid(maxAllowedDate) ? toString(maxAllowedDate) : undefined;
     }, [maxAllowedDate]);
@@ -1450,7 +1418,13 @@ function CalendarWithRef(_a, forwardRef) {
             applyMin: applyminConstraint,
         });
     }, [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate]);
-    var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes, startOfTheWeek); }, [startOfTheWeek, weekendIndexes]);
+    var checkIfWeekend = useMemo(function () { return checkIfWeekendHOF(weekendIndexes); }, [weekendIndexes]);
+    var weekendMap = useMemo(function () {
+        return weekendIndexes.reduce(function (acc, curr) {
+            acc[curr] = 1;
+            return acc;
+        }, {});
+    }, [weekendIndexes]);
     var selectedDate = useMemo(function () { return (isNormalView && isValid(value) ? value : undefined); }, [isNormalView, value]);
     var selectedMultiDates = useMemo(function () {
         if (isMultiSelectorView && Array.isArray(value) && value.every(isValid)) {
@@ -1536,10 +1510,12 @@ function CalendarWithRef(_a, forwardRef) {
         disablePast: disablePast,
         highlightsMap: highlightsMap,
         disableToday: disableToday,
+        weekendMap: weekendMap,
     }); }, [
         allowFewerDatesThanRange,
         checkDisabledForADate,
         checkIfWeekend,
+        weekendMap,
         className,
         disableFuture,
         disablePast,

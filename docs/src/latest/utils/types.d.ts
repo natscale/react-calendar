@@ -205,6 +205,7 @@ export interface CalendarViewProps extends CommonProps {
     viewDate: string | undefined;
     maxAllowedDate: string | undefined;
     minAllowedDate: string | undefined;
+    weekendMap: Record<WeekdayIndices, 1>;
 }
 export interface DayOfMonthSelectorProps extends Pick<CalendarViewProps, 'onChangenNewSelectedRangeEnd' | 'onChangenNewSelectedRangeStart' | 'startOfWeek' | 'fixedRange' | 'selectedDate' | 'selectedRangeStart' | 'selectedRangeEnd' | 'newSelectedRangeStart' | 'newSelectedRangeEnd' | 'isRangeSelectorView' | 'isFixedRangeView' | 'weekends' | 'selectedMultiDates' | 'isMultiSelectorView' | 'isRangeSelectModeOn' | 'onChangeRangeSelectMode' | 'disableFuture' | 'disablePast' | 'disableToday' | 'hideAdjacentDates' | 'lockView' | 'highlightsMap' | 'isDisabled' | 'checkIfWeekend' | 'today' | 'onChange' | 'onPartialRangeSelect' | 'onEachMultiSelect' | 'maxAllowedDate' | 'minAllowedDate' | 'allowFewerDatesThanRange' | 'skipDisabledDatesInRange'> {
     monthInView: MonthIndices;
@@ -222,7 +223,7 @@ export interface YearSelectorProps {
 }
 export interface WeekdayRowProps {
     startOfWeek: WeekdayIndices;
-    weekends: WeekdayIndices[];
+    weekendMap: Record<WeekdayIndices, 1>;
 }
 export interface HeaderProps {
     onClickPrev: () => any;

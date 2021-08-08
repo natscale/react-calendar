@@ -239,6 +239,7 @@ export interface CalendarViewProps extends CommonProps {
   viewDate: string | undefined;
   maxAllowedDate: string | undefined;
   minAllowedDate: string | undefined;
+  weekendMap: Record<WeekdayIndices, 1>;
 }
 
 export interface DayOfMonthSelectorProps
@@ -295,7 +296,7 @@ export interface YearSelectorProps {
 
 export interface WeekdayRowProps {
   startOfWeek: WeekdayIndices;
-  weekends: WeekdayIndices[];
+  weekendMap: Record<WeekdayIndices, 1>;
 }
 
 export interface HeaderProps {

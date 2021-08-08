@@ -73,6 +73,7 @@ function Component({
   checkIfWeekend,
   onChange,
   disableFuture,
+  weekendMap,
   disablePast,
   highlightsMap,
   disableToday,
@@ -424,7 +425,7 @@ function Component({
         )}
         {view === 'month_dates' && (
           <>
-            <WeekDaysRow startOfWeek={startOfWeek} weekends={weekends} />
+            <WeekDaysRow startOfWeek={startOfWeek} weekendMap={weekendMap} />
             <DayOfMonthSelector
               isRangeSelectModeOn={isRangeSelectModeOn}
               onChangeRangeSelectMode={onChangeRangeSelectMode}

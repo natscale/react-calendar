@@ -344,9 +344,10 @@ export function getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfTheWeek = 0)
     .slice(startOfTheWeek, 7)
     .concat(Object.keys(NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP).slice(0, startOfTheWeek)) as unknown as WeekdayIndices[];
 
-  const map = order.reduce((acc, weekdayIndex, index) => {
+  const map = order.reduce((acc, weekdayIndex) => {
     // acc[0] = DEFAULT_WEEKDAY_INDEX[3]
-    acc[Number(index) as WeekdayIndices] = NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[Number(weekdayIndex) as WeekdayIndices];
+    acc[Number(weekdayIndex) as WeekdayIndices] =
+      NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[Number(weekdayIndex) as WeekdayIndices];
     return acc;
   }, {} as Record<WeekdayIndices, string>);
 
@@ -435,28 +436,6 @@ function getInfluencedWeekDayIndexOnFirstDateOfMonth(
   date.setMonth(month);
   date.setFullYear(year);
   return getInfluencedWeekDayIndexAsPerAStartDay(date.getDay(), startOfTheWeek) as WeekdayIndices;
-}
-
-/**
- * Returns info about what indexes are weekend
- * @param startOfTheWeek index of the day to be considered as start of the week
- */
-export function getWeekendInfo(startOfTheWeek: WeekdayIndices): WeekdayIndices[] {
-  if (startOfTheWeek === 0) {
-    return [6, 0];
-  } else if (startOfTheWeek === 1) {
-    return [5, 6];
-  } else if (startOfTheWeek === 2) {
-    return [4, 5];
-  } else if (startOfTheWeek === 3) {
-    return [3, 4];
-  } else if (startOfTheWeek === 4) {
-    return [2, 3];
-  } else if (startOfTheWeek === 5) {
-    return [1, 2];
-  } else {
-    return [0, 1];
-  }
 }
 
 // 1 - 20 (20 years in one range block)
@@ -551,13 +530,13 @@ export function validateAndReturnDateFormatter(format: string): (date: Date, sep
   };
 }
 
-export function checkIfWeekendHOF(weekends: WeekdayIndices[], startDayOfWeek: WeekdayIndices): (date: Date) => boolean {
+export function checkIfWeekendHOF(weekends: WeekdayIndices[]): (date: Date) => boolean {
   const weekendMap = weekends.reduce((acc, curr) => {
     acc[curr] = 1;
     return acc;
   }, {} as Record<WeekdayIndices, 1>);
   return function checkIfWeekend(date: Date) {
-    return weekendMap[getInfluencedWeekDayIndexAsPerAStartDay(date.getDay(), startDayOfWeek)] === 1;
+    return weekendMap[date.getDay() as WeekdayIndices] === 1;
   };
 }
 

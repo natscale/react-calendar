@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useMemo, useState } from 'react';
 
-import type { CalendarProps, CalendarViewProps } from '../../utils/types';
+import type { CalendarProps, CalendarViewProps, WeekdayIndices } from '../../utils/types';
 
 import {
-  getWeekendInfo,
   isValid,
   isBefore,
   toString,
@@ -77,11 +76,11 @@ function CalendarWithRef(
     return {};
   }, [highlights]);
 
-  const weekendIndexes = useMemo(() => {
+  const weekendIndexes = useMemo<WeekdayIndices[]>(() => {
     return Array.isArray(weekends) && (weekends.every((num) => typeof num === 'number') || weekends.length === 0)
       ? weekends
-      : getWeekendInfo(startOfTheWeek);
-  }, [startOfTheWeek, weekends]);
+      : [6, 0];
+  }, [weekends]);
 
   const maxDate = useMemo(() => {
     return isValid(maxAllowedDate) ? toString(maxAllowedDate) : undefined;
@@ -126,10 +125,14 @@ function CalendarWithRef(
     [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate],
   );
 
-  const checkIfWeekend = useMemo(
-    () => checkIfWeekendHOF(weekendIndexes, startOfTheWeek),
-    [startOfTheWeek, weekendIndexes],
-  );
+  const checkIfWeekend = useMemo(() => checkIfWeekendHOF(weekendIndexes), [weekendIndexes]);
+
+  const weekendMap: Record<WeekdayIndices, 1> = useMemo(() => {
+    return weekendIndexes.reduce((acc, curr) => {
+      acc[curr] = 1;
+      return acc;
+    }, {} as Record<WeekdayIndices, 1>);
+  }, [weekendIndexes]);
 
   const selectedDate = useMemo(
     () => (isNormalView && isValid(value as Date) ? (value as Date) : undefined),
@@ -224,11 +227,13 @@ function CalendarWithRef(
       disablePast: disablePast,
       highlightsMap: highlightsMap,
       disableToday: disableToday,
+      weekendMap: weekendMap,
     }),
     [
       allowFewerDatesThanRange,
       checkDisabledForADate,
       checkIfWeekend,
+      weekendMap,
       className,
       disableFuture,
       disablePast,

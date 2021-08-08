@@ -65,11 +65,6 @@ export declare function getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfTheW
     map: Record<WeekdayIndices, string>;
     order: WeekdayIndices[];
 };
-/**
- * Returns info about what indexes are weekend
- * @param startOfTheWeek index of the day to be considered as start of the week
- */
-export declare function getWeekendInfo(startOfTheWeek: WeekdayIndices): WeekdayIndices[];
 export declare function getStartOfRangeForAYear(year: number): number;
 /**
  * Returns matrix for the month select view.
@@ -81,6 +76,6 @@ export declare function getNextRangeStartingYear(rangeStartYear: number): number
 export declare function getYearRangeLimits(rangeStartYear: number): [number, number];
 export declare function getYearsViewMetrix(rangeStartYear: number, selectedYearMap: Record<number, 1>): Array<YearCell>[];
 export declare function validateAndReturnDateFormatter(format: string): (date: Date, separator: string) => string | undefined;
-export declare function checkIfWeekendHOF(weekends: WeekdayIndices[], startDayOfWeek: WeekdayIndices): (date: Date) => boolean;
+export declare function checkIfWeekendHOF(weekends: WeekdayIndices[]): (date: Date) => boolean;
 export declare function checkIfDateIsDisabledHOF(params: CheckIfDateIsDisabledHOFParams): (date: Date) => boolean;
 export declare function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams): Array<DayOfMonthCell>[];
