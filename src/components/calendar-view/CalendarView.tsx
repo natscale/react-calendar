@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import type { MonthIndices, CSSProps, CalendarViewProps } from '../../utils/types';
 
@@ -71,6 +71,7 @@ function Component({
   isDisabled,
   checkIfWeekend,
   onChange,
+  showDualCalendar,
   disableFuture,
   weekendMap,
   disablePast,
@@ -82,37 +83,49 @@ function Component({
   // View States
   const [view, setView] = useState<'years' | 'months' | 'month_dates'>('month_dates');
 
-  const [monthInView, setMonthInView] = useState<MonthIndices>(() => {
-    const val = getAttrInViewFromDate({
-      isNormalView: isNormalView,
-      isMultiSelectorView: isMultiSelectorView,
-      isRangeSelectorView: isRangeSelectorView,
-      selectedDate: selectedDate,
-      selectedRangeStart: selectedRangeStart,
-      selectedMultiDates: selectedMultiDates,
-      viewDate: viewDate ? fromString(viewDate) : undefined,
-      minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
-      maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
-      isSecondary: isSecondary,
-    }).month;
-
-    return val;
-  });
-
-  const [yearInView, setYearInView] = useState(
-    getAttrInViewFromDate({
-      isNormalView: isNormalView,
-      isMultiSelectorView: isMultiSelectorView,
-      isRangeSelectorView: isRangeSelectorView,
-      selectedDate: selectedDate,
-      selectedRangeStart: selectedRangeStart,
-      selectedMultiDates: selectedMultiDates,
-      viewDate: viewDate ? fromString(viewDate) : undefined,
-      minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
-      maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
-      isSecondary: isSecondary,
-    }).year,
+  // This just tries to find a month to show based on a number
+  // of factors for the initial render only
+  const [monthInView, setMonthInView] = useState<MonthIndices>(
+    () =>
+      getDateToShow({
+        isNormalView: isNormalView,
+        isMultiSelectorView: isMultiSelectorView,
+        isRangeSelectorView: isRangeSelectorView,
+        selectedDate: selectedDate,
+        selectedRangeStart: selectedRangeStart,
+        selectedMultiDates: selectedMultiDates,
+        viewDate: viewDate ? fromString(viewDate) : undefined,
+        minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
+        maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
+      }).getMonth() as MonthIndices,
   );
+
+  // This just tries to find a year to show based on a number
+  // of factors for the initial render only
+  const [yearInView, setYearInView] = useState(
+    getDateToShow({
+      isNormalView: isNormalView,
+      isMultiSelectorView: isMultiSelectorView,
+      isRangeSelectorView: isRangeSelectorView,
+      selectedDate: selectedDate,
+      selectedRangeStart: selectedRangeStart,
+      selectedMultiDates: selectedMultiDates,
+      viewDate: viewDate ? fromString(viewDate) : undefined,
+      minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
+      maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
+    }).getFullYear(),
+  );
+
+  useLayoutEffect(() => {
+    if (showDualCalendar && isSecondary) {
+      const nextMonth = getNextMonth(monthInView);
+      setMonthInView(nextMonth);
+      setYearInView(nextMonth === 0 ? getNextYear(yearInView) : yearInView);
+    }
+    // we are intentionally missing monthInView and yearInView deps
+    // because we only want to auto compute secondary month when the props were changed the first time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showDualCalendar, isSecondary]);
 
   // updating view because view prop change
   useEffect(() => {
@@ -467,7 +480,7 @@ function Component({
 
 export const CalendarView = memo(Component);
 
-function getAttrInViewFromDate(props: AttrFromDateParams): { month: MonthIndices; year: number } {
+function getDateToShow(props: AttrFromDateParams): Date {
   const firstOfMulti =
     props.isMultiSelectorView &&
     props.selectedMultiDates &&
@@ -486,7 +499,8 @@ function getAttrInViewFromDate(props: AttrFromDateParams): { month: MonthIndices
     : isValid(props.maxAllowedDate)
     ? props.maxAllowedDate
     : new Date();
-  return { month: date.getMonth() as MonthIndices, year: date.getFullYear() };
+
+  return date;
 }
 
 interface AttrFromDateParams {
@@ -499,5 +513,4 @@ interface AttrFromDateParams {
   selectedMultiDates?: Record<string, Date | undefined>;
   minAllowedDate?: Date;
   maxAllowedDate?: Date;
-  isSecondary: boolean;
 }
