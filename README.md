@@ -2,11 +2,11 @@
 
 A no dependencies, `lightweight` and feature-rich ⚡ calendar component for react.
 
-> Note - The library is still under active development so the API might change before the first stable release. We do not recommend to use it in production.
+> Note - The library is still under active development so the API might change before the first stable release. We do not recommend to use it in production yet.
 
 [See Online Demo](https://natscale.github.io/react-calendar/)
 
-> The demo page above is just a test page to be able to share the development progress with other people while it's in the beta phase. We are working on an official website for it.
+> The link above is a test page to be able to share the development progress with other people while it's in the beta phase. We are working on an official website for it.
 
 ## :books: Table of Contents
 
