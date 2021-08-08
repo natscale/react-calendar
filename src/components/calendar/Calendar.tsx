@@ -53,8 +53,6 @@ function CalendarWithRef(
   }: CalendarProps,
   forwardRef: React.Ref<HTMLDivElement>,
 ): React.ReactElement<CalendarProps> {
-  const [today] = useState(new Date());
-
   const isRangeSelectorView = !!isRangeSelector;
   const isDualMode = isRangeSelectorView && !!showDualCalendar;
   const isMultiSelectorView = !isRangeSelectorView && !!isMultiSelector;
@@ -219,7 +217,6 @@ function CalendarWithRef(
       checkIfWeekend: checkIfWeekend,
       selectedMultiDates: selectedMultiDates,
       isMultiSelectorView: isMultiSelectorView,
-      today: today,
       maxAllowedDate: maxDate,
       minAllowedDate: minDate,
       onChange: onChange,
@@ -264,7 +261,6 @@ function CalendarWithRef(
       size,
       skipDisabledDatesInRange,
       startOfTheWeek,
-      today,
       useDarkMode,
       weekendIndexes,
     ],

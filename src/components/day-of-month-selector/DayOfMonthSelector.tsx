@@ -38,7 +38,6 @@ function DayOfMonthSelectorComponent({
   isDisabled,
   selectedMultiDates,
   isMultiSelectorView,
-  today,
   monthInView: viewingMonth,
   hideAdjacentDates,
   onChangenNewSelectedRangeEnd,
@@ -157,7 +156,7 @@ function DayOfMonthSelectorComponent({
           upperLimit: lockView
             ? new Date(clickedDate.getFullYear(), clickedDate.getMonth() + 1, 1)
             : disableFuture
-            ? getNextDate(today)
+            ? getNextDate(new Date())
             : undefined,
         });
 
@@ -208,7 +207,6 @@ function DayOfMonthSelectorComponent({
       isDisabled,
       skipDisabledDatesInRange,
       disableFuture,
-      today,
       allowFewerDatesThanRange,
       selectedMultiDates,
       onEachMultiSelect,

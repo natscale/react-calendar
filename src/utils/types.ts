@@ -233,7 +233,6 @@ export interface CalendarViewProps extends CommonProps {
   selectedRangeEnd: Date | undefined;
   newSelectedRangeStart: Date | undefined;
   newSelectedRangeEnd: Date | undefined;
-  today: Date;
   selectedMultiDates: Record<string, Date | undefined>;
   highlightsMap: Record<string, 1>;
   viewDate: string | undefined;
@@ -269,7 +268,6 @@ export interface DayOfMonthSelectorProps
     | 'highlightsMap'
     | 'isDisabled'
     | 'checkIfWeekend'
-    | 'today'
     | 'onChange'
     | 'onPartialRangeSelect'
     | 'onEachMultiSelect'

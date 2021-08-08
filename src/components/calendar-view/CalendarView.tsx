@@ -50,7 +50,6 @@ function Component({
   selectedMultiDates,
   minAllowedDate,
   maxAllowedDate,
-  today,
   isSecondary,
   lockView,
   startOfWeek,
@@ -94,7 +93,6 @@ function Component({
       viewDate: viewDate ? fromString(viewDate) : undefined,
       minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
       maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
-      today: today,
       isSecondary: isSecondary,
     }).month;
 
@@ -112,7 +110,6 @@ function Component({
       viewDate: viewDate ? fromString(viewDate) : undefined,
       minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
       maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
-      today: today,
       isSecondary: isSecondary,
     }).year,
   );
@@ -451,7 +448,6 @@ function Component({
               selectedMultiDates={selectedMultiDates}
               isMultiSelectorView={isMultiSelectorView}
               monthInView={monthInView}
-              today={today}
               maxAllowedDate={maxAllowedDate}
               minAllowedDate={minAllowedDate}
               weekends={weekends}
@@ -489,7 +485,7 @@ function getAttrInViewFromDate(props: AttrFromDateParams): { month: MonthIndices
     ? props.minAllowedDate
     : isValid(props.maxAllowedDate)
     ? props.maxAllowedDate
-    : props.today;
+    : new Date();
   return { month: date.getMonth() as MonthIndices, year: date.getFullYear() };
 }
 
@@ -503,6 +499,5 @@ interface AttrFromDateParams {
   selectedMultiDates?: Record<string, Date | undefined>;
   minAllowedDate?: Date;
   maxAllowedDate?: Date;
-  today: Date;
   isSecondary: boolean;
 }
