@@ -1399,9 +1399,6 @@ function CalendarWithRef(_a, forwardRef) {
     var isNormalView = !isRangeSelectorView && !isMultiSelectorView;
     var startOfTheWeek = startOfWeek;
     var fixedRangeLength = isFixedRangeView ? fixedRange : 1;
-    if (isNormalView && Array.isArray(value)) {
-        throw new Error('`value` should an instance of the Date class. Provided value is an Array.');
-    }
     var highlightsMap = useMemo(function () {
         if (Array.isArray(highlights)) {
             return highlights

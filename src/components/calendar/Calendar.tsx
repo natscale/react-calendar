@@ -65,10 +65,6 @@ function CalendarWithRef(
   const startOfTheWeek = startOfWeek;
   const fixedRangeLength = isFixedRangeView ? (fixedRange as number) : 1;
 
-  if (isNormalView && Array.isArray(value)) {
-    throw new Error('`value` should an instance of the Date class. Provided value is an Array.');
-  }
-
   const highlightsMap = useMemo<Record<string, 1>>(() => {
     if (Array.isArray(highlights)) {
       return highlights
