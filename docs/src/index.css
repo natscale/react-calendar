@@ -71,14 +71,26 @@ code {
 
 .view {
   padding: 12px;
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.props {
+.props_root {
   padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .props div + div {
   margin-top: 16px;
+}
+
+.props + .props {
+  margin-left: 16px;
 }
 
 .checkbox + .checkbox {
