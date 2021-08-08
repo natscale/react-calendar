@@ -337,17 +337,17 @@
   background-color: var(--arc-color-bg-disabled);
 }
 
-.arc_view-days-of-month .arc_view_cell.arc_disabled button {
+.arc_view-days-of-month .arc_view_cell.arc_disabled .arc_view_cell_value button {
   color: var(--arc-color-text-disabled);
   cursor: none;
   pointer-events: none;
 }
 
-.arc_view-days-of-month .arc_view_cell.arc_disabled.arc_wknd button {
+.arc_view-days-of-month .arc_view_cell.arc_disabled.arc_wknd .arc_view_cell_value button {
   color: var(--arc-color-text-disabled-weekend);
 }
 
-.arc_view-days-of-month .arc_view_cell.arc_disabled button::before {
+.arc_view-days-of-month .arc_view_cell.arc_disabled .arc_view_cell_value button::before {
   content: '';
   position: absolute;
   top: 15%;

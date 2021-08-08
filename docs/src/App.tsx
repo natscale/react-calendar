@@ -45,7 +45,7 @@ export function App(): React.ReactElement {
     maxAllowedDate: undefined,
   } as any);
 
-  const [value, setValue] = useState<Date>(new Date(2021, 6, 22));
+  const [value, setValue] = useState<Date>(new Date());
 
   const onChange = useCallback(
     (val) => {
