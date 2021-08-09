@@ -92,8 +92,6 @@ export function App(): React.ReactElement {
     [setNine],
   );
 
-  useEffect(() => console.log('nine is: ', nine), [nine]);
-
   const [ten, setTen] = useState<object>({});
 
   const onChangeTen = useCallback(
@@ -181,9 +179,7 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <CalendarWithShortcuts>
-              <Calendar onChange={onChangenine} shortcutButtons={newShortcutButtons} />
-            </CalendarWithShortcuts>
+            <CalendarWithShortcuts onChange={onChangenine} shortcutButtons={newShortcutButtons} />
           </div>
         </div>
       </div>
@@ -193,9 +189,12 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <CalendarWithShortcuts>
-              <Calendar onChange={onChangenine} shortcutButtons={newShortcutButtons} isRangeSelector />
-            </CalendarWithShortcuts>
+            <CalendarWithShortcuts
+              onChange={onChangenine}
+              shortcutButtons={newShortcutButtons}
+              isRangeSelector
+              value={[new Date(2021, 0, 22), new Date(2021, 1, 10)]}
+            />
           </div>
         </div>
       </div>
@@ -205,14 +204,12 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <CalendarWithShortcuts>
-              <Calendar
-                value={[new Date(2021, 6, 22), new Date(2021, 7, 25), new Date(2021, 8, 9)]}
-                isMultiSelector
-                disableToday
-                onChange={onChangeone}
-              />
-            </CalendarWithShortcuts>
+            <CalendarWithShortcuts
+              value={[new Date(2021, 9, 22), new Date(2021, 10, 25), new Date(2021, 11, 9)]}
+              isMultiSelector
+              disableToday
+              onChange={onChangeone}
+            />
           </div>
         </div>
       </div>
@@ -222,7 +219,7 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <Calendar onChange={onChangenine} shortcutButtons={newShortcutButtons} />
+            <Calendar onChange={onChangenine} />
           </div>
         </div>
       </div>

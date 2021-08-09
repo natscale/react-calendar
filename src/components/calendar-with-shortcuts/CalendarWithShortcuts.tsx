@@ -3,10 +3,7 @@ import { CalendarProps } from '../../utils/types';
 import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
 import { isValid } from '../../utils/date-utils';
 import { ShortcutButtonModel } from '../shortuct-bar/ShortcutButtonModel';
-
-interface Props {
-  children: React.ReactElement<CalendarProps>;
-}
+import Calendar from '../calendar/Calendar';
 
 const styles = {
   root: {
@@ -14,58 +11,67 @@ const styles = {
   },
 };
 
-function CalendarWithShortcutsRef({ children }: Props, ref: React.Ref<HTMLDivElement>) {
-  const calendarComp = React.Children.only(children);
-  const onCalendarChange = useCallback(
-    (val) => {
-      calendarComp.props.isMultiSelector
-        ? setMultiDates(val)
-        : calendarComp.props.isRangeSelector
-        ? updateRangeDates(val)
-        : setSelectedDate(val);
-    },
-    [calendarComp],
-  );
-
-  const [newProps, setNewProps] = useState<CalendarProps>({ ...calendarComp.props, onChange: onCalendarChange });
-
-  const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
+function CalendarWithShortcutsRef(props: CalendarProps, ref: React.Ref<HTMLDivElement>) {
   const [highlightedDate, setHighlightedDate] = useState<Date | undefined>(undefined);
+  const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [rangeStart, setRangeStart] = useState<Date | undefined>(undefined);
   const [rangeEnd, setRangeEnd] = useState<Date | undefined>(undefined);
   const [multiDates, setMultiDates] = useState<Record<string, Date | undefined> | undefined>(undefined);
+
+  const [viewDate, setViewDate] = useState<Date | undefined>(undefined);
+  const [newProps, setNewProps] = useState<CalendarProps>(props);
+  const resetHighlightedDate = useCallback(() => setHighlightedDate(undefined), [setHighlightedDate]);
 
   const updateRangeDates = (val: Date[]) => {
     setRangeStart(val[0]);
     setRangeEnd(val[1]);
   };
 
+  const updateSelectedDates = useCallback(
+    (val) => {
+      props.isMultiSelector && typeof Array.isArray(val) && isValid(val[0])
+        ? setMultiDates(val)
+        : props.isRangeSelector && Array.isArray(val) && isValid(val[0])
+        ? updateRangeDates(val)
+        : isValid(val as Date)
+        ? setSelectedDate(val)
+        : () => 0;
+    },
+    [props.isMultiSelector, props.isRangeSelector],
+  );
+
+  const onCalendarChange = useCallback(
+    (val) => {
+      updateSelectedDates(val);
+      resetHighlightedDate();
+      if (props.onChange) {
+        props.onChange(val);
+      }
+    },
+    [props, resetHighlightedDate, updateSelectedDates],
+  );
+
   const updateDateView = useCallback(
     (date: Date | undefined) => {
       if (isValid(date)) {
-        console.log('updateDateView');
-        setNewProps({ ...newProps, viewDate: date });
-        setHighlightedDate(date);
+        setViewDate(date);
       }
     },
-    [newProps, setHighlightedDate],
+    [setViewDate],
   );
 
-  useEffect(() => console.log('newProps are:', newProps), [newProps]);
-  useEffect(() => console.log('selectedDate is:', selectedDate), [selectedDate]);
-  useEffect(() => console.log('rangeStart is:', rangeStart), [rangeStart]);
-  useEffect(() => console.log('rangeEnd is:', rangeEnd), [rangeEnd]);
-  useEffect(() => console.log('multiDates is:', multiDates), [multiDates]);
+  useEffect(() => {
+    setNewProps({ ...props, viewDate: viewDate });
+    setHighlightedDate(viewDate);
+  }, [props, viewDate]);
 
-  const resetHighlightedDate = useCallback(() => setHighlightedDate(undefined), [setHighlightedDate]);
-  const [today] = useState(new Date());
-  const goToToday = useCallback(() => updateDateView(today), [today, updateDateView]);
+  const goToToday = useCallback(() => updateDateView(new Date()), [updateDateView]);
   const goToRangeStart = useCallback(() => updateDateView(rangeStart), [rangeStart, updateDateView]);
   const goToRangeEnd = useCallback(() => updateDateView(rangeEnd), [rangeEnd, updateDateView]);
   const toggleDate = useCallback(() => {
     let updateVal;
-    if (newProps.isMultiSelector && multiDates) {
+    if (props.isMultiSelector && multiDates) {
       const values = Object.values(multiDates).sort((a, b) =>
         isValid(a) && isValid(b) ? a.getTime() - b.getTime() : 0,
       );
@@ -75,7 +81,7 @@ function CalendarWithShortcutsRef({ children }: Props, ref: React.Ref<HTMLDivEle
       updateVal = selectedDate;
     }
     updateDateView(updateVal);
-  }, [multiDates, newProps, selectedDate, toggleDateIndex, updateDateView]);
+  }, [props.isMultiSelector, multiDates, selectedDate, toggleDateIndex, updateDateView]);
 
   const toggleDateOnBlur = useCallback(() => {
     resetHighlightedDate();
@@ -92,7 +98,7 @@ function CalendarWithShortcutsRef({ children }: Props, ref: React.Ref<HTMLDivEle
         buttonText: 'Selected Date',
         viewTypes: ['Normal', 'Multiple'],
         onButtonClick: toggleDate,
-        onBlur: toggleDateOnBlur,
+        // onBlur: toggleDateOnBlur,
       },
       {
         buttonText: 'Range Start',
@@ -105,21 +111,27 @@ function CalendarWithShortcutsRef({ children }: Props, ref: React.Ref<HTMLDivEle
         onButtonClick: goToRangeEnd,
       },
     ],
-    [goToRangeEnd, goToRangeStart, goToToday, toggleDate, toggleDateOnBlur],
+    [goToRangeEnd, goToRangeStart, goToToday, toggleDate],
   );
 
-  const viewType = newProps.isMultiSelector ? 'Multiple' : newProps.isRangeSelector ? 'Range' : 'Normal';
+  const viewType = props.isMultiSelector ? 'Multiple' : props.isRangeSelector ? 'Range' : 'Normal';
+
+  useEffect(
+    () => updateSelectedDates(props.value),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
-    <div ref={ref} style={styles.root} className="arc_shortcut_cal_root">
-      <ShortcutBar
-        barSize={276}
-        shortcutButtons={defaultShortcutButtons}
-        viewType={viewType}
-        updateView={updateDateView}
-        onBlurDefault={resetHighlightedDate}
+    <div ref={ref} style={styles.root} className="arc_shortcut_cal_root" onBlur={() => resetHighlightedDate()}>
+      <ShortcutBar shortcutButtons={defaultShortcutButtons} viewType={viewType} updateView={updateDateView} />
+      <Calendar
+        {...{
+          ...newProps,
+          onChange: onCalendarChange,
+          highlightedDate: highlightedDate,
+        }}
       />
-      {React.cloneElement(calendarComp, newProps)}
     </div>
   );
 }

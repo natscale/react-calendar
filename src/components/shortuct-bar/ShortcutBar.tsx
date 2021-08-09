@@ -4,18 +4,15 @@ import { ShortcutButtonModel } from './ShortcutButtonModel';
 
 interface Props {
   viewType: string;
-  barSize: number;
   shortcutButtons?: Array<ShortcutButtonModel>;
   updateView: (date: Date | undefined) => void;
-  onBlurDefault: () => void;
 }
 
-const getShortcutStyles = (size: number) => ({
+const getShortcutStyles = () => ({
   root: {
     display: 'flex',
     padding: '2%',
     gap: '1rem',
-    height: `${size}px`,
     alignItems: 'center',
     flexDirection: 'column' as const,
     overflow: 'auto',
@@ -23,8 +20,8 @@ const getShortcutStyles = (size: number) => ({
   },
 });
 
-function ShortcutBarComponent({ viewType, barSize, shortcutButtons, updateView, onBlurDefault }: Props) {
-  const shortcut = getShortcutStyles(barSize);
+function ShortcutBarComponent({ viewType, shortcutButtons, updateView }: Props) {
+  const shortcut = getShortcutStyles();
   const onButtonClick = (btn: ShortcutButtonModel) => {
     btn.goToDate ? updateView(btn.goToDate) : btn.onButtonClick ? btn.onButtonClick() : () => 0;
   };
@@ -36,12 +33,7 @@ function ShortcutBarComponent({ viewType, barSize, shortcutButtons, updateView, 
           {
             if (!btn.viewTypes || btn.viewTypes.find((type) => type === viewType)) {
               return (
-                <ShortcutButton
-                  key={index}
-                  buttonText={btn.buttonText}
-                  onButtonClick={() => onButtonClick(btn)}
-                  onBlur={btn.onBlur ? btn.onBlur : onBlurDefault}
-                />
+                <ShortcutButton key={index} buttonText={btn.buttonText} onButtonClick={() => onButtonClick(btn)} />
               );
             }
           }

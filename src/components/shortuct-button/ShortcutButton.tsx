@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 interface Props {
   buttonText: string;
   onButtonClick: () => void;
-  onBlur: () => void;
 }
 
 const shortcut = {
@@ -13,9 +12,9 @@ const shortcut = {
   },
 };
 
-function ShortcutButtonComponent({ buttonText, onButtonClick, onBlur }: Props) {
+function ShortcutButtonComponent({ buttonText, onButtonClick }: Props) {
   return (
-    <button style={shortcut.root} className="arc_shortcut_button" onClick={onButtonClick} onBlur={onBlur}>
+    <button style={shortcut.root} className="arc_shortcut_button" onClick={onButtonClick}>
       {buttonText}
     </button>
   );

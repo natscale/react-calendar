@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { createRef, memo, useEffect, useRef } from 'react';
 
 import { DayOfMonthCell } from '../calendar/Calendar';
 
@@ -40,11 +40,19 @@ function Component({ isHighlighted, cell, onDateClicked }: Props) {
     isHighlighted ? arc_view_cell_value_button_focused : undefined,
   ) as React.CSSProperties;
 
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  if (isHighlighted) {
+    buttonRef.current && buttonRef.current.focus();
+  } else {
+    buttonRef.current && buttonRef.current.blur();
+  }
+
   return (
     <div style={arc_view_cell}>
       <div style={arc_view_cell_value} className="arc_view_cell_value">
         <button
-          style={computedButtonStyle}
+          // ref={buttonRef}
+          style={arc_view_cell_value_button}
           disabled={cell.isDisabled}
           tabIndex={cell.isDisabled ? -1 : 0}
           onClick={() => onDateClicked(cell)}

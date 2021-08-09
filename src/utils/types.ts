@@ -200,5 +200,5 @@ export interface CalendarProps {
 
   shortcutButtons?: Array<ShortcutButtonModel>;
 
-  // highlightedDate?: Date;
+  highlightedDate?: Date;
 }

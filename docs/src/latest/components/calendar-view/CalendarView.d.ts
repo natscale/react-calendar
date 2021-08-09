@@ -47,6 +47,7 @@ declare type CalendarViewProps = {
     onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
     value?: Value;
     isNormalView: boolean;
+    highlightedDate: Date | undefined;
 };
 export default function Calendarview(props: CalendarViewProps): React.ReactElement<CalendarViewProps>;
 export {};

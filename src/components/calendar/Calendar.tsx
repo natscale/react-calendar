@@ -51,6 +51,7 @@ function CalendarWithRef(
     disableToday = false,
     showDualCalendar = false,
     hideAdjacentDates = false,
+    highlightedDate,
   }: CalendarProps,
   forwardRef: React.Ref<HTMLDivElement>,
 ): React.ReactElement<CalendarProps> {
@@ -239,6 +240,7 @@ function CalendarWithRef(
       disablePast: disablePast,
       highlights: highlights,
       disableToday: disableToday,
+      highlightedDate: highlightedDate,
     }),
     [
       allowFewerDatesThanRange,
@@ -279,6 +281,7 @@ function CalendarWithRef(
       useDarkMode,
       value,
       weekendIndexes,
+      highlightedDate,
     ],
   );
 

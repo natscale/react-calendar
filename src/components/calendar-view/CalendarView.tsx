@@ -68,6 +68,7 @@ type CalendarViewProps = {
   onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
   value?: Value;
   isNormalView: boolean;
+  highlightedDate: Date | undefined;
 };
 
 const bodyStyles = { height: '88%', width: '100%' };
@@ -416,7 +417,7 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
           <>
             <WeekDaysRow weekStartIndex={props.weekStartIndex} weekendIndices={props.weekendIndices} />
             <DayOfMonthSelector
-              highlightedDate={undefined}
+              highlightedDate={props.highlightedDate}
               isRangeSelectModeOn={props.isRangeSelectModeOn}
               setIsRangeSelectModeOn={props.setIsRangeSelectModeOn}
               skipDisabledDatesInRange={props.skipDisabledDatesInRange}
