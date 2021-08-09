@@ -324,7 +324,7 @@ export function App(): React.ReactElement {
             <Checkbox
               onChange={() => setTheme(theme !== 'brown' ? 'brown' : 'normal')}
               checked={theme === 'brown'}
-              label="Violet"
+              label="Brown"
             />
             <pre style={{ color: 'teal' }}>
               {`.rc_root.green {
