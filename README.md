@@ -2,13 +2,11 @@
 
 A no dependencies, `lightweight` and feature-rich ⚡ calendar component for react.
 
-> Note - The library is still under active development so the API might change before the first stable release. We do not recommend to use it in production.
-
-![Calendar View 1](docs/images/view-1.png)
+> Note - The library is still under active development so the API might change before the first stable release. We do not recommend to use it in production yet.
 
 [See Online Demo](https://natscale.github.io/react-calendar/)
 
-> The demo page above is just a test page to be able to share the development progress with other people while it's in the beta phase. We are working on an official website for it.
+> The link above is a test page to be able to share the development progress with other people while it's in the beta phase. We are working on an official website for it.
 
 ## :books: Table of Contents
 
@@ -25,10 +23,11 @@ A no dependencies, `lightweight` and feature-rich ⚡ calendar component for rea
 - 🗓 **Multiple Dates**
 - 🗓 **Highlight Custom Dates**
 - 🗓 **Disable Custom Dates**
+- 🗓🗓 **Dual Calendar**
 - 🦄 **Easy to Theme**
 - ✅ **No Dependencies**
 - 💻 **SSR Compatible**
-- 🔩 **Easily Customizable**
+- 🔩 **Lots of Very Easy Customizations**
 - 🕊 **Lightweight** - _less than 20kb_
 
 ## :package: Installation

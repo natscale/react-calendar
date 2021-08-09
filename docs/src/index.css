@@ -48,24 +48,47 @@ code {
   cursor: pointer;
 }
 
-.arc_root {
+.rc_root {
   margin-bottom: 16px;
 }
 
-.arc_root.green {
-  --arc-color-accent: #9fbb06;
-  --arc-color-accent-light: #ddea99;
-  --arc-color-accent-lighter: #f6f8e7;
+.rc_root.green {
+  --rc-hsl-primary-hue: 160deg;
 }
 
-.arc_root.brown {
-  --arc-color-accent: #bb6a06;
-  --arc-color-accent-light: #e8c498;
-  --arc-color-accent-lighter: #f8f0e5;
+.rc_root.brown {
+  --rc-hsl-primary-hue: 388deg;
 }
 
-.arc_root.violet {
-  --arc-color-primary: #8755ff;
-  --arc-color-primary-light: #e1c2f9;
-  --arc-color-primary-lighter: #f9ecff;
+.demo {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.view {
+  padding: 12px;
+  flex: 1 1 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.props_root {
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.props div + div {
+  margin-top: 16px;
+}
+
+.props + .props {
+  margin-left: 16px;
+}
+
+.checkbox + .checkbox {
+  margin-left: 4px;
 }

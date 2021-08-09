@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import type { MonthIndices, CSSProps, WeekdayIndices, Value } from '../../utils/types';
+import type { MonthIndices, CSSProps, CalendarViewProps } from '../../utils/types';
 
 import {
   getStartOfRangeForAYear,
@@ -13,6 +13,7 @@ import {
   getNextRangeStartingYear,
   getYearRangeLimits,
   isValid,
+  fromString,
 } from '../../utils/date-utils';
 
 import { Header } from '../header/Header';
@@ -21,61 +22,11 @@ import { YearSelector } from '../year-selector/YearSelector';
 import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
 import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
 
-type CalendarViewProps = {
-  viewDate: Date | undefined;
-  className: string;
-  isDualMode: boolean;
-  useDarkMode: boolean;
-  hideAdjacentDates: boolean;
-  isSecondary: boolean;
-  size: number;
-  fontSize: number;
-  onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
-  onChangenSelectedRangeStart: (date: Date | undefined) => unknown;
-  onChangenSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenSelectedMultiDates: (dates: Record<string, Date | undefined>) => unknown;
-  onChangenSelectedDate: (dates: Date) => unknown;
-  allowFewerDatesThanRange: boolean;
-  skipDisabledDatesInRange: boolean;
-  skipWeekendsInRange: boolean;
-  weekStartIndex: WeekdayIndices;
-  fixedRangeLength: number;
-  selectedDate: Date | undefined;
-  selectedRangeStart: Date | undefined;
-  selectedRangeEnd: Date | undefined;
-  newSelectedRangeStart: Date | undefined;
-  newSelectedRangeEnd: Date | undefined;
-  isRangeSelectorView: boolean;
-  isFixedRangeView: boolean;
-  weekendIndices: WeekdayIndices[];
-  selectedMultiDates: Record<string, Date | undefined>;
-  isMultiSelectorView: boolean;
-  isRangeSelectModeOn: boolean;
-  setIsRangeSelectModeOn: (on: boolean) => void;
-  disableFuture: boolean;
-  disablePast: boolean;
-  disableToday: boolean;
-  lockView: boolean;
-  maxAllowedDate?: Date;
-  minAllowedDate?: Date;
-  highlights: Date[];
-  isDisabled: (date: Date) => boolean;
-  checkIfWeekend: (date: Date) => boolean;
-  today: Date;
-  onChange?: (value: Value) => unknown | Promise<unknown>;
-  onPartialRangeSelect?: (value: Value) => unknown | Promise<unknown>;
-  onEachMultiSelect?: (value: Value) => unknown | Promise<unknown>;
-  value?: Value;
-  isNormalView: boolean;
-  highlightedDate: Date | undefined;
-};
-
 const bodyStyles = { height: '88%', width: '100%' };
 
 const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {
-    arc: {
+    rc: {
       width: `${size!}px`,
       height: `${size!}px`,
       fontSize: `${fontSize}px`,
@@ -87,74 +38,143 @@ const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize)
   },
 });
 
-export default function Calendarview(props: CalendarViewProps): React.ReactElement<CalendarViewProps> {
-  const styles = useMemo(() => getStyles(props.size, props.fontSize), [props.size, props.fontSize]);
+function Component({
+  size,
+  fontSize,
+  isNormalView,
+  isMultiSelectorView,
+  isRangeSelectorView,
+  viewDate,
+  selectedDate,
+  selectedRangeStart,
+  selectedMultiDates,
+  minAllowedDate,
+  maxAllowedDate,
+  isSecondary,
+  lockView,
+  startOfWeek,
+  weekends,
+  isRangeSelectModeOn,
+  onChangeRangeSelectMode,
+  skipDisabledDatesInRange,
+  hideAdjacentDates,
+  allowFewerDatesThanRange,
+  selectedRangeEnd,
+  newSelectedRangeStart,
+  onChangenNewSelectedRangeEnd,
+  onChangenNewSelectedRangeStart,
+  onPartialRangeSelect,
+  onEachMultiSelect,
+  newSelectedRangeEnd,
+  fixedRange,
+  isFixedRangeView,
+  isDisabled,
+  checkIfWeekend,
+  onChange,
+  showDualCalendar,
+  disableFuture,
+  weekendMap,
+  disablePast,
+  highlightsMap,
+  disableToday,
+}: CalendarViewProps): React.ReactElement<CalendarViewProps> {
+  const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
 
   // View States
   const [view, setView] = useState<'years' | 'months' | 'month_dates'>('month_dates');
 
-  const [monthInView, setMonthInView] = useState<MonthIndices>(() => {
-    const value = (
-      isValid(props.viewDate)
-        ? props.viewDate.getMonth()
-        : props.isNormalView && isValid(props.value as Date)
-        ? (props.value as Date).getMonth()
-        : props.isRangeSelectorView && props.selectedRangeStart
-        ? props.selectedRangeStart.getMonth()
-        : props.isMultiSelectorView && Array.isArray(props.value) && isValid(props.value[0])
-        ? props.value[0].getMonth()
-        : isValid(props.minAllowedDate)
-        ? props.minAllowedDate.getMonth()
-        : isValid(props.maxAllowedDate)
-        ? props.maxAllowedDate.getMonth()
-        : props.today.getMonth()
-    ) as MonthIndices;
-    return props.isSecondary ? getNextMonth(value) : value;
-  });
-
-  const [yearInView, setYearInView] = useState(
-    isValid(props.viewDate)
-      ? props.viewDate.getFullYear()
-      : props.isNormalView && isValid(props.value as Date)
-      ? (props.value as Date).getFullYear()
-      : props.isRangeSelectorView && props.selectedRangeStart
-      ? props.selectedRangeStart.getFullYear()
-      : props.isMultiSelectorView && Array.isArray(props.value) && isValid(props.value[0])
-      ? props.value[0].getFullYear()
-      : isValid(props.minAllowedDate)
-      ? props.minAllowedDate.getFullYear()
-      : isValid(props.maxAllowedDate)
-      ? props.maxAllowedDate.getFullYear()
-      : props.today.getFullYear(),
+  // This just tries to find a month to show based on a number
+  // of factors for the initial render only
+  const [monthInView, setMonthInView] = useState<MonthIndices>(
+    () =>
+      getDateToShow({
+        isNormalView: isNormalView,
+        isMultiSelectorView: isMultiSelectorView,
+        isRangeSelectorView: isRangeSelectorView,
+        selectedDate: selectedDate,
+        selectedRangeStart: selectedRangeStart,
+        selectedMultiDates: selectedMultiDates,
+        viewDate: viewDate ? fromString(viewDate) : undefined,
+        minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
+        maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
+      }).getMonth() as MonthIndices,
   );
 
-  useEffect(() => {
-    if (isValid(props.viewDate)) {
-      setMonthInView(props.viewDate.getMonth() as MonthIndices);
-      setYearInView(props.viewDate.getFullYear());
-      // set date in focus
+  // This just tries to find a year to show based on a number
+  // of factors for the initial render only
+  const [yearInView, setYearInView] = useState(
+    getDateToShow({
+      isNormalView: isNormalView,
+      isMultiSelectorView: isMultiSelectorView,
+      isRangeSelectorView: isRangeSelectorView,
+      selectedDate: selectedDate,
+      selectedRangeStart: selectedRangeStart,
+      selectedMultiDates: selectedMultiDates,
+      viewDate: viewDate ? fromString(viewDate) : undefined,
+      minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
+      maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
+    }).getFullYear(),
+  );
+
+  useLayoutEffect(() => {
+    if (showDualCalendar && isSecondary) {
+      const nextMonth = getNextMonth(monthInView);
+      setMonthInView(nextMonth);
+      setYearInView(nextMonth === 0 ? getNextYear(yearInView) : yearInView);
     }
-  }, [props.viewDate]);
+    // we are intentionally missing monthInView and yearInView deps
+    // because we only want to auto compute secondary month when the props were changed the first time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showDualCalendar, isSecondary]);
+
+  // updating view because view prop change
+  useEffect(() => {
+    if (viewDate && isValid(fromString(viewDate))) {
+      setMonthInView(fromString(viewDate).getMonth() as MonthIndices);
+      setYearInView(fromString(viewDate).getFullYear());
+    }
+  }, [viewDate]);
+
+  // updating view when selected date change
+  useEffect(() => {
+    if (isValid(selectedDate)) {
+      setMonthInView(selectedDate.getMonth() as MonthIndices);
+      setYearInView(selectedDate.getFullYear());
+    }
+  }, [selectedDate]);
+
+  // updating view when first multi is selected, after that
+  // we don't update
+  useEffect(() => {
+    const dates = Object.keys(selectedMultiDates)
+      .map((str) => selectedMultiDates[str])
+      .filter((d) => isValid(d));
+
+    if (dates.length === 1 && dates[0]) {
+      setMonthInView(dates[0].getMonth() as MonthIndices);
+      setYearInView(dates[0].getFullYear());
+    }
+  }, [selectedMultiDates]);
 
   const changeMonthInView = useCallback(
     (month: MonthIndices) => {
-      !props.lockView && setMonthInView(month);
+      !lockView && setMonthInView(month);
     },
-    [props.lockView, setMonthInView],
+    [lockView, setMonthInView],
   );
 
   const changeYearInView = useCallback(
     (year: number) => {
-      !props.lockView && setYearInView(year);
+      !lockView && setYearInView(year);
     },
-    [props.lockView, setYearInView],
+    [lockView, setYearInView],
   );
 
   const changeView = useCallback(
     (view: 'years' | 'months' | 'month_dates') => {
-      !props.lockView && setView(view);
+      !lockView && setView(view);
     },
-    [props.lockView, setView],
+    [lockView, setView],
   );
 
   const [startingYearForCurrRange, setStartingYearForCurrRange] = useState(getStartOfRangeForAYear(yearInView));
@@ -241,17 +261,17 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
     const lastItem = cells.current[cells.current.length - 1];
     const grid = currentCalendarRef.querySelector('[role="grid"]');
     const seletedItemIfAny: HTMLButtonElement | null =
-      currentCalendarRef.querySelector('[role="grid"] .arc_selected button') ||
-      currentCalendarRef.querySelector('[role="grid"] .arc_range_end button') ||
-      currentCalendarRef.querySelector('[role="grid"] .arc_range_start button');
+      currentCalendarRef.querySelector('[role="grid"] .rc_selected button') ||
+      currentCalendarRef.querySelector('[role="grid"] .rc_range_end button') ||
+      currentCalendarRef.querySelector('[role="grid"] .rc_range_start button');
 
     const firstActiveItem: HTMLButtonElement | null = currentCalendarRef.querySelector(
-      '[role="grid"] .arc_active button',
+      '[role="grid"] .rc_active button',
     );
 
-    const prevButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_nav-prev');
-    const nextButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_nav-next');
-    const monthYearSelector: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_label');
+    const prevButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_nav-prev');
+    const nextButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_nav-next');
+    const monthYearSelector: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_label');
 
     if (grid && !grid.contains(document.activeElement)) {
       // if focus in not already inside the GRID then bring the focus
@@ -389,8 +409,8 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
           setHasFocus(false);
         }
       }}
-      style={styles.root.arc}
-      className="arc"
+      style={styles.root.rc}
+      className="rc"
       ref={calendarRef}
     >
       <Header
@@ -398,12 +418,12 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
         onClickNext={onNextClick}
         onChangeViewType={changeView}
         viewType={view}
-        viewingMonth={monthInView}
-        viewingYear={yearInView}
+        monthInView={monthInView}
+        yearInView={yearInView}
         yearMatrixStart={yearMatrixRangeStart}
         yearMatrixEnd={yearMatrixRangeEnd}
       />
-      <div style={bodyStyles} className="arc_view">
+      <div style={bodyStyles} className="rc_body">
         {view === 'months' && <MonthSelector onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />}
         {view === 'years' && (
           <YearSelector
@@ -415,54 +435,82 @@ export default function Calendarview(props: CalendarViewProps): React.ReactEleme
         )}
         {view === 'month_dates' && (
           <>
-            <WeekDaysRow weekStartIndex={props.weekStartIndex} weekendIndices={props.weekendIndices} />
+            <WeekDaysRow startOfWeek={startOfWeek} weekendMap={weekendMap} />
             <DayOfMonthSelector
-              highlightedDate={props.highlightedDate}
-              isRangeSelectModeOn={props.isRangeSelectModeOn}
-              setIsRangeSelectModeOn={props.setIsRangeSelectModeOn}
-              skipDisabledDatesInRange={props.skipDisabledDatesInRange}
-              hideAdjacentDates={props.hideAdjacentDates}
-              allowFewerDatesThanRange={props.allowFewerDatesThanRange}
-              selectedDate={props.selectedDate}
-              selectedRangeStart={props.selectedRangeStart}
-              selectedRangeEnd={props.selectedRangeEnd}
-              lockView={props.lockView}
-              newSelectedRangeStart={props.newSelectedRangeStart}
-              weekStartIndex={props.weekStartIndex}
-              onChangeViewingYear={changeYearInView}
-              onChangeViewingMonth={changeMonthInView}
-              onChangenSelectedMultiDates={props.onChangenSelectedMultiDates}
-              onChangenNewSelectedRangeEnd={props.onChangenNewSelectedRangeEnd}
-              onChangenNewSelectedRangeStart={props.onChangenNewSelectedRangeStart}
-              onChangenSelectedRangeEnd={props.onChangenSelectedRangeEnd}
-              onChangenSelectedRangeStart={props.onChangenSelectedRangeStart}
-              onChangenSelectedDate={props.onChangenSelectedDate}
-              onPartialRangeSelect={props.onPartialRangeSelect}
-              onEachMultiSelect={props.onEachMultiSelect}
-              newSelectedRangeEnd={props.newSelectedRangeEnd}
-              isRangeSelectorView={props.isRangeSelectorView}
-              fixedRangeLength={props.fixedRangeLength}
-              isFixedRangeView={props.isFixedRangeView}
-              isDisabled={props.isDisabled}
-              checkIfWeekend={props.checkIfWeekend}
-              selectedMultiDates={props.selectedMultiDates}
-              isMultiSelectorView={props.isMultiSelectorView}
-              viewingMonth={monthInView}
-              today={props.today}
-              maxAllowedDate={props.maxAllowedDate}
-              minAllowedDate={props.minAllowedDate}
-              weekendIndices={props.weekendIndices}
-              skipWeekendsInRange={props.skipWeekendsInRange}
-              onChange={props.onChange}
-              viewingYear={yearInView}
-              disableFuture={props.disableFuture}
-              disablePast={props.disablePast}
-              highlights={props.highlights}
-              disableToday={props.disableToday}
+              isRangeSelectModeOn={isRangeSelectModeOn}
+              onChangeRangeSelectMode={onChangeRangeSelectMode}
+              skipDisabledDatesInRange={skipDisabledDatesInRange}
+              hideAdjacentDates={hideAdjacentDates}
+              allowFewerDatesThanRange={allowFewerDatesThanRange}
+              selectedDate={selectedDate}
+              selectedRangeStart={selectedRangeStart}
+              selectedRangeEnd={selectedRangeEnd}
+              lockView={lockView}
+              newSelectedRangeStart={newSelectedRangeStart}
+              startOfWeek={startOfWeek}
+              onChangenNewSelectedRangeEnd={onChangenNewSelectedRangeEnd}
+              onChangenNewSelectedRangeStart={onChangenNewSelectedRangeStart}
+              onPartialRangeSelect={onPartialRangeSelect}
+              onEachMultiSelect={onEachMultiSelect}
+              newSelectedRangeEnd={newSelectedRangeEnd}
+              isRangeSelectorView={isRangeSelectorView}
+              fixedRange={fixedRange}
+              isFixedRangeView={isFixedRangeView}
+              isDisabled={isDisabled}
+              checkIfWeekend={checkIfWeekend}
+              selectedMultiDates={selectedMultiDates}
+              isMultiSelectorView={isMultiSelectorView}
+              monthInView={monthInView}
+              maxAllowedDate={maxAllowedDate}
+              minAllowedDate={minAllowedDate}
+              weekends={weekends}
+              onChange={onChange}
+              yearInView={yearInView}
+              disableFuture={disableFuture}
+              disablePast={disablePast}
+              highlightsMap={highlightsMap}
+              disableToday={disableToday}
             />
           </>
         )}
       </div>
     </div>
   );
+}
+
+export const CalendarView = memo(Component);
+
+function getDateToShow(props: AttrFromDateParams): Date {
+  const firstOfMulti =
+    props.isMultiSelectorView &&
+    props.selectedMultiDates &&
+    props.selectedMultiDates[Object.keys(props.selectedMultiDates)[0]];
+
+  const date = isValid(props.viewDate)
+    ? props.viewDate
+    : props.isNormalView && isValid(props.selectedDate as Date)
+    ? (props.selectedDate as Date)
+    : props.isRangeSelectorView && props.selectedRangeStart
+    ? props.selectedRangeStart
+    : firstOfMulti && isValid(firstOfMulti)
+    ? firstOfMulti
+    : isValid(props.minAllowedDate)
+    ? props.minAllowedDate
+    : isValid(props.maxAllowedDate)
+    ? props.maxAllowedDate
+    : new Date();
+
+  return date;
+}
+
+interface AttrFromDateParams {
+  isNormalView: boolean;
+  isMultiSelectorView: boolean;
+  isRangeSelectorView: boolean;
+  viewDate?: Date;
+  selectedDate?: Date;
+  selectedRangeStart?: Date;
+  selectedMultiDates?: Record<string, Date | undefined>;
+  minAllowedDate?: Date;
+  maxAllowedDate?: Date;
 }

@@ -62,7 +62,16 @@ export function addDays(
  * Converts a date to string
  */
 export function toString(date: Date): string {
-  return `${date.getFullYear()}${date.getMonth()}${date.getDate()}`;
+  return `${date.getFullYear() < 10 ? '0' + date.getFullYear() : date.getFullYear()}_${
+    date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()
+  }_${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`;
+}
+
+/**
+ * MAkes a date from a string
+ */
+export function fromString(date: string): Date {
+  return new Date(Number(date.substr(0, 4)), Number(date.substr(5, 2)), Number(date.substr(8, 2)));
 }
 
 /**
@@ -335,9 +344,10 @@ export function getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfTheWeek = 0)
     .slice(startOfTheWeek, 7)
     .concat(Object.keys(NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP).slice(0, startOfTheWeek)) as unknown as WeekdayIndices[];
 
-  const map = order.reduce((acc, weekdayIndex, index) => {
+  const map = order.reduce((acc, weekdayIndex) => {
     // acc[0] = DEFAULT_WEEKDAY_INDEX[3]
-    acc[Number(index) as WeekdayIndices] = NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[Number(weekdayIndex) as WeekdayIndices];
+    acc[Number(weekdayIndex) as WeekdayIndices] =
+      NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[Number(weekdayIndex) as WeekdayIndices];
     return acc;
   }, {} as Record<WeekdayIndices, string>);
 
@@ -428,28 +438,6 @@ function getInfluencedWeekDayIndexOnFirstDateOfMonth(
   return getInfluencedWeekDayIndexAsPerAStartDay(date.getDay(), startOfTheWeek) as WeekdayIndices;
 }
 
-/**
- * Returns info about what indexes are weekend
- * @param startOfTheWeek index of the day to be considered as start of the week
- */
-export function getWeekendInfo(startOfTheWeek: number): WeekdayIndices[] {
-  if (startOfTheWeek === 0) {
-    return [6, 0];
-  } else if (startOfTheWeek === 1) {
-    return [5, 6];
-  } else if (startOfTheWeek === 2) {
-    return [4, 5];
-  } else if (startOfTheWeek === 3) {
-    return [3, 4];
-  } else if (startOfTheWeek === 4) {
-    return [2, 3];
-  } else if (startOfTheWeek === 5) {
-    return [1, 2];
-  } else {
-    return [0, 1];
-  }
-}
-
 // 1 - 20 (20 years in one range block)
 // 21 - 40
 // so if you provide 3 then the start of raange for 3 would be
@@ -460,8 +448,8 @@ export function getStartOfRangeForAYear(year: number): number {
   if (year % 20 === 0) {
     return 20 * (year / 20 - 1) + 1;
   }
-  // logic derived from a few examples like 2021, 1981, 1973
-  return 20 * Number((year / 20).toFixed(0)) + 1;
+  // try with 2021, 1981, 1973, 3218
+  return 20 * Number(Math.floor(year / 20)) + 1;
 }
 
 /**
@@ -542,13 +530,13 @@ export function validateAndReturnDateFormatter(format: string): (date: Date, sep
   };
 }
 
-export function checkIfWeekendHOF(weekends: WeekdayIndices[], startDayOfWeek: WeekdayIndices): (date: Date) => boolean {
+export function checkIfWeekendHOF(weekends: WeekdayIndices[]): (date: Date) => boolean {
   const weekendMap = weekends.reduce((acc, curr) => {
     acc[curr] = 1;
     return acc;
   }, {} as Record<WeekdayIndices, 1>);
   return function checkIfWeekend(date: Date) {
-    return weekendMap[getInfluencedWeekDayIndexAsPerAStartDay(date.getDay(), startDayOfWeek)] === 1;
+    return weekendMap[date.getDay() as WeekdayIndices] === 1;
   };
 }
 
@@ -606,13 +594,13 @@ export function checkIfDateIsDisabledHOF(params: CheckIfDateIsDisabledHOFParams)
       }
     }
 
-    if (applyMax) {
+    if (applyMax && maxDate) {
       if (isBefore(dateToCheck, maxDate)) {
         return true;
       }
     }
 
-    if (applyMin) {
+    if (applyMin && minDate) {
       if (isBefore(minDate, dateToCheck)) {
         return true;
       }

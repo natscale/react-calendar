@@ -1,38 +1,33 @@
 import React, { memo, useMemo } from 'react';
 
-import { MonthCell, MonthIndices } from '../../utils/types';
+import { MonthCell, MonthSelectorProps } from '../../utils/types';
 
 import { getMonthViewMetrix } from '../../utils/date-utils';
-import { Month } from '../month-cell/Month';
-
-interface Props {
-  onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
-  onChangeViewingMonth: (month: MonthIndices) => unknown;
-}
+import { Month } from '../month-cell/MonthCell';
 
 const months = {
   root: { height: '100%' },
-  arc_view_row: { height: '24.9%', display: 'flex', width: '100%' },
-  arc_view_cell: {
+  'rc_body-row': { height: '24.9%', display: 'flex', width: '100%' },
+  'rc_body-cell': {
     flexBasis: '33.33%',
     maxWidth: '33.33%',
     height: '100%',
   },
 };
 
-function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: Props) {
+function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: MonthSelectorProps) {
   const monthsViewMatrix = useMemo<MonthCell[][]>(() => {
     return getMonthViewMetrix({});
   }, []);
 
   return (
-    <div role="grid" style={months.root} className="arc_view-months">
+    <div role="grid" style={months.root} className="rc_body-months">
       {monthsViewMatrix.map((row, index) => (
-        <div style={months.arc_view_row} className="arc_view_row" key={index}>
+        <div style={months['rc_body-row']} className="rc_body-row" key={index}>
           {row.map((cell) => (
             <div
-              style={months.arc_view_cell}
-              className={`arc_view_cell${cell.isCurrentMonth ? ' arc_this_month' : ''}`}
+              style={months['rc_body-cell']}
+              className={`rc_body-cell${cell.isCurrentMonth ? ' rc_this_month' : ''}`}
               key={cell.month}
             >
               <Month

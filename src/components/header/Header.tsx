@@ -1,20 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { memo } from 'react';
 
-import { MonthIndices } from '../../utils/types';
+import { HeaderProps } from '../../utils/types';
 
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
-
-export interface Props {
-  onClickPrev: () => any;
-  onClickNext: () => any;
-  onChangeViewType: (view: 'month_dates' | 'months' | 'years') => any;
-  viewType: 'month_dates' | 'months' | 'years';
-  viewingMonth: MonthIndices;
-  viewingYear: number;
-  yearMatrixStart: number;
-  yearMatrixEnd: number;
-}
 
 const header = {
   root: {
@@ -24,8 +13,8 @@ const header = {
     alignTtems: 'center',
     width: '100%',
   },
-  arc_header_nav: { width: '10.14%', height: '100%', flex: '0 0 auto' },
-  arch_header_label: {
+  rc_header_nav: { width: '10.14%', height: '100%', flex: '0 0 auto' },
+  rch_header_label: {
     width: '65.21%',
     height: '100%',
     margin: '0 4.34%',
@@ -41,20 +30,20 @@ function HeaderComponent({
   onChangeViewType,
   onClickNext,
   viewType,
-  viewingMonth,
-  viewingYear,
+  monthInView: viewingMonth,
+  yearInView: viewingYear,
   yearMatrixEnd,
   yearMatrixStart,
-}: Props) {
+}: HeaderProps) {
   return (
-    <header style={header.root} className="arc_header">
-      <button style={header.arc_header_nav} className="arc_header_nav arc_header_nav-prev" onClick={onClickPrev}>
+    <header style={header.root} className="rc_header">
+      <button style={header.rc_header_nav} className="rc_header_nav rc_header_nav-prev" onClick={onClickPrev}>
         <span>←</span>
       </button>
       {viewType === 'month_dates' ? (
         <button
-          style={header.arch_header_label}
-          className="arc_header_label arc_header_label-days-of-month"
+          style={header.rch_header_label}
+          className="rc_header_label rc_header_label-days-of-month"
           onClick={() => onChangeViewType('years')}
         >
           <div>
@@ -65,15 +54,15 @@ function HeaderComponent({
           </div>
         </button>
       ) : viewType === 'months' ? (
-        <button style={header.arch_header_label} className="arc_header_label arc_header_label-months">
+        <button style={header.rch_header_label} className="rc_header_label rc_header_label-months">
           <div onClick={() => onChangeViewType('years')}>
             <span>{viewingYear}</span>
           </div>
         </button>
       ) : (
         <button
-          style={header.arch_header_label}
-          className="arc_header_label arc_header_label-years"
+          style={header.rch_header_label}
+          className="rc_header_label rc_header_label-years"
           onClick={() => onChangeViewType('month_dates')}
         >
           <div>
@@ -83,7 +72,7 @@ function HeaderComponent({
           </div>
         </button>
       )}
-      <button style={header.arc_header_nav} className="arc_header_nav arc_header_nav-next" onClick={onClickNext}>
+      <button style={header.rc_header_nav} className="rc_header_nav rc_header_nav-next" onClick={onClickNext}>
         <span>→</span>
       </button>
     </header>
