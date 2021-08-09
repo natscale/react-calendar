@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarProps } from '../../utils/types';
+import { CalendarProps, CalendarWithShortcutProps } from '../../utils/types';
 import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
 import { isValid } from '../../utils/date-utils';
 import { ShortcutButtonModel } from '../shortuct-bar/ShortcutButtonModel';
@@ -11,7 +11,7 @@ const styles = {
   },
 };
 
-function CalendarWithShortcutsRef(props: CalendarProps, ref: React.Ref<HTMLDivElement>) {
+function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.Ref<HTMLDivElement>) {
   const [highlightedDate, setHighlightedDate] = useState<Date | undefined>(undefined);
   const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -98,7 +98,6 @@ function CalendarWithShortcutsRef(props: CalendarProps, ref: React.Ref<HTMLDivEl
         buttonText: 'Selected Date',
         viewTypes: ['Normal', 'Multiple'],
         onButtonClick: toggleDate,
-        // onBlur: toggleDateOnBlur,
       },
       {
         buttonText: 'Range Start',
@@ -116,6 +115,12 @@ function CalendarWithShortcutsRef(props: CalendarProps, ref: React.Ref<HTMLDivEl
 
   const viewType = props.isMultiSelector ? 'Multiple' : props.isRangeSelector ? 'Range' : 'Normal';
 
+  const shortcutButtonsToShow = props.showDefaultShortcuts
+    ? props.shortcutButtons
+      ? defaultShortcutButtons.concat(props.shortcutButtons)
+      : defaultShortcutButtons
+    : props.shortcutButtons;
+
   useEffect(
     () => updateSelectedDates(props.value),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,7 +129,7 @@ function CalendarWithShortcutsRef(props: CalendarProps, ref: React.Ref<HTMLDivEl
 
   return (
     <div ref={ref} style={styles.root} className="arc_shortcut_cal_root" onBlur={() => resetHighlightedDate()}>
-      <ShortcutBar shortcutButtons={defaultShortcutButtons} viewType={viewType} updateView={updateDateView} />
+      <ShortcutBar shortcutButtons={shortcutButtonsToShow} viewType={viewType} updateView={updateDateView} />
       <Calendar
         {...{
           ...newProps,

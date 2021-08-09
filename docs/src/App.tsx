@@ -155,19 +155,21 @@ export function App(): React.ReactElement {
   const maxDate = new Date(2021, 7, 28);
   const minDate = new Date(2021, 7, 4);
 
-  const goToSpecificDate = () => setViewDate(new Date(2016, 1, 13));
-  const goToLastYear = () => new Date(2020, 1, 13);
+  const goToSpecificDate = () => new Date(2020, 1, 13);
+
+  const lastYear = new Date();
+  lastYear.setFullYear(lastYear.getFullYear() === 1 ? 1 : lastYear.getFullYear() - 1);
 
   const newShortcutButtons = [
     {
       buttonText: 'Move To Date',
       viewTypes: ['Normal', 'Multiple', 'Range'],
-      onButtonClick: goToSpecificDate,
+      goToDate: new Date(2020, 1, 13),
     },
     {
       buttonText: ' Last Year',
       viewTypes: ['Normal', 'Multiple', 'Range'],
-      goToDate: new Date(2020, 1, 13),
+      goToDate: lastYear,
     },
   ];
 
@@ -179,7 +181,11 @@ export function App(): React.ReactElement {
         </div>
         <div>
           <div className="calendar">
-            <CalendarWithShortcuts onChange={onChangenine} shortcutButtons={newShortcutButtons} />
+            <CalendarWithShortcuts
+              onChange={onChangenine}
+              shortcutButtons={newShortcutButtons}
+              showDefaultShortcuts={true}
+            />
           </div>
         </div>
       </div>
@@ -192,6 +198,7 @@ export function App(): React.ReactElement {
             <CalendarWithShortcuts
               onChange={onChangenine}
               shortcutButtons={newShortcutButtons}
+              showDefaultShortcuts={true}
               isRangeSelector
               value={[new Date(2021, 0, 22), new Date(2021, 1, 10)]}
             />
@@ -205,6 +212,7 @@ export function App(): React.ReactElement {
         <div>
           <div className="calendar">
             <CalendarWithShortcuts
+              showDefaultShortcuts={true}
               value={[new Date(2021, 9, 22), new Date(2021, 10, 25), new Date(2021, 11, 9)]}
               isMultiSelector
               disableToday

@@ -200,5 +200,15 @@ export interface CalendarProps {
 
   shortcutButtons?: Array<ShortcutButtonModel>;
 
+  showDefaultShortcuts?: boolean;
+
+  highlightedDate?: Date;
+}
+
+export interface CalendarWithShortcutProps extends CalendarProps {
+  shortcutButtons?: Array<ShortcutButtonModel>;
+
+  showDefaultShortcuts?: boolean;
+
   highlightedDate?: Date;
 }
