@@ -16,7 +16,7 @@ export const NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP: Record<WeekdayIndices, string> =
 export const NATIVE_INDEX_TO_LABEL_MONTHS_MAP: Record<MonthIndices, string> = {
   0: 'January',
   1: 'February',
-  2: 'Mrch',
+  2: 'March',
   3: 'April',
   4: 'May',
   5: 'June',
