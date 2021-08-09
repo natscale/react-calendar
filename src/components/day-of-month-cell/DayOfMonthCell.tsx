@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { DayOfMonthCellProps } from '../calendar/Calendar';
 
-const arc_view_cell = {
+const root = {
   width: '100%',
   height: '100%',
   display: 'flex',
@@ -10,7 +10,7 @@ const arc_view_cell = {
   justifyContent: 'center',
 };
 
-const arc_view_cell_value = {
+const value = {
   width: '69.80%',
   height: '80%',
   display: 'flex',
@@ -18,17 +18,17 @@ const arc_view_cell_value = {
   justifyContent: 'center',
 };
 
-const arc_view_cell_value_button = {
+const valueButton = {
   width: '100%',
   height: '100%',
 };
 
 function Component({ cell, onDateClicked }: DayOfMonthCellProps) {
   return (
-    <div style={arc_view_cell}>
-      <div style={arc_view_cell_value} className="arc_view_cell_value">
+    <div style={root}>
+      <div style={value} className="rc_body-cell_value">
         <button
-          style={arc_view_cell_value_button}
+          style={valueButton}
           disabled={cell.isDisabled}
           tabIndex={cell.isDisabled ? -1 : 0}
           onClick={() => onDateClicked(cell)}

@@ -4,7 +4,7 @@ import { MonthCellProps } from '../calendar/Calendar';
 
 import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
 
-const arc_view_cell_value = {
+const rcBodyCellValue = {
   width: '100%',
   height: '100%',
   display: 'flex',
@@ -12,7 +12,7 @@ const arc_view_cell_value = {
   justifyContent: 'center',
 };
 
-const arc_view_cell_value_button = {
+const rcBodyCellValueButton = {
   width: '95%',
   height: '45%',
   display: 'flex',
@@ -22,9 +22,9 @@ const arc_view_cell_value_button = {
 
 function Component({ cell, onMonthClicked }: MonthCellProps) {
   return (
-    <div style={arc_view_cell_value}>
+    <div style={rcBodyCellValue}>
       <button
-        style={arc_view_cell_value_button}
+        style={rcBodyCellValueButton}
         onClick={() => {
           onMonthClicked(cell);
         }}

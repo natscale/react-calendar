@@ -269,8 +269,8 @@ function CalendarWithRef(
   const computedClass = useMemo(
     () =>
       typeof className === 'string'
-        ? `arc_root${useDarkMode ? ' arc_dark' : ''}${isDualMode ? ' arc_dual' : ''}` + ` ${className}`
-        : `arc_root${useDarkMode ? ' arc_dark' : ''}${isDualMode ? ' arc_dual' : ''}`,
+        ? `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` + ` ${className}`
+        : `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}`,
     [className, useDarkMode, isDualMode],
   );
 

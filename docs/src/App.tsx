@@ -55,7 +55,7 @@ export function App(): React.ReactElement {
   );
 
   const [roundButtonStyles, setApplyRoundButtonCss] = useState(false);
-  const [theme, setTheme] = useState<'green' | 'violet' | 'normal'>('normal');
+  const [theme, setTheme] = useState<'green' | 'brown' | 'normal'>('normal');
 
   return (
     <div className="demo">
@@ -296,7 +296,7 @@ export function App(): React.ReactElement {
           <span
             dangerouslySetInnerHTML={{
               __html: roundButtonStyles
-                ? '<style>.arc_view-days-of-month .arc_view_cell .arc_view_cell_value{border-radius: 50%;}</style>'
+                ? '<style>.rc_body-days-of-month .rc_body-cell .rc_body-cell_value{border-radius: 50%;}</style>'
                 : '<span></span>',
             }}
           ></span>
@@ -309,7 +309,7 @@ export function App(): React.ReactElement {
               CSS
             />
             <pre style={{ color: 'rebeccapurple' }}>
-              {`.arc_view-days-of-month .arc_view_cell .arc_view_cell_value {
+              {`.rc_body-days-of-month .rc_body-cell .rc_body-cell_value {
   border-radius: 50%;
 }`}
             </pre>
@@ -322,21 +322,17 @@ export function App(): React.ReactElement {
               label="Green"
             />
             <Checkbox
-              onChange={() => setTheme(theme !== 'violet' ? 'violet' : 'normal')}
-              checked={theme === 'violet'}
+              onChange={() => setTheme(theme !== 'brown' ? 'brown' : 'normal')}
+              checked={theme === 'brown'}
               label="Violet"
             />
             <pre style={{ color: 'teal' }}>
-              {`.arc_root.green {
-  --arc-color-accent: #9fbb06;
-  --arc-color-accent-light: #ddea99;
-  --arc-color-accent-lighter: #f6f8e7;
+              {`.rc_root.green {
+  --rc-hsl-primary-hue: 160deg;
 }
 
-.arc_root.violet {
-  --arc-color-primary: #8755ff;
-  --arc-color-primary-light: #e1c2f9;
-  --arc-color-primary-lighter: #f9ecff;
+.rc_root.brown {
+  --rc-hsl-primary-hue: 388deg;
 }`}
             </pre>
           </div>

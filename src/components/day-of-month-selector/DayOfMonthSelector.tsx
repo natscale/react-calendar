@@ -6,16 +6,16 @@ import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, toString } fr
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonthCell';
 
 const dayOfMonthStyles = {
-  'arc_view-days-of-month': {
+  'rc_body-days-of-month': {
     height: '85%',
   },
-  arc_view_row: {
+  'rc_body-row': {
     height: '16.664%',
     display: 'flex',
     width: '100%',
     alignItems: 'center',
   },
-  arc_view_cell: {
+  'rc_body-cell': {
     flexBasis: '14.286%',
     maxWidth: '14.286%',
     height: '100%',
@@ -214,12 +214,12 @@ function DayOfMonthSelectorComponent({
   );
 
   return (
-    <div style={dayOfMonthStyles['arc_view-days-of-month']} className="arc_view-days-of-month" role="grid">
+    <div style={dayOfMonthStyles['rc_body-days-of-month']} className="rc_body-days-of-month" role="grid">
       {daysOfMMonthViewMatrix.map((row, index) => (
-        <div style={dayOfMonthStyles.arc_view_row} className="arc_view_row" key={index}>
+        <div style={dayOfMonthStyles['rc_body-row']} className="rc_body-row" key={index}>
           {row.map((cell) => (
             <div
-              style={dayOfMonthStyles.arc_view_cell}
+              style={dayOfMonthStyles['rc_body-cell']}
               onMouseEnter={() => {
                 if (isRangeSelectorView) {
                   if (isRangeSelectModeOn) {
@@ -228,17 +228,17 @@ function DayOfMonthSelectorComponent({
                 }
               }}
               key={toString(cell.date)}
-              className={`arc_view_cell${cell.activeMonthInView ? ' arc_active' : ''}${
-                cell.isWeekend ? ' arc_wknd' : ''
-              }${cell.isToday ? ' arc_today' : ''}${cell.isFirstRow ? ' arc_fr' : ''}${
-                cell.isToday ? ' arc_today' : ''
-              }${cell.isHighlight ? ' arc_highlight' : ''}${cell.isLastRow ? ' arc_lr' : ''}${
-                cell.isFirsColumn ? ' arc_fc' : ''
-              }${cell.isLastColumn ? ' arc_lc' : ''}${cell.isSelected && !isRangeSelectorView ? ' arc_selected' : ''}${
-                cell.isDisabled ? ' arc_disabled' : ''
-              }${cell.isInRange ? ' arc_in_range' : ''}${cell.isRangeStart ? ' arc_range_start' : ''}${
-                cell.isRangeEnd ? ' arc_range_end' : ''
-              }${isRangeSelectModeOn ? ' arc_range_mode' : ''}`}
+              className={`rc_body-cell${cell.activeMonthInView ? ' rc_active' : ''}${cell.isWeekend ? ' rc_wknd' : ''}${
+                cell.isToday ? ' rc_today' : ''
+              }${cell.isFirstRow ? ' rc_fr' : ''}${cell.isToday ? ' rc_today' : ''}${
+                cell.isHighlight ? ' rc_highlight' : ''
+              }${cell.isLastRow ? ' rc_lr' : ''}${cell.isFirsColumn ? ' rc_fc' : ''}${
+                cell.isLastColumn ? ' rc_lc' : ''
+              }${cell.isSelected && !isRangeSelectorView ? ' rc_selected' : ''}${
+                cell.isDisabled ? ' rc_disabled' : ''
+              }${cell.isInRange ? ' rc_in_range' : ''}${cell.isRangeStart ? ' rc_range_start' : ''}${
+                cell.isRangeEnd ? ' rc_range_end' : ''
+              }${isRangeSelectModeOn ? ' rc_range_mode' : ''}`}
             >
               {!cell.activeMonthInView && hideAdjacentDates ? null : (
                 <DayOfMonth cell={cell} onDateClicked={onDateClicked} />

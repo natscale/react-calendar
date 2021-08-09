@@ -48,20 +48,16 @@ code {
   cursor: pointer;
 }
 
-.arc_root {
+.rc_root {
   margin-bottom: 16px;
 }
 
-.arc_root.green {
-  --arc-color-accent: #9fbb06;
-  --arc-color-accent-light: #ddea99;
-  --arc-color-accent-lighter: #f6f8e7;
+.rc_root.green {
+  --rc-hsl-primary-hue: 160deg;
 }
 
-.arc_root.violet {
-  --arc-color-primary: #8755ff;
-  --arc-color-primary-light: #e1c2f9;
-  --arc-color-primary-lighter: #f9ecff;
+.rc_root.brown {
+  --rc-hsl-primary-hue: 388deg;
 }
 
 .demo {

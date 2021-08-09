@@ -7,8 +7,8 @@ import { Month } from '../month-cell/MonthCell';
 
 const months = {
   root: { height: '100%' },
-  arc_view_row: { height: '24.9%', display: 'flex', width: '100%' },
-  arc_view_cell: {
+  'rc_body-row': { height: '24.9%', display: 'flex', width: '100%' },
+  'rc_body-cell': {
     flexBasis: '33.33%',
     maxWidth: '33.33%',
     height: '100%',
@@ -21,13 +21,13 @@ function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: Mont
   }, []);
 
   return (
-    <div role="grid" style={months.root} className="arc_view-months">
+    <div role="grid" style={months.root} className="rc_body-months">
       {monthsViewMatrix.map((row, index) => (
-        <div style={months.arc_view_row} className="arc_view_row" key={index}>
+        <div style={months['rc_body-row']} className="rc_body-row" key={index}>
           {row.map((cell) => (
             <div
-              style={months.arc_view_cell}
-              className={`arc_view_cell${cell.isCurrentMonth ? ' arc_this_month' : ''}`}
+              style={months['rc_body-cell']}
+              className={`rc_body-cell${cell.isCurrentMonth ? ' rc_this_month' : ''}`}
               key={cell.month}
             >
               <Month

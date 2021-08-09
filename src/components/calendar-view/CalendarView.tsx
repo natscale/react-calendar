@@ -26,7 +26,7 @@ const bodyStyles = { height: '88%', width: '100%' };
 
 const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {
-    arc: {
+    rc: {
       width: `${size!}px`,
       height: `${size!}px`,
       fontSize: `${fontSize}px`,
@@ -261,17 +261,17 @@ function Component({
     const lastItem = cells.current[cells.current.length - 1];
     const grid = currentCalendarRef.querySelector('[role="grid"]');
     const seletedItemIfAny: HTMLButtonElement | null =
-      currentCalendarRef.querySelector('[role="grid"] .arc_selected button') ||
-      currentCalendarRef.querySelector('[role="grid"] .arc_range_end button') ||
-      currentCalendarRef.querySelector('[role="grid"] .arc_range_start button');
+      currentCalendarRef.querySelector('[role="grid"] .rc_selected button') ||
+      currentCalendarRef.querySelector('[role="grid"] .rc_range_end button') ||
+      currentCalendarRef.querySelector('[role="grid"] .rc_range_start button');
 
     const firstActiveItem: HTMLButtonElement | null = currentCalendarRef.querySelector(
-      '[role="grid"] .arc_active button',
+      '[role="grid"] .rc_active button',
     );
 
-    const prevButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_nav-prev');
-    const nextButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_nav-next');
-    const monthYearSelector: HTMLButtonElement | null = currentCalendarRef.querySelector('header .arc_header_label');
+    const prevButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_nav-prev');
+    const nextButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_nav-next');
+    const monthYearSelector: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_label');
 
     if (grid && !grid.contains(document.activeElement)) {
       // if focus in not already inside the GRID then bring the focus
@@ -409,8 +409,8 @@ function Component({
           setHasFocus(false);
         }
       }}
-      style={styles.root.arc}
-      className="arc"
+      style={styles.root.rc}
+      className="rc"
       ref={calendarRef}
     >
       <Header
@@ -423,7 +423,7 @@ function Component({
         yearMatrixStart={yearMatrixRangeStart}
         yearMatrixEnd={yearMatrixRangeEnd}
       />
-      <div style={bodyStyles} className="arc_view">
+      <div style={bodyStyles} className="rc_body">
         {view === 'months' && <MonthSelector onChangeViewType={changeView} onChangeViewingMonth={changeMonthInView} />}
         {view === 'years' && (
           <YearSelector

@@ -6,7 +6,7 @@ import { getWeekDaysIndexToLabelMapForAStartOfTheWeek } from '../../utils/date-u
 import { NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP } from '../../utils/constants';
 
 const weekdaysRow = {
-  arc_view_weekdays: {
+  'rc_body-weekdays': {
     height: '15%',
     margin: '0',
     padding: 0,
@@ -14,7 +14,7 @@ const weekdaysRow = {
     width: '100%',
     listStyle: 'none',
   },
-  arc_view_weekdays_cell: {
+  'rc_body-weekdays_cell': {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -22,7 +22,7 @@ const weekdaysRow = {
     flexBasis: '14.286%',
     maxWidth: '14.286%',
   },
-  arc_view_weekdays_cell_value: {
+  'rc_body-weekdays_cell_value': {
     width: '65.95%',
     display: 'flex',
     alignItems: 'center',
@@ -37,14 +37,14 @@ function WeekDaysRowComponent({ startOfWeek, weekendMap }: WeekdayRowProps) {
   }, [startOfWeek]);
 
   return (
-    <ul style={weekdaysRow.arc_view_weekdays} className="arc_view_weekdays">
+    <ul style={weekdaysRow['rc_body-weekdays']} className="rc_body-weekdays">
       {weekDayOrder.map((weekDay) => (
         <li
-          style={weekdaysRow.arc_view_weekdays_cell}
+          style={weekdaysRow['rc_body-weekdays_cell']}
           key={weekDay}
-          className={`arc_view_weekdays_cell${weekendMap[weekDay] ? ' arc_wknd' : ''}`}
+          className={`rc_body-weekdays_cell${weekendMap[weekDay] ? ' rc_wknd' : ''}`}
         >
-          <div style={weekdaysRow.arc_view_weekdays_cell_value}>
+          <div style={weekdaysRow['rc_body-weekdays_cell_value']}>
             <span>{NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[weekDay]}</span>
           </div>
         </li>
