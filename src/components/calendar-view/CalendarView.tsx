@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import type { MonthIndices, CSSProps, CalendarViewProps } from '../../utils/types';
+import type { CalendarViewProps, CSSProps, MonthIndices } from '../../utils/types';
 
 import {
-  getStartOfRangeForAYear,
-  getPreviousYear,
-  getPreviousMonth,
-  getPreviousRangeStartingYear,
-  getNextYear,
+  fromString,
   getNextMonth,
   getNextRangeStartingYear,
+  getNextYear,
+  getPreviousMonth,
+  getPreviousRangeStartingYear,
+  getPreviousYear,
+  getStartOfRangeForAYear,
   getYearRangeLimits,
   isValid,
-  fromString,
 } from '../../utils/date-utils';
 
 import { Header } from '../header/Header';
@@ -85,6 +85,7 @@ function Component({
 
   // This just tries to find a month to show based on a number
   // of factors for the initial render only
+  // const fromString(viewDate) = viewDate ? fromString(viewDate) : undefined;
   const [monthInView, setMonthInView] = useState<MonthIndices>(
     () =>
       getDateToShow({
@@ -94,7 +95,7 @@ function Component({
         selectedDate: selectedDate,
         selectedRangeStart: selectedRangeStart,
         selectedMultiDates: selectedMultiDates,
-        viewDate: viewDate ? fromString(viewDate) : undefined,
+        viewDate: viewDate,
         minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
         maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
       }).getMonth() as MonthIndices,
@@ -110,7 +111,7 @@ function Component({
       selectedDate: selectedDate,
       selectedRangeStart: selectedRangeStart,
       selectedMultiDates: selectedMultiDates,
-      viewDate: viewDate ? fromString(viewDate) : undefined,
+      viewDate: viewDate,
       minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
       maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
     }).getFullYear(),
@@ -127,15 +128,7 @@ function Component({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showDualCalendar, isSecondary]);
 
-  // updating view because view prop change
-  useEffect(() => {
-    if (viewDate && isValid(fromString(viewDate))) {
-      setMonthInView(fromString(viewDate).getMonth() as MonthIndices);
-      setYearInView(fromString(viewDate).getFullYear());
-    }
-  }, [viewDate]);
-
-  // updating view when selected date change
+  // updating view when selectedDate change
   useEffect(() => {
     if (isValid(selectedDate)) {
       setMonthInView(selectedDate.getMonth() as MonthIndices);
@@ -310,9 +303,7 @@ function Component({
         return null;
       }
 
-      const nextItem = move(currentItem);
-
-      return nextItem;
+      return move(currentItem);
     };
 
     function onKeyPressListener(e: KeyboardEvent) {
@@ -397,6 +388,13 @@ function Component({
     };
   }, [calendarRef, view, hasFocus, monthInView]);
 
+  useEffect(() => {
+    if (isValid(viewDate)) {
+      setMonthInView(viewDate.getMonth() as MonthIndices);
+      setYearInView(viewDate.getFullYear());
+    }
+  }, [viewDate]);
+
   return (
     <div
       onFocus={() => {
@@ -404,7 +402,7 @@ function Component({
       }}
       onBlur={(e: React.FocusEvent<HTMLDivElement>) => {
         if (e.currentTarget.contains(e.target)) {
-          // if bluee vent has come from a child then do nothing
+          // if blue event has come from a child then do nothing
         } else {
           setHasFocus(false);
         }

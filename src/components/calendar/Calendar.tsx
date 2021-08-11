@@ -50,7 +50,6 @@ function CalendarWithRef(
     disableToday = false,
     showDualCalendar = false,
     hideAdjacentDates = false,
-    highlightedDate,
   }: CalendarProps,
   forwardRef: React.Ref<HTMLDivElement>,
 ): React.ReactElement<CalendarProps> {
@@ -90,7 +89,7 @@ function CalendarWithRef(
   }, [minAllowedDate]);
 
   const viewDate = useMemo(() => {
-    return isValid(initialViewDate) ? toString(initialViewDate) : undefined;
+    return isValid(initialViewDate) ? initialViewDate : undefined;
   }, [initialViewDate]);
 
   const applyMaxConstraint = useMemo(() => {
@@ -226,7 +225,6 @@ function CalendarWithRef(
       highlightsMap: highlightsMap,
       disableToday: disableToday,
       weekendMap: weekendMap,
-      highlightedDate: highlightedDate,
     }),
     [
       allowFewerDatesThanRange,
@@ -265,7 +263,6 @@ function CalendarWithRef(
       startOfTheWeek,
       useDarkMode,
       weekendIndexes,
-      highlightedDate,
     ],
   );
 

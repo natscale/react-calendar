@@ -172,6 +172,51 @@
   width: 100%;
 }
 
+
+.rc_shortcuts_view {
+  font-size: 0.8rem;
+  --rc-shorcut-button-hover: #e8e8e8;
+}
+
+.rc_shortcut_cal_root {
+  border: 1px solid #e8e8e8;
+  margin-bottom: 16px;
+}
+
+.rc_shortcut_cal_root .rc_root {
+  border: none;
+  margin: 0;
+}
+
+.rc_shortcut_cal_root .rc_shortcuts_view {
+  border-right: 1px solid #e8e8e8;
+}
+
+.rc_shortcut_button {
+  border: none;
+  /*margin: 0;*/
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  cursor: pointer;
+  border-radius: 25px;
+  background-color: #f6f6f6;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+}
+
+.rc_shortcut_button:hover {
+  background-color: var(--rc-shorcut-button-hover);
+}
+
+.rc_shortcut_button:active {
+  transform: translateY(1px);
+}
+
 /** rc_body-months **/
 
 .rc_body-months .rc_body-cell button {

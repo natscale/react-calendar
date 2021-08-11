@@ -27,7 +27,7 @@ function ShortcutBarComponent({ viewType, shortcutButtons, updateView }: Props) 
   };
 
   return (
-    <div style={shortcut.root} className={'arc_shortcuts_view'}>
+    <div style={shortcut.root} className={'rc_shortcuts_view'}>
       {shortcutButtons &&
         shortcutButtons.map((btn: ShortcutButtonModel, index: number) => {
           {

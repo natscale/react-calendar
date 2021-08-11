@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarProps, CalendarWithShortcutProps } from '../../utils/types';
+import { CalendarProps, CalendarViewProps, CalendarWithShortcutProps } from '../../utils/types';
 import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
-import { isValid } from '../../utils/date-utils';
+import { getAsNewDate, isValid, toString } from '../../utils/date-utils';
 import { ShortcutButtonModel } from '../shortuct-bar/ShortcutButtonModel';
 import Calendar from '../calendar/Calendar';
 
@@ -12,7 +12,6 @@ const styles = {
 };
 
 function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.Ref<HTMLDivElement>) {
-  const [highlightedDate, setHighlightedDate] = useState<Date | undefined>(undefined);
   const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [rangeStart, setRangeStart] = useState<Date | undefined>(undefined);
@@ -20,8 +19,6 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
   const [multiDates, setMultiDates] = useState<Record<string, Date | undefined> | undefined>(undefined);
 
   const [viewDate, setViewDate] = useState<Date | undefined>(undefined);
-  const [newProps, setNewProps] = useState<CalendarProps>(props);
-  const resetHighlightedDate = useCallback(() => setHighlightedDate(undefined), [setHighlightedDate]);
 
   const updateRangeDates = (val: Date[]) => {
     setRangeStart(val[0]);
@@ -44,27 +41,21 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
   const onCalendarChange = useCallback(
     (val) => {
       updateSelectedDates(val);
-      resetHighlightedDate();
       if (props.onChange) {
         props.onChange(val);
       }
     },
-    [props, resetHighlightedDate, updateSelectedDates],
+    [props, updateSelectedDates],
   );
 
   const updateDateView = useCallback(
     (date: Date | undefined) => {
       if (isValid(date)) {
-        setViewDate(date);
+        setViewDate(getAsNewDate(date));
       }
     },
     [setViewDate],
   );
-
-  useEffect(() => {
-    setNewProps({ ...props, viewDate: viewDate });
-    setHighlightedDate(viewDate);
-  }, [props, viewDate]);
 
   const goToToday = useCallback(() => updateDateView(new Date()), [updateDateView]);
   const goToRangeStart = useCallback(() => updateDateView(rangeStart), [rangeStart, updateDateView]);
@@ -82,11 +73,6 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
     }
     updateDateView(updateVal);
   }, [props.isMultiSelector, multiDates, selectedDate, toggleDateIndex, updateDateView]);
-
-  const toggleDateOnBlur = useCallback(() => {
-    resetHighlightedDate();
-    setToggleDateIndex(0);
-  }, [resetHighlightedDate]);
 
   const defaultShortcutButtons: Array<ShortcutButtonModel> = useMemo(
     () => [
@@ -127,16 +113,15 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
     [],
   );
 
+  const commonProps = useMemo<CalendarProps>(
+    () => ({ ...props, viewDate: viewDate, onChange: onCalendarChange }),
+    [onCalendarChange, props, viewDate],
+  );
+
   return (
-    <div ref={ref} style={styles.root} className="arc_shortcut_cal_root" onBlur={() => resetHighlightedDate()}>
+    <div ref={ref} style={styles.root} className="rc_shortcut_cal_root">
       <ShortcutBar shortcutButtons={shortcutButtonsToShow} viewType={viewType} updateView={updateDateView} />
-      <Calendar
-        {...{
-          ...newProps,
-          onChange: onCalendarChange,
-          highlightedDate: highlightedDate,
-        }}
-      />
+      <Calendar {...commonProps} />
     </div>
   );
 }

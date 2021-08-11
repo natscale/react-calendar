@@ -193,20 +193,17 @@ export interface CalendarProps {
    * This callback will be called for each date in a multiselect calendar
    */
   onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
-
-  shortcutButtons?: Array<ShortcutButtonModel>;
-
-  showDefaultShortcuts?: boolean;
-
-  highlightedDate?: Date;
 }
 
 export interface CalendarWithShortcutProps extends CalendarProps {
+  /**
+   * Array of custom shortcut buttons based on the ShortcutButtonModel model.
+   */
   shortcutButtons?: Array<ShortcutButtonModel>;
-
+  /**
+   * Option to show the default shortcut buttons for each calendar view type.
+   */
   showDefaultShortcuts?: boolean;
-
-  highlightedDate?: Date;
 }
 
 type CommonProps = Required<
@@ -250,7 +247,7 @@ export interface CalendarViewProps extends CommonProps {
   newSelectedRangeEnd: Date | undefined;
   selectedMultiDates: Record<string, Date | undefined>;
   highlightsMap: Record<string, 1>;
-  viewDate: string | undefined;
+  viewDate: Date | undefined;
   maxAllowedDate: string | undefined;
   minAllowedDate: string | undefined;
   weekendMap: Record<WeekdayIndices, 1>;

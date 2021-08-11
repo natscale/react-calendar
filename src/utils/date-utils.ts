@@ -279,6 +279,10 @@ export function getNextYear(year: number): number {
   return year + 1;
 }
 
+export function getAsNewDate(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
 export function getNextDate(date: Date): Date {
   if (isLastDayOfYear(date)) {
     return new Date(date.getFullYear() + 1, 0, 1);

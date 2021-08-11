@@ -6,6 +6,7 @@ import { Calendar, giveDaysInRange, giveFormatter } from './latest/main';
 import { Popover } from 'react-tiny-popover';
 
 import 'rc-slider/assets/index.css';
+import { CalendarWithShortcuts } from './latest/main';
 
 const highlights = [
   new Date(2021, new Date().getMonth(), 6),
@@ -56,18 +57,37 @@ export function App(): React.ReactElement {
 
   const [roundButtonStyles, setApplyRoundButtonCss] = useState(false);
   const [theme, setTheme] = useState<'green' | 'brown' | 'normal'>('normal');
+  const [shortcutCal, setShortcutCal] = useState<boolean>(false);
 
   return (
     <div className="demo">
       <div className="view">
         <div>
           <div className="calendar">
-            <Calendar {...props} className={theme} value={value} onChange={onChange} />
+            {shortcutCal ? (
+              <CalendarWithShortcuts
+                {...props}
+                className={theme}
+                value={value}
+                onChange={onChange}
+                showDefaultShortcuts={true}
+              />
+            ) : (
+              <Calendar {...props} className={theme} value={value} onChange={onChange} />
+            )}
           </div>
         </div>
       </div>
       <div className="props_root">
         <div className="props">
+          <div>
+            <Checkbox
+              toggle
+              onChange={() => setShortcutCal(!shortcutCal)}
+              checked={shortcutCal}
+              label="With Shortcuts"
+            />
+          </div>
           <div>
             <Checkbox
               toggle
