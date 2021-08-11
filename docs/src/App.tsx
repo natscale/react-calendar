@@ -55,6 +55,14 @@ export function App(): React.ReactElement {
     [setValue],
   );
 
+  const customShortcutButtons = [
+    {
+      buttonText: 'Go To Jan 2016',
+      viewTypes: ['Normal', 'Multiple', 'Range'],
+      goToDate: new Date(2016, 0, 1),
+    },
+  ];
+
   const [roundButtonStyles, setApplyRoundButtonCss] = useState(false);
   const [theme, setTheme] = useState<'green' | 'brown' | 'normal'>('normal');
   const [shortcutCal, setShortcutCal] = useState<boolean>(false);
@@ -70,6 +78,7 @@ export function App(): React.ReactElement {
                 className={theme}
                 value={value}
                 onChange={onChange}
+                shortcutButtons={customShortcutButtons}
                 showDefaultShortcuts={true}
               />
             ) : (
@@ -325,8 +334,6 @@ export function App(): React.ReactElement {
               onChange={() => setApplyRoundButtonCss(!roundButtonStyles)}
               checked={props.roundButtonStyles}
               label={roundButtonStyles ? 'Remove this css' : 'Apply this css'}
-              this
-              CSS
             />
             <pre style={{ color: 'rebeccapurple' }}>
               {`.rc_body-days-of-month .rc_body-cell .rc_body-cell_value {

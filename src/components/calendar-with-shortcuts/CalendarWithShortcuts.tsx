@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarProps, CalendarViewProps, CalendarWithShortcutProps } from '../../utils/types';
+import { CalendarProps, CalendarWithShortcutProps } from '../../utils/types';
 import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
-import { getAsNewDate, isValid, toString } from '../../utils/date-utils';
+import { getAsNewDate, isValid } from '../../utils/date-utils';
 import { ShortcutButtonModel } from '../shortuct-bar/ShortcutButtonModel';
 import Calendar from '../calendar/Calendar';
 

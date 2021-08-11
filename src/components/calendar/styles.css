@@ -117,7 +117,8 @@
   font-family: inherit;
 }
 
-.rc_root button {
+.rc_root button,
+.rc_shortcut_cal_root button{
   border: none;
   margin: 0;
   padding: 0;
@@ -174,8 +175,9 @@
 
 
 .rc_shortcuts_view {
-  font-size: 0.8rem;
-  --rc-shorcut-button-hover: #e8e8e8;
+  font-size: 0.83rem;
+  --rc-color-shorcut-button: #f6f6f6;
+  --rc-color-shorcut-button-hover: #e8e8e8;
 }
 
 .rc_shortcut_cal_root {
@@ -188,32 +190,21 @@
   margin: 0;
 }
 
-.rc_shortcut_cal_root .rc_shortcuts_view {
+.rc_shortcuts_view {
   border-right: 1px solid #e8e8e8;
 }
 
-.rc_shortcut_button {
-  border: none;
-  /*margin: 0;*/
-  padding: 0;
-  width: auto;
-  overflow: visible;
-  color: inherit;
-  font: inherit;
-  line-height: normal;
-  cursor: pointer;
+.rc_shortcuts_view button {
   border-radius: 25px;
-  background-color: #f6f6f6;
-  -webkit-font-smoothing: inherit;
-  -moz-osx-font-smoothing: inherit;
-  -webkit-appearance: none;
+  cursor: pointer;
+  background-color: var(--rc-color-shorcut-button);
 }
 
-.rc_shortcut_button:hover {
-  background-color: var(--rc-shorcut-button-hover);
+.rc_shortcuts_view button:hover {
+  background-color: var(--rc-color-shorcut-button-hover);
 }
 
-.rc_shortcut_button:active {
+.rc_shortcuts_view button:active {
   transform: translateY(1px);
 }
 

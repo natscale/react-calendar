@@ -230,8 +230,8 @@ type CommonProps = Required<
   Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange'>;
 
 export interface CalendarViewProps extends CommonProps {
-  onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
+  onChangeNewSelectedRangeEnd: (date: Date | undefined) => unknown;
+  onChangeNewSelectedRangeStart: (date: Date | undefined) => unknown;
   onChangeRangeSelectMode: (on: boolean) => void;
   checkIfWeekend: (date: Date) => boolean;
   isSecondary: boolean;
@@ -256,8 +256,8 @@ export interface CalendarViewProps extends CommonProps {
 export interface DayOfMonthSelectorProps
   extends Pick<
     CalendarViewProps,
-    | 'onChangenNewSelectedRangeEnd'
-    | 'onChangenNewSelectedRangeStart'
+    | 'onChangeNewSelectedRangeEnd'
+    | 'onChangeNewSelectedRangeStart'
     | 'startOfWeek'
     | 'fixedRange'
     | 'selectedDate'
