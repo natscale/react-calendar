@@ -220,7 +220,7 @@
 /** rc_body-months **/
 
 .rc_body-months .rc_body-cell button {
-  font-size: 0.83em;
+  font-size: 0.85em;
   color: var(--rc-color-text-dom-active);
   cursor: pointer;
 }
@@ -237,7 +237,7 @@
 /** rc_body-years **/
 
 .rc_body-years .rc_body-cell button {
-  font-size: 0.83em;
+  font-size: 0.85em;
   color: var(--rc-color-text-dom-active);
   cursor: pointer;
 }
