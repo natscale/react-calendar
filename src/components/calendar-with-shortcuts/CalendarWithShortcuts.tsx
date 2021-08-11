@@ -119,7 +119,7 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
   );
 
   return (
-    <div ref={ref} style={styles.root} className="rc_shortcut_cal_root">
+    <div ref={ref} style={styles.root} className={'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? 'rc_dark' : '')}>
       <ShortcutBar shortcutButtons={shortcutButtonsToShow} viewType={viewType} updateView={updateDateView} />
       <Calendar {...commonProps} />
     </div>
