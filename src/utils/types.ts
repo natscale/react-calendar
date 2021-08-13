@@ -4,6 +4,8 @@ export type MonthIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 export type WeekdayIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+export type ViewType = 'years' | 'months' | 'month_dates';
+
 export interface DayOfMonthCell {
   date: Date;
   dayOfMonth: number;
@@ -91,6 +93,10 @@ export interface CalendarProps {
    * Custom classname
    */
   className?: string;
+  /**
+   * By default it is month_dates
+   */
+  initialView?: ViewType;
   /**
    * Width & Height of the calendar.
    * Default is 276
@@ -215,7 +221,7 @@ type CommonProps = Required<
     | 'className'
   >
 > &
-  Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange'>;
+  Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange' | 'initialView'>;
 
 export interface CalendarViewProps extends CommonProps {
   onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
@@ -300,8 +306,8 @@ export interface WeekdayRowProps {
 export interface HeaderProps {
   onClickPrev: () => any;
   onClickNext: () => any;
-  onChangeViewType: (view: 'month_dates' | 'months' | 'years') => any;
-  viewType: 'month_dates' | 'months' | 'years';
+  onChangeViewType: (view: ViewType) => any;
+  viewType: ViewType;
   monthInView: MonthIndices;
   yearInView: number;
   yearMatrixStart: number;

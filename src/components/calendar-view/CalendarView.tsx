@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import type { MonthIndices, CSSProps, CalendarViewProps } from '../../utils/types';
+import type { MonthIndices, CSSProps, CalendarViewProps, ViewType } from '../../utils/types';
 
 import {
   getStartOfRangeForAYear,
@@ -23,6 +23,12 @@ import { WeekDaysRow } from '../week-days-row/WeekDaysRow';
 import { DayOfMonthSelector } from '../day-of-month-selector/DayOfMonthSelector';
 
 const bodyStyles = { height: '88%', width: '100%' };
+
+const Views: Record<ViewType, 1> = {
+  years: 1,
+  months: 1,
+  month_dates: 1,
+};
 
 const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize) => ({
   root: {
@@ -56,6 +62,7 @@ function Component({
   weekends,
   isRangeSelectModeOn,
   onChangeRangeSelectMode,
+  initialView,
   skipDisabledDatesInRange,
   hideAdjacentDates,
   allowFewerDatesThanRange,
@@ -81,7 +88,7 @@ function Component({
   const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
 
   // View States
-  const [view, setView] = useState<'years' | 'months' | 'month_dates'>('month_dates');
+  const [view, setView] = useState<ViewType>(initialView && Views[initialView] ? initialView : 'month_dates');
 
   // This just tries to find a month to show based on a number
   // of factors for the initial render only
@@ -171,7 +178,7 @@ function Component({
   );
 
   const changeView = useCallback(
-    (view: 'years' | 'months' | 'month_dates') => {
+    (view: ViewType) => {
       !lockView && setView(view);
     },
     [lockView, setView],
@@ -257,9 +264,8 @@ function Component({
       ? Array.from(currentCalendarRef.querySelectorAll('[role="grid"] button:not([disabled])'))
       : [];
 
-    const firstItem = cells.current[0];
-    const lastItem = cells.current[cells.current.length - 1];
-    const grid = currentCalendarRef.querySelector('[role="grid"]');
+    const firstCell = cells.current[0];
+    const lastCell = cells.current[cells.current.length - 1];
     const seletedItemIfAny: HTMLButtonElement | null =
       currentCalendarRef.querySelector('[role="grid"] .rc_selected button') ||
       currentCalendarRef.querySelector('[role="grid"] .rc_range_end button') ||
@@ -269,24 +275,30 @@ function Component({
       '[role="grid"] .rc_active button',
     );
 
-    const prevButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_nav-prev');
-    const nextButton: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_nav-next');
-    const monthYearSelector: HTMLButtonElement | null = currentCalendarRef.querySelector('header .rc_header_label');
+    const header: HTMLElement | null = currentCalendarRef.querySelector('.rc_header');
 
-    if (grid && !grid.contains(document.activeElement)) {
+    if (!header) {
+      return;
+    }
+
+    const prevButton: HTMLButtonElement | null = header.querySelector('.rc_header_nav-prev');
+    const nextButton: HTMLButtonElement | null = header.querySelector('.rc_header_nav-next');
+    const monthYearSelector: HTMLButtonElement | null = header.querySelector('.rc_header_label');
+
+    if (currentCalendarRef && !currentCalendarRef.contains(document.activeElement)) {
       // if focus in not already inside the GRID then bring the focus
       if (seletedItemIfAny) {
         seletedItemIfAny.focus();
       } else if (firstActiveItem) {
         firstActiveItem.focus();
       } else {
-        firstItem.focus();
+        firstCell.focus();
       }
     }
 
     const focusNext = (currentItem: HTMLButtonElement | null, startItem: HTMLButtonElement | null) => {
       // Determine which item is the startItem (first or last)
-      const goingDown = startItem === firstItem;
+      const goingDown = startItem === firstCell;
 
       const move = (elem: HTMLButtonElement) => {
         const indexOfItem = cells.current.indexOf(elem);
@@ -319,32 +331,26 @@ function Component({
       const { target } = e;
       const cell = cells.current && cells.current.find((item) => item === target);
 
-      if (!cell) {
-        return;
-      }
-
       if (e.key === 'Tab') {
         e.preventDefault();
-        const endItem = focusNext(cell, firstItem);
-        if (endItem === firstItem) {
-          prevButton?.focus();
-        } else if (document.activeElement === nextButton) {
-          firstItem?.focus();
-        } else if (document.activeElement === monthYearSelector) {
-          nextButton?.focus();
-        } else if (document.activeElement === prevButton) {
-          monthYearSelector?.focus();
+        if (header?.contains(document.activeElement)) {
+          // if header has focus move it to calendar
+          firstCell.focus();
         } else {
-          endItem?.focus();
+          // otherwise if calendar has focus move it to header first button
+          prevButton?.focus();
         }
       }
 
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         let count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+        if (!cell) {
+          return;
+        }
         let endItem: HTMLButtonElement | null = cell;
         while (count > 0) {
-          endItem = focusNext(endItem, firstItem);
+          endItem = focusNext(endItem, firstCell);
           count--;
         }
         endItem?.focus();
@@ -353,9 +359,12 @@ function Component({
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         let count = view === 'month_dates' ? 7 : view === 'months' ? 3 : 5;
+        if (!cell) {
+          return;
+        }
         let endItem: HTMLButtonElement | null = cell;
         while (count > 0) {
-          endItem = focusNext(endItem, lastItem);
+          endItem = focusNext(endItem, lastCell);
           count--;
         }
         endItem?.focus();
@@ -363,30 +372,54 @@ function Component({
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        const endItem = focusNext(cell, lastItem);
-        endItem?.focus();
+        if (document.activeElement === prevButton) {
+          nextButton?.focus();
+        } else if (document.activeElement === monthYearSelector) {
+          prevButton?.focus();
+        } else if (document.activeElement === nextButton) {
+          monthYearSelector?.focus();
+        } else {
+          if (!cell) {
+            return;
+          }
+          const endItem = focusNext(cell, lastCell);
+          endItem?.focus();
+        }
       }
 
       if (e.key === 'ArrowRight') {
         e.preventDefault();
-        const endItem = focusNext(cell, firstItem);
-        endItem?.focus();
+        if (document.activeElement === prevButton) {
+          monthYearSelector?.focus();
+        } else if (document.activeElement === monthYearSelector) {
+          nextButton?.focus();
+        } else if (document.activeElement === nextButton) {
+          prevButton?.focus();
+        } else {
+          if (!cell) {
+            return;
+          }
+          const endItem = focusNext(cell, firstCell);
+          endItem?.focus();
+        }
       }
 
       if (e.key === 'Home') {
         e.preventDefault();
-        firstItem.focus();
+        firstCell.focus();
       }
 
       if (e.key === 'End') {
         e.preventDefault();
-        lastItem.focus();
+        lastCell.focus();
       }
 
       if (e.key === 'Escape') {
         e.preventDefault();
-        cell.blur();
-        currentCalendarRef?.blur();
+        // hack so browser focuses the next tabbable element when
+        // tab is pressed
+        lastCell.focus();
+        lastCell.blur();
       }
     }
 
@@ -395,7 +428,8 @@ function Component({
     return () => {
       currentCalendarRef.removeEventListener('keydown', onKeyPressListener, { capture: true });
     };
-  }, [calendarRef, view, hasFocus, monthInView]);
+    // we want to update elem refs when month/year/year range changes
+  }, [calendarRef, view, hasFocus, monthInView, yearInView, startingYearForCurrRange]);
 
   return (
     <div

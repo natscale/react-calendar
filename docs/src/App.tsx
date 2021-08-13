@@ -1,3 +1,4 @@
+import type { CalendarProps, WeekdayIndices } from './latest/utils/types';
 import React, { useCallback, useState } from 'react';
 import { Button, Checkbox, Input } from 'semantic-ui-react';
 
@@ -20,14 +21,15 @@ const randMonth = () => Math.floor(Math.random() * 11) + 0;
 const randDate = () => Math.floor(Math.random() * 28) + 1;
 
 export function App(): React.ReactElement {
-  const [props, setProps] = useState({
+  const [props, setProps] = useState<CalendarProps>({
     hideAdjacentDates: false,
     useDarkMode: false,
     className: 'myckass',
     size: 276,
     fontSize: 14,
-    viewDate: Date,
+    viewDate: new Date(),
     lockView: false,
+    // initialView: 'years',
     showDualCalendar: false,
     isMultiSelector: false,
     isRangeSelector: false,
@@ -43,7 +45,7 @@ export function App(): React.ReactElement {
     highlights: highlights,
     minAllowedDate: undefined,
     maxAllowedDate: undefined,
-  } as any);
+  });
 
   const [value, setValue] = useState<Date>(new Date());
 
@@ -284,7 +286,7 @@ export function App(): React.ReactElement {
                     .map((e) => Number(e.trim()))
                     .filter((n) => !isNaN(n));
                 if (arr) {
-                  setProps({ ...props, weekends: arr });
+                  setProps({ ...props, weekends: arr as WeekdayIndices[] });
                 } else {
                   setProps({ ...props, weekends: [] });
                 }
@@ -303,10 +305,8 @@ export function App(): React.ReactElement {
           <div>
             <Checkbox
               onChange={() => setApplyRoundButtonCss(!roundButtonStyles)}
-              checked={props.roundButtonStyles}
+              checked={roundButtonStyles}
               label={roundButtonStyles ? 'Remove this css' : 'Apply this css'}
-              this
-              CSS
             />
             <pre style={{ color: 'rebeccapurple' }}>
               {`.rc_body-days-of-month .rc_body-cell .rc_body-cell_value {
