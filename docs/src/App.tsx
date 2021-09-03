@@ -1,6 +1,7 @@
-import type { CalendarProps, WeekdayIndices } from './latest/utils/types';
+import type { CalendarProps, WeekdayIndices, CalendarRef } from './latest/utils/types';
 import React, { useCallback, useState } from 'react';
 import { Button, Checkbox, Input } from 'semantic-ui-react';
+import { useRef } from 'react';
 
 import { Calendar, giveDaysInRange, giveFormatter } from './latest/main';
 
@@ -27,7 +28,6 @@ export function App(): React.ReactElement {
     className: 'myckass',
     size: 276,
     fontSize: 14,
-    viewDate: new Date(),
     lockView: false,
     // initialView: 'years',
     showDualCalendar: false,
@@ -49,6 +49,8 @@ export function App(): React.ReactElement {
 
   const [value, setValue] = useState<Date>(new Date());
 
+  const calendarRef = useRef<CalendarRef>();
+
   const onChange = useCallback(
     (val) => {
       setValue(val);
@@ -64,7 +66,7 @@ export function App(): React.ReactElement {
       <div className="view">
         <div>
           <div className="calendar">
-            <Calendar {...props} className={theme} value={value} onChange={onChange} />
+            <Calendar ref={calendarRef} {...props} className={theme} value={value} onChange={onChange} />
           </div>
         </div>
       </div>
@@ -173,14 +175,14 @@ export function App(): React.ReactElement {
             <h4>Move to Date</h4>
             <Button
               onClick={() => {
-                setProps({ ...props, viewDate: new Date(randYear(), randMonth(), randDate()) });
+                calendarRef?.current?.setView(new Date(randYear(), randMonth(), randDate()));
               }}
             >
               Random Date
             </Button>
             <Button
               onClick={() => {
-                setProps({ ...props, viewDate: new Date() });
+                calendarRef?.current?.setView(new Date());
               }}
             >
               Today

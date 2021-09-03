@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import type { MonthIndices, CSSProps, CalendarViewProps, ViewType } from '../../utils/types';
+import type { MonthIndices, CSSProps, CalendarViewProps, ViewType, CalendarRef } from '../../utils/types';
 
 import {
   getStartOfRangeForAYear,
@@ -44,47 +54,50 @@ const getStyles: (size: number, fontSize: number) => CSSProps = (size, fontSize)
   },
 });
 
-function Component({
-  size,
-  fontSize,
-  isNormalView,
-  isMultiSelectorView,
-  isRangeSelectorView,
-  viewDate,
-  selectedDate,
-  selectedRangeStart,
-  selectedMultiDates,
-  minAllowedDate,
-  maxAllowedDate,
-  isSecondary,
-  lockView,
-  startOfWeek,
-  weekends,
-  isRangeSelectModeOn,
-  onChangeRangeSelectMode,
-  initialView,
-  skipDisabledDatesInRange,
-  hideAdjacentDates,
-  allowFewerDatesThanRange,
-  selectedRangeEnd,
-  newSelectedRangeStart,
-  onChangenNewSelectedRangeEnd,
-  onChangenNewSelectedRangeStart,
-  onPartialRangeSelect,
-  onEachMultiSelect,
-  newSelectedRangeEnd,
-  fixedRange,
-  isFixedRangeView,
-  isDisabled,
-  checkIfWeekend,
-  onChange,
-  showDualCalendar,
-  disableFuture,
-  weekendMap,
-  disablePast,
-  highlightsMap,
-  disableToday,
-}: CalendarViewProps): React.ReactElement<CalendarViewProps> {
+function Component(
+  {
+    size,
+    fontSize,
+    isNormalView,
+    isMultiSelectorView,
+    isRangeSelectorView,
+    viewDate,
+    selectedDate,
+    selectedRangeStart,
+    selectedMultiDates,
+    minAllowedDate,
+    maxAllowedDate,
+    isSecondary,
+    lockView,
+    startOfWeek,
+    weekends,
+    isRangeSelectModeOn,
+    onChangeRangeSelectMode,
+    initialView,
+    skipDisabledDatesInRange,
+    hideAdjacentDates,
+    allowFewerDatesThanRange,
+    selectedRangeEnd,
+    newSelectedRangeStart,
+    onChangenNewSelectedRangeEnd,
+    onChangenNewSelectedRangeStart,
+    onPartialRangeSelect,
+    onEachMultiSelect,
+    newSelectedRangeEnd,
+    fixedRange,
+    isFixedRangeView,
+    isDisabled,
+    checkIfWeekend,
+    onChange,
+    showDualCalendar,
+    disableFuture,
+    weekendMap,
+    disablePast,
+    highlightsMap,
+    disableToday,
+  }: CalendarViewProps,
+  ref: React.Ref<CalendarRef>,
+): React.ReactElement<CalendarViewProps> {
   const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
 
   // View States
@@ -94,14 +107,14 @@ function Component({
   // of factors for the initial render only
   const [monthInView, setMonthInView] = useState<MonthIndices>(
     () =>
-      getDateToShow({
+      getInitialDateToShow({
         isNormalView: isNormalView,
         isMultiSelectorView: isMultiSelectorView,
         isRangeSelectorView: isRangeSelectorView,
         selectedDate: selectedDate,
         selectedRangeStart: selectedRangeStart,
         selectedMultiDates: selectedMultiDates,
-        viewDate: viewDate ? fromString(viewDate) : undefined,
+        viewDate: viewDate,
         minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
         maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
       }).getMonth() as MonthIndices,
@@ -110,18 +123,25 @@ function Component({
   // This just tries to find a year to show based on a number
   // of factors for the initial render only
   const [yearInView, setYearInView] = useState(
-    getDateToShow({
+    getInitialDateToShow({
       isNormalView: isNormalView,
       isMultiSelectorView: isMultiSelectorView,
       isRangeSelectorView: isRangeSelectorView,
       selectedDate: selectedDate,
       selectedRangeStart: selectedRangeStart,
       selectedMultiDates: selectedMultiDates,
-      viewDate: viewDate ? fromString(viewDate) : undefined,
+      viewDate: viewDate,
       minAllowedDate: minAllowedDate ? fromString(minAllowedDate) : undefined,
       maxAllowedDate: maxAllowedDate ? fromString(maxAllowedDate) : undefined,
     }).getFullYear(),
   );
+
+  useImperativeHandle(ref, () => ({
+    setView: (date: Date) => {
+      setMonthInView(date.getMonth() as MonthIndices);
+      setYearInView(date.getFullYear());
+    },
+  }));
 
   useLayoutEffect(() => {
     if (showDualCalendar && isSecondary) {
@@ -134,14 +154,6 @@ function Component({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showDualCalendar, isSecondary]);
 
-  // updating view because view prop change
-  useEffect(() => {
-    if (viewDate && isValid(fromString(viewDate))) {
-      setMonthInView(fromString(viewDate).getMonth() as MonthIndices);
-      setYearInView(fromString(viewDate).getFullYear());
-    }
-  }, [viewDate]);
-
   // updating view when selected date change
   useEffect(() => {
     if (isValid(selectedDate)) {
@@ -150,8 +162,7 @@ function Component({
     }
   }, [selectedDate]);
 
-  // updating view when first multi is selected, after that
-  // we don't update
+  // updating view only when first multi is selected
   useEffect(() => {
     const dates = Object.keys(selectedMultiDates)
       .map((str) => selectedMultiDates[str])
@@ -167,21 +178,21 @@ function Component({
     (month: MonthIndices) => {
       !lockView && setMonthInView(month);
     },
-    [lockView, setMonthInView],
+    [lockView],
   );
 
   const changeYearInView = useCallback(
     (year: number) => {
       !lockView && setYearInView(year);
     },
-    [lockView, setYearInView],
+    [lockView],
   );
 
   const changeView = useCallback(
     (view: ViewType) => {
       !lockView && setView(view);
     },
-    [lockView, setView],
+    [lockView],
   );
 
   const [startingYearForCurrRange, setStartingYearForCurrRange] = useState(getStartOfRangeForAYear(yearInView));
@@ -512,9 +523,9 @@ function Component({
   );
 }
 
-export const CalendarView = memo(Component);
+export const CalendarView = memo(forwardRef(Component));
 
-function getDateToShow(props: AttrFromDateParams): Date {
+function getInitialDateToShow(props: InitialDateParams): Date {
   const firstOfMulti =
     props.isMultiSelectorView &&
     props.selectedMultiDates &&
@@ -537,7 +548,7 @@ function getDateToShow(props: AttrFromDateParams): Date {
   return date;
 }
 
-interface AttrFromDateParams {
+interface InitialDateParams {
   isNormalView: boolean;
   isMultiSelectorView: boolean;
   isRangeSelectorView: boolean;

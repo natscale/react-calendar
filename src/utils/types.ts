@@ -72,6 +72,8 @@ export interface CheckIfDateIsDisabledHOFParams {
   applyMin: boolean;
 }
 
+export type CalendarRef = { setView: (date: Date) => void };
+
 export interface CSSProps {
   root: {
     rc: CSSProperties;
@@ -112,7 +114,7 @@ export interface CalendarProps {
    * By default it shows today's date month and year. If a date is selected it shows the selected
    * date's month and year.
    */
-  viewDate?: Date;
+  initialViewDate?: Date;
   /**
    * User can not change month/year
    */
@@ -241,7 +243,7 @@ export interface CalendarViewProps extends CommonProps {
   newSelectedRangeEnd: Date | undefined;
   selectedMultiDates: Record<string, Date | undefined>;
   highlightsMap: Record<string, 1>;
-  viewDate: string | undefined;
+  viewDate: Date | undefined;
   maxAllowedDate: string | undefined;
   minAllowedDate: string | undefined;
   weekendMap: Record<WeekdayIndices, 1>;

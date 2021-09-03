@@ -77,12 +77,13 @@
   --rc-color-border: #4e4d4d;
   --rc-color-text-hover: #403e3e;
   /* General Theme Main Colors */
-  --rc-color-primary: #ced9ea;
-  --rc-color-primary-light: #6d707f;
-  --rc-color-primary-lighter: #474b52;
-  --rc-color-accent: #eacece;
-  --rc-color-accent-light: #7f6d6d;
-  --rc-color-accent-lighter: #524747;
+  --rc-color-primary: hsl(216deg 40% 86%);
+  --rc-color-primary-light: hsl(230deg 8% 46%);
+  --rc-color-primary-lighter: hsl(216deg 40% 86% / 18%);
+  /* --rc-color-primary-lighter: hsl(218deg 7% 30%); */
+  --rc-color-accent: hsl(0deg 40% 86%);
+  --rc-color-accent-light: hsl(0deg 8% 46%);
+  --rc-color-accent-lighter: hsl(0deg 40% 86% / 18%);
 }
 
 .rc_root {
