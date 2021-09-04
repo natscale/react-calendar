@@ -234,6 +234,11 @@
   border-radius: 2px;
 }
 
+/* No Pad Mode */
+.rc_no_range_padding .rc_body-days-of-month .rc_body-cell .rc_body-cell_value {
+  border-radius: 0;
+}
+
 .rc_body-days-of-month .rc_body-cell .rc_body-cell_value:hover {
   background-color: var(--rc-color-bg-text-hover-header-button);
 }
@@ -260,6 +265,16 @@
 .rc_body-days-of-month .rc_body-cell.rc_in_range.rc_active .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-in-range-active);
   color: var(--rc-color-text-dark);
+}
+
+.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_end .rc_body-cell_value {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.rc_no_range_padding .rc_body-days-of-month .rc_body-cell.rc_range_start .rc_body-cell_value {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 .rc_body-days-of-month .rc_body-cell.rc_in_range.rc_wknd.rc_active .rc_body-cell_value {

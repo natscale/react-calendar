@@ -33,6 +33,7 @@ export function App(): React.ReactElement {
     showDualCalendar: false,
     isMultiSelector: false,
     isRangeSelector: false,
+    noPadRangeCell: false,
     skipDisabledDatesInRange: false,
     allowFewerDatesThanRange: false,
     fixedRange: undefined,
@@ -140,6 +141,20 @@ export function App(): React.ReactElement {
               onChange={() => setProps({ ...props, isRangeSelector: !props.isRangeSelector })}
               checked={props.isRangeSelector}
               label="Range Selector"
+            />
+          </div>
+          <div>
+            <Checkbox
+              toggle
+              onChange={() =>
+                setProps({
+                  ...props,
+                  noPadRangeCell: !props.noPadRangeCell,
+                  ...(!props.noPadRangeCell ? { isRangeSelector: true } : null),
+                })
+              }
+              checked={props.noPadRangeCell}
+              label="No Padding In Range Cells"
             />
           </div>
           <div>

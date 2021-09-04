@@ -110,6 +110,11 @@ export interface CalendarProps {
    */
   fontSize?: number;
   /**
+   * In Range Cells have padding between them
+   * Default is true
+   */
+  noPadRangeCell?: boolean;
+  /**
    * The initial month and year that will be shown to the user.
    * By default it shows today's date month and year. If a date is selected it shows the selected
    * date's month and year.
@@ -207,6 +212,7 @@ type CommonProps = Required<
     CalendarProps,
     | 'lockView'
     | 'isDisabled'
+    | 'noPadRangeCell'
     | 'disableFuture'
     | 'disablePast'
     | 'disableToday'
@@ -253,6 +259,7 @@ export interface DayOfMonthSelectorProps
   extends Pick<
     CalendarViewProps,
     | 'onChangenNewSelectedRangeEnd'
+    | 'noPadRangeCell'
     | 'onChangenNewSelectedRangeStart'
     | 'startOfWeek'
     | 'fixedRange'
@@ -317,6 +324,7 @@ export interface HeaderProps {
 }
 
 export interface DayOfMonthCellProps {
+  noPadRangeCell: boolean;
   cell: DayOfMonthCell;
   onDateClicked: (cell: DayOfMonthCell) => unknown;
 }

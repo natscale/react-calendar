@@ -40,6 +40,7 @@ function CalendarWithRef(
     fixedRange,
     isDisabled,
     onPartialRangeSelect,
+    noPadRangeCell: noPadRangeCell = true,
     onEachMultiSelect,
     initialView,
     onChange,
@@ -194,6 +195,7 @@ function CalendarWithRef(
 
   const commonProps = useMemo<Omit<CalendarViewProps, 'isSecondary'>>(
     () => ({
+      noPadRangeCell: !!noPadRangeCell && isRangeSelectorView,
       showDualCalendar: isDualMode,
       viewDate: viewDate,
       useDarkMode: useDarkMode,
@@ -260,6 +262,7 @@ function CalendarWithRef(
       maxDate,
       minDate,
       newSelectedRangeEnd,
+      noPadRangeCell,
       newSelectedRangeStart,
       onChange,
       onEachMultiSelect,
@@ -279,9 +282,12 @@ function CalendarWithRef(
   const computedClass = useMemo(
     () =>
       typeof className === 'string'
-        ? `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` + ` ${className}`
-        : `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}`,
-    [className, useDarkMode, isDualMode],
+        ? `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` +
+          ` ${className}` +
+          `${!!noPadRangeCell && isRangeSelectorView ? ' rc_no_range_padding' : ''}`
+        : `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` +
+          `${!!noPadRangeCell && isRangeSelectorView ? ' rc_no_range_padding' : ''}`,
+    [className, useDarkMode, isDualMode, noPadRangeCell, isRangeSelectorView],
   );
 
   return (

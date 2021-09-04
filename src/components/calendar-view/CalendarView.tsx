@@ -70,6 +70,7 @@ function Component(
     isSecondary,
     lockView,
     startOfWeek,
+    noPadRangeCell,
     weekends,
     isRangeSelectModeOn,
     onChangeRangeSelectMode,
@@ -482,6 +483,7 @@ function Component(
           <>
             <WeekDaysRow startOfWeek={startOfWeek} weekendMap={weekendMap} />
             <DayOfMonthSelector
+              noPadRangeCell={noPadRangeCell}
               isRangeSelectModeOn={isRangeSelectModeOn}
               onChangeRangeSelectMode={onChangeRangeSelectMode}
               skipDisabledDatesInRange={skipDisabledDatesInRange}
