@@ -20,7 +20,7 @@ const giveStyles = (noPadRangeCell: boolean) => ({
 
 const giveButtonStyles = (noPadRangeCell: boolean) => ({
   width: noPadRangeCell ? '69.8%' : '100%',
-  height: '90%',
+  height: '92%',
 });
 
 function Component({ cell, onDateClicked, noPadRangeCell }: DayOfMonthCellProps) {

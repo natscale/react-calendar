@@ -333,11 +333,8 @@
 
 /* Selected */
 
-.rc_body-days-of-month .rc_body-cell.rc_today:not(.rc_selected):not(.rc_disabled) button {
-  border-bottom: 1px solid currentColor;
-}
-
-.rc_body-days-of-month .rc_body-cell.rc_highlight:not(.rc_selected):not(.rc_disabled) button {
+.rc_body-days-of-month .rc_body-cell.rc_today:not(.rc_disabled) button,
+.rc_body-days-of-month .rc_body-cell.rc_highlight:not(.rc_disabled) button {
   border-bottom: 1px solid currentColor;
 }
 
