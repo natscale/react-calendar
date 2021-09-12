@@ -15,6 +15,10 @@ function CalendarWithShortcutsRef(
   props: CalendarWithShortcutProps,
   calendarRef: Ref<CalendarRef>,
 ): React.ReactElement<CalendarWithShortcutProps> {
+  if (props.showDualCalendar) {
+    throw new Error('Dual calendar does not support shortcuts.');
+  }
+
   const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [rangeStart, setRangeStart] = useState<Date | undefined>(undefined);
@@ -53,7 +57,6 @@ function CalendarWithShortcutsRef(
     (date: Date | undefined) => {
       if (isValid(date) && calendarRef) {
         (calendarRef as MutableRefObject<CalendarRef>)?.current?.setView(date);
-        // calendarRefs?.current?.setView(date);
       }
     },
     [calendarRef],
