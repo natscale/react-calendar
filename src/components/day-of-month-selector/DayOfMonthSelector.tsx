@@ -19,6 +19,8 @@ const dayOfMonthStyles = {
     flexBasis: '14.286%',
     maxWidth: '14.286%',
     height: '100%',
+    display: 'flex',
+    aligntems: 'center',
   },
 };
 
@@ -46,6 +48,7 @@ function DayOfMonthSelectorComponent({
   onChange,
   yearInView: viewingYear,
   allowFewerDatesThanRange,
+  noPadRangeCell,
   disableFuture,
   disablePast,
   lockView,
@@ -241,7 +244,7 @@ function DayOfMonthSelectorComponent({
               }${isRangeSelectModeOn ? ' rc_range_mode' : ''}`}
             >
               {!cell.activeMonthInView && hideAdjacentDates ? null : (
-                <DayOfMonth cell={cell} onDateClicked={onDateClicked} />
+                <DayOfMonth noPadRangeCell={noPadRangeCell} cell={cell} onDateClicked={onDateClicked} />
               )}
             </div>
           ))}

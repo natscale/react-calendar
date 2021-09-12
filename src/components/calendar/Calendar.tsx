@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useMemo, useState } from 'react';
+import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
 
-import type { CalendarProps, CalendarViewProps, WeekdayIndices } from '../../utils/types';
+import type { CalendarProps, CalendarRef, CalendarViewProps, WeekdayIndices } from '../../utils/types';
 
 import {
   isValid,
@@ -31,7 +31,7 @@ function CalendarWithRef(
     useDarkMode = false,
     weekends,
     highlights = emptyArray,
-    viewDate: initialViewDate,
+    initialViewDate,
     allowFewerDatesThanRange = false,
     startOfWeek = 1,
     maxAllowedDate,
@@ -40,7 +40,9 @@ function CalendarWithRef(
     fixedRange,
     isDisabled,
     onPartialRangeSelect,
+    noPadRangeCell: noPadRangeCell = true,
     onEachMultiSelect,
+    initialView,
     onChange,
     lockView = false,
     disableFuture = false,
@@ -51,13 +53,21 @@ function CalendarWithRef(
     showDualCalendar = false,
     hideAdjacentDates = false,
   }: CalendarProps,
-  forwardRef: React.Ref<HTMLDivElement>,
+  forwardRef: React.Ref<CalendarRef>,
 ): React.ReactElement<CalendarProps> {
   const isRangeSelectorView = !!isRangeSelector;
   const isDualMode = isRangeSelectorView && !!showDualCalendar;
   const isMultiSelectorView = !isRangeSelectorView && !!isMultiSelector;
   const isFixedRangeView = isRangeSelectorView && typeof fixedRange === 'number' && fixedRange > 0 ? true : false;
   const isNormalView = !isRangeSelectorView && !isMultiSelectorView;
+
+  const calendarRef = useRef<CalendarRef>({ setView: () => undefined });
+
+  useImperativeHandle(forwardRef, () => ({
+    setView: (date: Date) => {
+      calendarRef.current.setView(date);
+    },
+  }));
 
   const startOfTheWeek = startOfWeek;
   const fixedRangeLength = isFixedRangeView ? (fixedRange as number) : 1;
@@ -175,7 +185,6 @@ function CalendarWithRef(
       const date = value[1].getDate();
       return new Date(year, month, date);
     } else {
-      // TODO read from user's value prop
       return undefined;
     }
   }, [isRangeSelectorView, selectedRangeStart, value]);
@@ -186,6 +195,7 @@ function CalendarWithRef(
 
   const commonProps = useMemo<Omit<CalendarViewProps, 'isSecondary'>>(
     () => ({
+      noPadRangeCell: !!noPadRangeCell && isRangeSelectorView,
       showDualCalendar: isDualMode,
       viewDate: viewDate,
       useDarkMode: useDarkMode,
@@ -211,6 +221,7 @@ function CalendarWithRef(
       onEachMultiSelect: onEachMultiSelect,
       newSelectedRangeEnd: newSelectedRangeEnd,
       isRangeSelectorView: isRangeSelectorView,
+      initialView: initialView,
       fixedRange: fixedRangeLength,
       isFixedRangeView: isFixedRangeView,
       isDisabled: checkDisabledForADate,
@@ -236,6 +247,7 @@ function CalendarWithRef(
       disablePast,
       hideAdjacentDates,
       disableToday,
+      initialView,
       fixedRangeLength,
       fontSize,
       highlightsMap,
@@ -250,6 +262,7 @@ function CalendarWithRef(
       maxDate,
       minDate,
       newSelectedRangeEnd,
+      noPadRangeCell,
       newSelectedRangeStart,
       onChange,
       onEachMultiSelect,
@@ -269,20 +282,23 @@ function CalendarWithRef(
   const computedClass = useMemo(
     () =>
       typeof className === 'string'
-        ? `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` + ` ${className}`
-        : `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}`,
-    [className, useDarkMode, isDualMode],
+        ? `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` +
+          ` ${className}` +
+          `${!!noPadRangeCell && isRangeSelectorView ? ' rc_no_range_padding' : ''}`
+        : `rc_root${useDarkMode ? ' rc_dark' : ''}${isDualMode ? ' rc_dual' : ''}` +
+          `${!!noPadRangeCell && isRangeSelectorView ? ' rc_no_range_padding' : ''}`,
+    [className, useDarkMode, isDualMode, noPadRangeCell, isRangeSelectorView],
   );
 
   return (
-    <div className={computedClass} style={styles} ref={forwardRef}>
+    <div className={computedClass} style={styles}>
       {isDualMode ? (
         <>
           <CalendarView isSecondary={false} {...commonProps} />
           <CalendarView isSecondary={true} {...commonProps} />
         </>
       ) : (
-        <CalendarView isSecondary={false} {...commonProps} />
+        <CalendarView ref={calendarRef} isSecondary={false} {...commonProps} />
       )}
     </div>
   );
