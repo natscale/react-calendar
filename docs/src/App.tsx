@@ -3,9 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { Button, Checkbox, Input } from 'semantic-ui-react';
 import { useRef } from 'react';
 
-import { Calendar, giveDaysInRange, giveFormatter } from './latest/main';
-
-import { Popover } from 'react-tiny-popover';
+import { Calendar } from './latest/main';
 
 import 'rc-slider/assets/index.css';
 import { CalendarWithShortcuts } from './latest/main';
@@ -77,9 +75,9 @@ export function App(): React.ReactElement {
       <div className="view">
         <div>
           <div className="calendar">
-            <Calendar ref={calendarRef} {...props} className={theme} value={value} onChange={onChange} />
             {shortcutCal ? (
               <CalendarWithShortcuts
+                ref={calendarRef}
                 {...props}
                 className={theme}
                 value={value}
@@ -88,7 +86,7 @@ export function App(): React.ReactElement {
                 showDefaultShortcuts={true}
               />
             ) : (
-              <Calendar {...props} className={theme} value={value} onChange={onChange} />
+              <Calendar ref={calendarRef} {...props} className={theme} value={value} onChange={onChange} />
             )}
           </div>
         </div>

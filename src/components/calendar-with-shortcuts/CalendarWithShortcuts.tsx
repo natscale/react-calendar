@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarProps, CalendarWithShortcutProps } from '../../utils/types';
+import React, { MutableRefObject, Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CalendarRef, CalendarWithShortcutProps } from '../../utils/types';
 import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
-import { getAsNewDate, isValid } from '../../utils/date-utils';
+import { isValid } from '../../utils/date-utils';
 import { ShortcutButtonModel } from '../shortuct-bar/ShortcutButtonModel';
 import Calendar from '../calendar/Calendar';
 
@@ -11,14 +11,15 @@ const styles = {
   },
 };
 
-function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.Ref<HTMLDivElement>) {
+function CalendarWithShortcutsRef(
+  props: CalendarWithShortcutProps,
+  calendarRef: Ref<CalendarRef>,
+): React.ReactElement<CalendarWithShortcutProps> {
   const [toggleDateIndex, setToggleDateIndex] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [rangeStart, setRangeStart] = useState<Date | undefined>(undefined);
   const [rangeEnd, setRangeEnd] = useState<Date | undefined>(undefined);
   const [multiDates, setMultiDates] = useState<Record<string, Date | undefined> | undefined>(undefined);
-
-  const [viewDate, setViewDate] = useState<Date | undefined>(undefined);
 
   const updateRangeDates = (val: Date[]) => {
     setRangeStart(val[0]);
@@ -27,10 +28,10 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
 
   const updateSelectedDates = useCallback(
     (val) => {
-      props.isMultiSelector && typeof Array.isArray(val) && isValid(val[0])
-        ? setMultiDates(val)
-        : props.isRangeSelector && Array.isArray(val) && isValid(val[0])
+      props.isRangeSelector && Array.isArray(val) && isValid(val[0])
         ? updateRangeDates(val)
+        : props.isMultiSelector && typeof Array.isArray(val) && isValid(val[0])
+        ? setMultiDates(val)
         : isValid(val as Date)
         ? setSelectedDate(val)
         : () => 0;
@@ -50,11 +51,12 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
 
   const updateDateView = useCallback(
     (date: Date | undefined) => {
-      if (isValid(date)) {
-        setViewDate(getAsNewDate(date));
+      if (isValid(date) && calendarRef) {
+        (calendarRef as MutableRefObject<CalendarRef>)?.current?.setView(date);
+        // calendarRefs?.current?.setView(date);
       }
     },
-    [setViewDate],
+    [calendarRef],
   );
 
   const goToToday = useCallback(() => updateDateView(new Date()), [updateDateView]);
@@ -99,7 +101,7 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
     [goToRangeEnd, goToRangeStart, goToToday, toggleDate],
   );
 
-  const viewType = props.isMultiSelector ? 'Multiple' : props.isRangeSelector ? 'Range' : 'Normal';
+  const viewType = props.isRangeSelector ? 'Range' : props.isMultiSelector ? 'Multiple' : 'Normal';
 
   const shortcutButtonsToShow = props.showDefaultShortcuts
     ? props.shortcutButtons
@@ -113,20 +115,14 @@ function CalendarWithShortcutsRef(props: CalendarWithShortcutProps, ref: React.R
     [],
   );
 
-  const commonProps = useMemo<CalendarProps>(
-    () => ({ ...props, viewDate: viewDate, onChange: onCalendarChange }),
-    [onCalendarChange, props, viewDate],
-  );
-
   return (
-    <div ref={ref} style={styles.root} className={'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? 'rc_dark' : '')}>
+    <div style={styles.root} className={'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? 'rc_dark' : '')}>
       <ShortcutBar shortcutButtons={shortcutButtonsToShow} viewType={viewType} updateView={updateDateView} />
-      <Calendar {...commonProps} />
+      <Calendar ref={calendarRef} {...props} onChange={onCalendarChange} />
     </div>
   );
 }
 
-// export const CalendarWithShortcuts = memo(CalendarWithShortcutsComponent);
 const CalendarWithShortcuts = React.forwardRef(CalendarWithShortcutsRef);
 
 export default CalendarWithShortcuts;

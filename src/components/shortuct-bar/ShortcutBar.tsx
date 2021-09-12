@@ -8,7 +8,7 @@ interface Props {
   updateView: (date: Date | undefined) => void;
 }
 
-const getShortcutStyles = () => ({
+const shortcutStyles = {
   root: {
     display: 'flex',
     padding: '2%',
@@ -16,18 +16,17 @@ const getShortcutStyles = () => ({
     alignItems: 'center',
     flexDirection: 'column' as const,
     overflow: 'auto',
-    width: '120px',
+    width: '130px',
   },
-});
+};
 
 function ShortcutBarComponent({ viewType, shortcutButtons, updateView }: Props) {
-  const shortcut = getShortcutStyles();
   const onButtonClick = (btn: ShortcutButtonModel) => {
     btn.goToDate ? updateView(btn.goToDate) : btn.onButtonClick ? btn.onButtonClick() : () => 0;
   };
 
   return (
-    <div style={shortcut.root} className={'rc_shortcuts_view'}>
+    <div style={shortcutStyles.root} className={'rc_shortcuts_view'}>
       {shortcutButtons &&
         shortcutButtons.map((btn: ShortcutButtonModel, index: number) => {
           {

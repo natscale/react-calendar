@@ -7,8 +7,7 @@ interface Props {
 
 const shortcut = {
   root: {
-    padding: '0 0.5rem',
-    minHeight: '28px',
+    padding: '7px 10px',
   },
 };
 
