@@ -42,8 +42,8 @@ function DayOfMonthSelectorComponent({
   isMultiSelectorView,
   monthInView: viewingMonth,
   hideAdjacentDates,
-  onChangenNewSelectedRangeEnd,
-  onChangenNewSelectedRangeStart,
+  onChangeNewSelectedRangeEnd,
+  onChangeNewSelectedRangeStart,
   weekends: weekendIndices,
   onChange,
   yearInView: viewingYear,
@@ -141,13 +141,13 @@ function DayOfMonthSelectorComponent({
             }
           }
 
-          onChangenNewSelectedRangeEnd(undefined);
+          onChangeNewSelectedRangeEnd(undefined);
           setIsRangeSelectModeOn(false);
         } else {
           // select first date
-          onChangenNewSelectedRangeStart(clickedDate);
+          onChangeNewSelectedRangeStart(clickedDate);
 
-          onChangenNewSelectedRangeEnd(undefined);
+          onChangeNewSelectedRangeEnd(undefined);
 
           setIsRangeSelectModeOn(true);
           onPartialRangeSelect && onPartialRangeSelect(clickedDate);
@@ -201,10 +201,10 @@ function DayOfMonthSelectorComponent({
       isMultiSelectorView,
       isRangeSelectModeOn,
       newSelectedRangeStart,
-      onChangenNewSelectedRangeEnd,
+      onChangeNewSelectedRangeEnd,
       setIsRangeSelectModeOn,
       onChange,
-      onChangenNewSelectedRangeStart,
+      onChangeNewSelectedRangeStart,
       onPartialRangeSelect,
       fixedRangeLength,
       isDisabled,
@@ -226,7 +226,7 @@ function DayOfMonthSelectorComponent({
               onMouseEnter={() => {
                 if (isRangeSelectorView) {
                   if (isRangeSelectModeOn) {
-                    onChangenNewSelectedRangeEnd(new Date(cell.year, cell.month, cell.dayOfMonth));
+                    onChangeNewSelectedRangeEnd(new Date(cell.year, cell.month, cell.dayOfMonth));
                   }
                 }
               }}

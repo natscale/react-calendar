@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { ShortcutButtonModel } from '../components/shortuct-bar/ShortcutButtonModel';
 
 export type MonthIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -207,6 +208,17 @@ export interface CalendarProps {
   onEachMultiSelect?: (value: Value) => any | Promise<any> | void;
 }
 
+export interface CalendarWithShortcutProps extends CalendarProps {
+  /**
+   * Array of custom shortcut buttons based on the ShortcutButtonModel model.
+   */
+  shortcutButtons?: Array<ShortcutButtonModel>;
+  /**
+   * Option to show the default shortcut buttons for each calendar view type.
+   */
+  showDefaultShortcuts?: boolean;
+}
+
 type CommonProps = Required<
   Pick<
     CalendarProps,
@@ -232,8 +244,8 @@ type CommonProps = Required<
   Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange' | 'initialView'>;
 
 export interface CalendarViewProps extends CommonProps {
-  onChangenNewSelectedRangeEnd: (date: Date | undefined) => unknown;
-  onChangenNewSelectedRangeStart: (date: Date | undefined) => unknown;
+  onChangeNewSelectedRangeEnd: (date: Date | undefined) => unknown;
+  onChangeNewSelectedRangeStart: (date: Date | undefined) => unknown;
   onChangeRangeSelectMode: (on: boolean) => void;
   checkIfWeekend: (date: Date) => boolean;
   isSecondary: boolean;
@@ -258,9 +270,9 @@ export interface CalendarViewProps extends CommonProps {
 export interface DayOfMonthSelectorProps
   extends Pick<
     CalendarViewProps,
-    | 'onChangenNewSelectedRangeEnd'
+    | 'onChangeNewSelectedRangeEnd'
+    | 'onChangeNewSelectedRangeStart'
     | 'noPadRangeCell'
-    | 'onChangenNewSelectedRangeStart'
     | 'startOfWeek'
     | 'fixedRange'
     | 'selectedDate'

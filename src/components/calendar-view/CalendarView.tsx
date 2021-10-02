@@ -80,8 +80,8 @@ function Component(
     allowFewerDatesThanRange,
     selectedRangeEnd,
     newSelectedRangeStart,
-    onChangenNewSelectedRangeEnd,
-    onChangenNewSelectedRangeStart,
+    onChangeNewSelectedRangeEnd,
+    onChangeNewSelectedRangeStart,
     onPartialRangeSelect,
     onEachMultiSelect,
     newSelectedRangeEnd,
@@ -495,8 +495,8 @@ function Component(
               lockView={lockView}
               newSelectedRangeStart={newSelectedRangeStart}
               startOfWeek={startOfWeek}
-              onChangenNewSelectedRangeEnd={onChangenNewSelectedRangeEnd}
-              onChangenNewSelectedRangeStart={onChangenNewSelectedRangeStart}
+              onChangeNewSelectedRangeEnd={onChangeNewSelectedRangeEnd}
+              onChangeNewSelectedRangeStart={onChangeNewSelectedRangeStart}
               onPartialRangeSelect={onPartialRangeSelect}
               onEachMultiSelect={onEachMultiSelect}
               newSelectedRangeEnd={newSelectedRangeEnd}
