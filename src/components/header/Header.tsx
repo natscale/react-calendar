@@ -37,11 +37,17 @@ function HeaderComponent({
 }: HeaderProps) {
   return (
     <header style={header.root} className="rc_header">
-      <button style={header.rc_header_nav} className="rc_header_nav rc_header_nav-prev" onClick={onClickPrev}>
+      <button
+        type="button"
+        style={header.rc_header_nav}
+        className="rc_header_nav rc_header_nav-prev"
+        onClick={onClickPrev}
+      >
         <span>←</span>
       </button>
       {viewType === 'month_dates' ? (
         <button
+          type="button"
           style={header.rch_header_label}
           className="rc_header_label rc_header_label-days-of-month"
           onClick={() => onChangeViewType('years')}
@@ -54,13 +60,14 @@ function HeaderComponent({
           </div>
         </button>
       ) : viewType === 'months' ? (
-        <button style={header.rch_header_label} className="rc_header_label rc_header_label-months">
+        <button type="button" style={header.rch_header_label} className="rc_header_label rc_header_label-months">
           <div onClick={() => onChangeViewType('years')}>
             <span>{viewingYear}</span>
           </div>
         </button>
       ) : (
         <button
+          type="button"
           style={header.rch_header_label}
           className="rc_header_label rc_header_label-years"
           onClick={() => onChangeViewType('month_dates')}
@@ -72,7 +79,12 @@ function HeaderComponent({
           </div>
         </button>
       )}
-      <button style={header.rc_header_nav} className="rc_header_nav rc_header_nav-next" onClick={onClickNext}>
+      <button
+        type="button"
+        style={header.rc_header_nav}
+        className="rc_header_nav rc_header_nav-next"
+        onClick={onClickNext}
+      >
         <span>→</span>
       </button>
     </header>

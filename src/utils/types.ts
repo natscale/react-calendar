@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react';
-import { ShortcutButtonModel } from '../components/shortuct-bar/ShortcutButtonModel';
 
 export type MonthIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
@@ -212,11 +211,7 @@ export interface CalendarWithShortcutProps extends CalendarProps {
   /**
    * Array of custom shortcut buttons based on the ShortcutButtonModel model.
    */
-  shortcutButtons?: Array<ShortcutButtonModel>;
-  /**
-   * Option to show the default shortcut buttons for each calendar view type.
-   */
-  showDefaultShortcuts?: boolean;
+  shortcutButtons: Array<ShortcutButtonModel>;
 }
 
 type CommonProps = Required<
@@ -349,4 +344,11 @@ export interface MonthCellProps {
 export interface YearCellProps {
   cell: YearCell;
   onYearClicked: (cell: YearCell) => unknown;
+}
+
+// Shortcut types
+
+export interface ShortcutButtonModel {
+  id: string;
+  render: () => React.ReactElement<unknown>;
 }

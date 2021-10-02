@@ -65,7 +65,7 @@ function CalendarWithRef(
 
   useImperativeHandle(forwardRef, () => ({
     setView: (date: Date) => {
-      calendarRef.current.setView(date);
+      date && calendarRef.current.setView(date);
     },
   }));
 

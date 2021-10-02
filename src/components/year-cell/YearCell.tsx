@@ -22,6 +22,7 @@ function Component({ cell, onYearClicked }: YearCellProps) {
   return (
     <div style={rcBodyCellValue}>
       <button
+        type="button"
         style={rcBodyCellValueButton}
         onClick={() => {
           onYearClicked(cell);

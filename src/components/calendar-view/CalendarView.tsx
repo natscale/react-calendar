@@ -139,8 +139,10 @@ function Component(
 
   useImperativeHandle(ref, () => ({
     setView: (date: Date) => {
-      setMonthInView(date.getMonth() as MonthIndices);
-      setYearInView(date.getFullYear());
+      if (date) {
+        setMonthInView(date.getMonth() as MonthIndices);
+        setYearInView(date.getFullYear());
+      }
     },
   }));
 

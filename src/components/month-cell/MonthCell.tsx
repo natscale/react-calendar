@@ -24,6 +24,7 @@ function Component({ cell, onMonthClicked }: MonthCellProps) {
   return (
     <div style={rcBodyCellValue}>
       <button
+        type="button"
         style={rcBodyCellValueButton}
         onClick={() => {
           onMonthClicked(cell);

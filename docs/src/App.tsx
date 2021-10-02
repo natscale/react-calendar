@@ -7,6 +7,7 @@ import { Calendar } from './latest/main';
 
 import 'rc-slider/assets/index.css';
 import { CalendarWithShortcuts } from './latest/main';
+import { ShortcutButtonModel } from './latest/components/shortuct-bar/ShortcutButtonModel';
 
 const highlights = [
   new Date(2021, new Date().getMonth(), 6),
@@ -58,11 +59,22 @@ export function App(): React.ReactElement {
     [setValue],
   );
 
-  const customShortcutButtons = [
+  const customShortcutButtons: Array<ShortcutButtonModel> = [
     {
-      buttonText: 'Go To Jan 2016',
-      viewTypes: ['Normal', 'Multiple', 'Range'],
-      goToDate: new Date(2016, 0, 1),
+      render: () => <button onClick={() => calendarRef.current?.setView(new Date())}>Today</button>,
+      id: 'jan',
+    },
+    {
+      render: () => <button onClick={() => calendarRef.current?.setView(new Date(2016, 2, 16))}>March 2016</button>,
+      id: 'feb',
+    },
+    {
+      render: () => <button onClick={() => calendarRef.current?.setView(new Date(2020, 3, 6))}>April 2020</button>,
+      id: 'mar',
+    },
+    {
+      render: () => <button onClick={() => calendarRef.current?.setView(new Date(1947, 7, 1))}>Aug 1947</button>,
+      id: 'apr',
     },
   ];
 
@@ -83,7 +95,6 @@ export function App(): React.ReactElement {
                 value={value}
                 onChange={onChange}
                 shortcutButtons={customShortcutButtons}
-                showDefaultShortcuts={true}
               />
             ) : (
               <Calendar ref={calendarRef} {...props} className={theme} value={value} onChange={onChange} />

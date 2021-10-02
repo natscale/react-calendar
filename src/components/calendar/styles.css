@@ -66,13 +66,10 @@
   --rc-color-bg-disabled: var(--rc-color-bg-light);
   --rc-color-bg-disabled-cross: var(--rc-color-text-inactive);
   --rc-color-bg-disabled-weekend-cross: var(--rc-color-accent-light);
-  --rc-color-shorcut-button: #f6f6f6;
-  --rc-color-shorcut-button-text: #353535;
-  --rc-color-shorcut-button-hover: #e8e8e8;
 }
 
-.rc_root.rc_dark,
-.rc_shortcut_cal_root.rc_dark {
+.rc_shortcut_cal_root.rc_dark,
+.rc_root.rc_dark {
   /* General Theme */
   --rc-color-transparent: rgba(0, 0, 0, 0);
   --rc-color-text-dark: #fff;
@@ -95,11 +92,11 @@
 }
 
 .rc_root {
-    background-color: var(--rc-color-bg-light);
-    border: 1px solid var(--rc-color-border-root);
-    font-size: 1rem;
-    border-radius: 8px;
-    position: relative;
+  background-color: var(--rc-color-bg-light);
+  border: 1px solid var(--rc-color-border-root);
+  font-size: 1rem;
+  border-radius: 8px;
+  position: relative;
 }
 
 .rc {
@@ -126,20 +123,19 @@
   font-family: inherit;
 }
 
-.rc_root button,
-.rc_shortcut_cal_root button {
-    border: none;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    overflow: visible;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    line-height: normal;
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
-    -webkit-appearance: none;
+.rc_root button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
 }
 
 .rc_root button::-moz-focus-inner {
@@ -185,39 +181,23 @@
 /** rc_shortcut_root **/
 
 .rc_shortcut_cal_root {
-    border: 1px solid #e8e8e8;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    overflow: hidden;
+  border: 1px solid #e8e8e8;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .rc_shortcut_cal_root .rc_root {
-    border: none;
-    margin: 0;
-    border-radius: 0;
+  border: none;
+  margin: 0;
+  border-radius: 0;
 }
 
 /** rc_shortcut_view **/
 
 .rc_shortcuts_view {
-    font-size: 0.83rem;
-    border-right: 1px solid var(--rc-color-border);
-    background-color: var(--rc-color-bg-light);
-}
-
-.rc_shortcuts_view button {
-    border-radius: 25px;
-    cursor: pointer;
-    color: var(--rc-color-shorcut-button-text);
-    background-color: var(--rc-color-shorcut-button);
-}
-
-.rc_shortcuts_view button:hover {
-    background-color: var(--rc-color-shorcut-button-hover);
-}
-
-.rc_shortcuts_view button:active {
-    transform: translateY(1px);
+  border-right: 1px solid var(--rc-color-border);
+  background-color: var(--rc-color-bg-light);
 }
 
 /** rc_body-months **/

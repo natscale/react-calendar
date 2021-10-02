@@ -34,6 +34,7 @@ function Component({ cell, onDateClicked, noPadRangeCell }: DayOfMonthCellProps)
     <div style={root}>
       <div style={styles} className="rc_body-cell_value">
         <button
+          type="button"
           style={buttonStyles}
           disabled={cell.isDisabled}
           tabIndex={cell.isDisabled ? -1 : 0}
