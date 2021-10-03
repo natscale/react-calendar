@@ -1,21 +1,38 @@
-import React, { Ref, useImperativeHandle, useRef } from 'react';
+import React, { Ref, useImperativeHandle, useRef, useMemo } from 'react';
 
 import { CalendarRef, CalendarWithShortcutProps } from '../../utils/types';
 import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
 
-import Calendar from '../calendar/Calendar';
+import Calendar, { DEFAULT_SIZE } from '../calendar/Calendar';
 
-const styles = {
+export const SHORTCUT_SIZE = 130;
+
+const giveStyles: (width: number, direction?: 'left' | 'right' | 'bottom') => Record<'root', React.CSSProperties> = (
+  width,
+  direction,
+) => ({
   root: {
     display: 'inline-flex',
+    flexDirection: direction === 'bottom' ? 'column-reverse' : direction === 'right' ? 'row-reverse' : 'row',
+    width: `${width + (direction === 'bottom' ? 0 : 130)}px`,
   },
-};
+});
 
 function CalendarWithShortcutsRef(
   props: CalendarWithShortcutProps,
   calendarRef: Ref<CalendarRef>,
 ): React.ReactElement<CalendarWithShortcutProps> {
   const internalRef = useRef<CalendarRef | null>(null);
+
+  const styles = useMemo(() => {
+    return giveStyles(props.size || DEFAULT_SIZE, props.direction);
+  }, [props.direction, props.size]);
+
+  const classNames = useMemo(() => {
+    return (
+      'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? 'rc_dark' : '') + ('rc_dir-' + (props.direction || 'left'))
+    );
+  }, [props.useDarkMode, props.direction]);
 
   if (!props.shortcutButtons.length) {
     throw new Error('Provide a list of shortcut buttons');
@@ -31,8 +48,8 @@ function CalendarWithShortcutsRef(
   );
 
   return (
-    <div style={styles.root} className={'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? 'rc_dark' : '')}>
-      <ShortcutBar shortcutButtons={props.shortcutButtons} />
+    <div style={styles.root} className={classNames}>
+      <ShortcutBar direction={props.direction || 'left'} shortcutButtons={props.shortcutButtons} />
       <Calendar ref={internalRef} {...props} />
     </div>
   );

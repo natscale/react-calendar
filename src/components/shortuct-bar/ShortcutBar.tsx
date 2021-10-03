@@ -1,27 +1,41 @@
-import React from 'react';
-import { ShortcutButtonModel } from '../calendar/Calendar';
+import React, { useMemo } from 'react';
+import { SHORTCUT_SIZE } from '../calendar-with-shortcuts/CalendarWithShortcuts';
+import { CalendarWithShortcutProps, ShortcutButtonModel } from '../calendar/Calendar';
 
-interface Props {
+interface Props extends Pick<CalendarWithShortcutProps, 'direction'> {
   shortcutButtons: Array<ShortcutButtonModel>;
 }
 
-const shortcutStyles = {
+const giveStyles: (dir: CalendarWithShortcutProps['direction']) => Record<'root' | 'notFirst', React.CSSProperties> = (
+  dir,
+) => ({
   root: {
     display: 'flex',
-    padding: '2%',
-    gap: '1rem',
+    padding: dir === 'bottom' ? '4%' : '2%',
     alignItems: 'center',
-    flexDirection: 'column' as const,
+    flexDirection: dir === 'bottom' ? 'row' : 'column',
     overflow: 'auto',
-    width: '130px',
+    width: dir === 'bottom' ? '100%' : `${SHORTCUT_SIZE}px`,
   },
-};
+  notFirst: {
+    [dir === 'bottom' ? 'marginLeft' : 'marginTop']: dir === 'bottom' ? '6%' : '12%',
+  },
+});
 
-export function ShortcutBar({ shortcutButtons }: Props): React.ReactElement<Props> {
+const empty = {};
+
+export function ShortcutBar({ shortcutButtons, direction }: Props): React.ReactElement<Props> {
+  const styles = useMemo(() => {
+    return giveStyles(direction);
+  }, [direction]);
   return (
-    <div style={shortcutStyles.root} className="rc_shortcuts_view">
-      {shortcutButtons.map((btn: ShortcutButtonModel) => {
-        return <div key={btn.id}>{btn.render()}</div>;
+    <div style={styles.root} className="rc_shortcuts_view">
+      {shortcutButtons.map((btn: ShortcutButtonModel, index: number) => {
+        return (
+          <div style={index !== 0 ? styles.notFirst : empty} key={btn.id}>
+            {btn.render()}
+          </div>
+        );
       })}
     </div>
   );

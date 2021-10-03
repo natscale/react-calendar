@@ -22,6 +22,8 @@ const emptyArray: Date[] = [];
 
 const styles = { display: 'inline-flex' };
 
+export const DEFAULT_SIZE = 276;
+
 function CalendarWithRef(
   {
     value,
@@ -46,7 +48,7 @@ function CalendarWithRef(
     onChange,
     lockView = false,
     disableFuture = false,
-    size = 276,
+    size = DEFAULT_SIZE,
     fontSize = 16,
     disablePast = false,
     disableToday = false,

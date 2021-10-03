@@ -212,6 +212,10 @@ export interface CalendarWithShortcutProps extends CalendarProps {
    * Array of custom shortcut buttons based on the ShortcutButtonModel model.
    */
   shortcutButtons: Array<ShortcutButtonModel>;
+  /**
+   * Position to place the shorcuts. Default is 'left'
+   */
+  direction?: 'left' | 'right' | 'bottom';
 }
 
 type CommonProps = Required<

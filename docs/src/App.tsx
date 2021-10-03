@@ -61,26 +61,27 @@ export function App(): React.ReactElement {
 
   const customShortcutButtons: Array<ShortcutButtonModel> = [
     {
-      render: () => <button onClick={() => calendarRef.current?.setView(new Date())}>Today</button>,
+      render: () => (
+        <button style={{ width: '80px' }} onClick={() => calendarRef.current?.setView(new Date())}>
+          Today
+        </button>
+      ),
       id: 'jan',
     },
     {
-      render: () => <button onClick={() => calendarRef.current?.setView(new Date(2016, 2, 16))}>March 2016</button>,
+      render: () => (
+        <button style={{ width: '90px' }} onClick={() => calendarRef.current?.setView(new Date(2016, 2, 16))}>
+          March 2016
+        </button>
+      ),
       id: 'feb',
-    },
-    {
-      render: () => <button onClick={() => calendarRef.current?.setView(new Date(2020, 3, 6))}>April 2020</button>,
-      id: 'mar',
-    },
-    {
-      render: () => <button onClick={() => calendarRef.current?.setView(new Date(1947, 7, 1))}>Aug 1947</button>,
-      id: 'apr',
     },
   ];
 
   const [roundButtonStyles, setApplyRoundButtonCss] = useState(false);
   const [theme, setTheme] = useState<'green' | 'brown' | 'normal'>('normal');
   const [shortcutCal, setShortcutCal] = useState<boolean>(false);
+  const [shortcutDir, setShortcutDir] = useState<'left' | 'right' | 'bottom'>('left');
 
   return (
     <div className="demo">
@@ -89,8 +90,9 @@ export function App(): React.ReactElement {
           <div className="calendar">
             {shortcutCal ? (
               <CalendarWithShortcuts
-                ref={calendarRef}
                 {...props}
+                ref={calendarRef}
+                direction={shortcutDir}
                 className={theme}
                 value={value}
                 onChange={onChange}
@@ -104,14 +106,6 @@ export function App(): React.ReactElement {
       </div>
       <div className="props_root">
         <div className="props">
-          <div>
-            <Checkbox
-              toggle
-              onChange={() => setShortcutCal(!shortcutCal)}
-              checked={shortcutCal}
-              label="With Shortcuts"
-            />
-          </div>
           <div>
             <Checkbox
               toggle
@@ -327,6 +321,33 @@ export function App(): React.ReactElement {
               onChange={() => setProps({ ...props, startOfWeek: 6 })}
               checked={props.startOfWeek === 6}
               label="Sat"
+            />
+          </div>
+          <div>
+            <h4>Add Your Shortcuts</h4>
+            <Checkbox
+              onChange={() => {
+                setShortcutCal((val) => !val);
+                setShortcutDir('left');
+              }}
+              checked={shortcutCal && shortcutDir === 'left'}
+              label="Left"
+            />
+            <Checkbox
+              onChange={() => {
+                setShortcutCal((val) => !val);
+                setShortcutDir('right');
+              }}
+              checked={shortcutCal && shortcutDir === 'right'}
+              label="Right"
+            />
+            <Checkbox
+              onChange={() => {
+                setShortcutCal((val) => !val);
+                setShortcutDir('bottom');
+              }}
+              checked={shortcutCal && shortcutDir === 'bottom'}
+              label="Bottom"
             />
           </div>
           <div>

@@ -196,8 +196,19 @@
 /** rc_shortcut_view **/
 
 .rc_shortcuts_view {
-  border-right: 1px solid var(--rc-color-border);
   background-color: var(--rc-color-bg-light);
+}
+
+.rc_shortcut_cal_root.rc_dir-left .rc_shortcuts_view {
+  border-right: 1px solid var(--rc-color-border);
+}
+
+.rc_shortcut_cal_root.rc_dir-right .rc_shortcuts_view {
+  border-left: 1px solid var(--rc-color-border);
+}
+
+.rc_shortcut_cal_root.rc_dir-bottom .rc_shortcuts_view {
+  border-top: 1px solid var(--rc-color-border);
 }
 
 /** rc_body-months **/
