@@ -248,6 +248,9 @@ export interface CalendarViewProps extends CommonProps {
   onChangeRangeSelectMode: (on: boolean) => void;
   checkIfWeekend: (date: Date) => boolean;
   isSecondary: boolean;
+  view: ViewType;
+  setView: (view: ViewType) => void;
+  showDualCalendar: boolean;
   isRangeSelectorView: boolean;
   isFixedRangeView: boolean;
   isMultiSelectorView: boolean;
@@ -264,47 +267,49 @@ export interface CalendarViewProps extends CommonProps {
   maxAllowedDate: string | undefined;
   minAllowedDate: string | undefined;
   weekendMap: Record<WeekdayIndices, 1>;
-}
-
-export interface DayOfMonthSelectorProps
-  extends Pick<
-    CalendarViewProps,
-    | 'onChangeNewSelectedRangeEnd'
-    | 'onChangeNewSelectedRangeStart'
-    | 'noPadRangeCell'
-    | 'startOfWeek'
-    | 'fixedRange'
-    | 'selectedDate'
-    | 'selectedRangeStart'
-    | 'selectedRangeEnd'
-    | 'newSelectedRangeStart'
-    | 'newSelectedRangeEnd'
-    | 'isRangeSelectorView'
-    | 'isFixedRangeView'
-    | 'weekends'
-    | 'selectedMultiDates'
-    | 'isMultiSelectorView'
-    | 'isRangeSelectModeOn'
-    | 'onChangeRangeSelectMode'
-    | 'disableFuture'
-    | 'disablePast'
-    | 'disableToday'
-    | 'hideAdjacentDates'
-    | 'lockView'
-    | 'highlightsMap'
-    | 'isDisabled'
-    | 'checkIfWeekend'
-    | 'onChange'
-    | 'onPartialRangeSelect'
-    | 'onEachMultiSelect'
-    | 'maxAllowedDate'
-    | 'minAllowedDate'
-    | 'allowFewerDatesThanRange'
-    | 'skipDisabledDatesInRange'
-  > {
   monthInView: MonthIndices;
   yearInView: number;
+  onChangeViewingYear: (year: number) => unknown;
+  onChangeViewingMonth: (month: MonthIndices) => unknown;
 }
+
+export type DayOfMonthSelectorProps = Pick<
+  CalendarViewProps,
+  | 'onChangeNewSelectedRangeEnd'
+  | 'onChangeNewSelectedRangeStart'
+  | 'noPadRangeCell'
+  | 'startOfWeek'
+  | 'fixedRange'
+  | 'selectedDate'
+  | 'selectedRangeStart'
+  | 'monthInView'
+  | 'yearInView'
+  | 'selectedRangeEnd'
+  | 'newSelectedRangeStart'
+  | 'newSelectedRangeEnd'
+  | 'isRangeSelectorView'
+  | 'isFixedRangeView'
+  | 'weekends'
+  | 'selectedMultiDates'
+  | 'isMultiSelectorView'
+  | 'isRangeSelectModeOn'
+  | 'onChangeRangeSelectMode'
+  | 'disableFuture'
+  | 'disablePast'
+  | 'disableToday'
+  | 'hideAdjacentDates'
+  | 'lockView'
+  | 'highlightsMap'
+  | 'isDisabled'
+  | 'checkIfWeekend'
+  | 'onChange'
+  | 'onPartialRangeSelect'
+  | 'onEachMultiSelect'
+  | 'maxAllowedDate'
+  | 'minAllowedDate'
+  | 'allowFewerDatesThanRange'
+  | 'skipDisabledDatesInRange'
+>;
 
 export interface MonthSelectorProps {
   onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
@@ -328,6 +333,8 @@ export interface HeaderProps {
   onClickNext: () => any;
   onChangeViewType: (view: ViewType) => any;
   viewType: ViewType;
+  showDualCalendar: boolean;
+  isSecondary: boolean;
   monthInView: MonthIndices;
   yearInView: number;
   yearMatrixStart: number;

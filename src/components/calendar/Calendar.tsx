@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useImperativeHandle, useMemo, useState } from 'react';
 
-import type { CalendarProps, CalendarRef, CalendarViewProps, WeekdayIndices } from '../../utils/types';
+import type {
+  CalendarProps,
+  CalendarRef,
+  CalendarViewProps,
+  MonthIndices,
+  ViewType,
+  WeekdayIndices,
+} from '../../utils/types';
 
 import {
   isValid,
@@ -12,14 +19,23 @@ import {
   giveRangeDays,
   validateAndReturnDateFormatter,
   fromString,
+  getNextMonth,
+  getNextYear,
 } from '../../utils/date-utils';
 
 import './styles.css';
 
-import { CalendarView } from '../calendar-view/CalendarView';
+import { CalendarView, getInitialDateToShow } from '../calendar-view/CalendarView';
 
 const emptyArray: Date[] = [];
-
+const Views: Record<ViewType, 1> = {
+  years: 1,
+  months: 1,
+  month_dates: 1,
+};
+const emptyFunc = () => {
+  //
+};
 const styles = { display: 'inline-flex' };
 
 export const DEFAULT_SIZE = 276;
@@ -62,14 +78,6 @@ function CalendarWithRef(
   const isMultiSelectorView = !isRangeSelectorView && !!isMultiSelector;
   const isFixedRangeView = isRangeSelectorView && typeof fixedRange === 'number' && fixedRange > 0 ? true : false;
   const isNormalView = !isRangeSelectorView && !isMultiSelectorView;
-
-  const calendarRef = useRef<CalendarRef>({ setView: () => undefined });
-
-  useImperativeHandle(forwardRef, () => ({
-    setView: (date: Date) => {
-      date && calendarRef.current.setView(date);
-    },
-  }));
 
   const startOfTheWeek = startOfWeek;
   const fixedRangeLength = isFixedRangeView ? (fixedRange as number) : 1;
@@ -195,6 +203,76 @@ function CalendarWithRef(
   const [newSelectedRangeStart, setNewSelectedRangeStart] = useState<Date | undefined>(selectedRangeStart);
   const [newSelectedRangeEnd, setNewSelectedRangeEnd] = useState<Date | undefined>(selectedRangeEnd);
 
+  // This just tries to find a month to show based on a number
+  // of factors for the initial render only
+  const [monthInView, setMonthInView] = useState<MonthIndices>(
+    () =>
+      getInitialDateToShow({
+        isNormalView: isNormalView,
+        isMultiSelectorView: isMultiSelectorView,
+        isRangeSelectorView: isRangeSelectorView,
+        selectedDate: selectedDate,
+        selectedRangeStart: selectedRangeStart,
+        selectedMultiDates: selectedMultiDates,
+        viewDate: viewDate,
+        minAllowedDate: minDate ? fromString(minDate) : undefined,
+        maxAllowedDate: maxDate ? fromString(maxDate) : undefined,
+      }).getMonth() as MonthIndices,
+  );
+
+  // This just tries to find a year to show based on a number
+  // of factors for the initial render only
+  const [yearInView, setYearInView] = useState(
+    getInitialDateToShow({
+      isNormalView: isNormalView,
+      isMultiSelectorView: isMultiSelectorView,
+      isRangeSelectorView: isRangeSelectorView,
+      selectedDate: selectedDate,
+      selectedRangeStart: selectedRangeStart,
+      selectedMultiDates: selectedMultiDates,
+      viewDate: viewDate,
+      minAllowedDate: minDate ? fromString(minDate) : undefined,
+      maxAllowedDate: maxDate ? fromString(maxDate) : undefined,
+    }).getFullYear(),
+  );
+
+  const secondCalMonth = getNextMonth(monthInView);
+  const secondCalYear = secondCalMonth === 0 ? getNextYear(yearInView) : yearInView;
+
+  useImperativeHandle(forwardRef, () => ({
+    setView: (date: Date) => {
+      if (date) {
+        setMonthInView(date.getMonth() as MonthIndices);
+        setYearInView(date.getFullYear());
+      }
+    },
+  }));
+
+  // secondary can't change year
+  const changeYearInView = useCallback(
+    (year: number) => {
+      !lockView && setYearInView(year);
+    },
+    [lockView],
+  );
+
+  const changeMonthInView = useCallback(
+    (month: MonthIndices) => {
+      !lockView && setMonthInView(month);
+    },
+    [lockView],
+  );
+
+  // View States
+  const [view, setView] = useState<ViewType>(initialView && Views[initialView] ? initialView : 'month_dates');
+
+  const changeView = useCallback(
+    (view: ViewType) => {
+      !lockView && setView(view);
+    },
+    [lockView, setView],
+  );
+
   const commonProps = useMemo<Omit<CalendarViewProps, 'isSecondary'>>(
     () => ({
       noPadRangeCell: !!noPadRangeCell && isRangeSelectorView,
@@ -233,51 +311,63 @@ function CalendarWithRef(
       maxAllowedDate: maxDate,
       minAllowedDate: minDate,
       onChange: onChange,
+      view: view,
+      setView: changeView,
       disableFuture: disableFuture,
       disablePast: disablePast,
       highlightsMap: highlightsMap,
       disableToday: disableToday,
       weekendMap: weekendMap,
+      yearInView,
+      monthInView,
+      onChangeViewingMonth: changeMonthInView,
+      onChangeViewingYear: changeYearInView,
     }),
     [
-      allowFewerDatesThanRange,
-      checkDisabledForADate,
-      checkIfWeekend,
-      weekendMap,
+      noPadRangeCell,
+      isRangeSelectorView,
+      isDualMode,
+      viewDate,
+      useDarkMode,
       className,
-      disableFuture,
-      disablePast,
       hideAdjacentDates,
-      disableToday,
+      isNormalView,
+      size,
+      fontSize,
+      startOfTheWeek,
+      weekendIndexes,
+      isRangeSelectModeOn,
+      skipDisabledDatesInRange,
+      allowFewerDatesThanRange,
+      selectedDate,
+      selectedRangeStart,
+      selectedRangeEnd,
+      lockView,
+      newSelectedRangeStart,
+      onPartialRangeSelect,
+      onEachMultiSelect,
+      newSelectedRangeEnd,
       initialView,
       fixedRangeLength,
-      fontSize,
-      highlightsMap,
-      viewDate,
-      isDualMode,
       isFixedRangeView,
+      checkDisabledForADate,
+      checkIfWeekend,
+      selectedMultiDates,
       isMultiSelectorView,
-      isNormalView,
-      isRangeSelectModeOn,
-      isRangeSelectorView,
-      lockView,
       maxDate,
       minDate,
-      newSelectedRangeEnd,
-      noPadRangeCell,
-      newSelectedRangeStart,
       onChange,
-      onEachMultiSelect,
-      onPartialRangeSelect,
-      selectedDate,
-      selectedMultiDates,
-      selectedRangeEnd,
-      selectedRangeStart,
-      size,
-      skipDisabledDatesInRange,
-      startOfTheWeek,
-      useDarkMode,
-      weekendIndexes,
+      view,
+      changeView,
+      disableFuture,
+      disablePast,
+      highlightsMap,
+      disableToday,
+      weekendMap,
+      yearInView,
+      monthInView,
+      changeMonthInView,
+      changeYearInView,
     ],
   );
 
@@ -296,11 +386,18 @@ function CalendarWithRef(
     <div className={computedClass} style={styles}>
       {isDualMode ? (
         <>
-          <CalendarView isSecondary={false} {...commonProps} />
-          <CalendarView isSecondary={true} {...commonProps} />
+          <CalendarView {...commonProps} isSecondary={false} />
+          <CalendarView
+            {...commonProps}
+            view="month_dates"
+            setView={emptyFunc}
+            isSecondary={true}
+            monthInView={secondCalMonth}
+            yearInView={secondCalYear}
+          />
         </>
       ) : (
-        <CalendarView ref={calendarRef} isSecondary={false} {...commonProps} />
+        <CalendarView {...commonProps} isSecondary={false} />
       )}
     </div>
   );

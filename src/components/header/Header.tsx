@@ -28,6 +28,8 @@ const header = {
 function HeaderComponent({
   onClickPrev,
   onChangeViewType,
+  showDualCalendar,
+  isSecondary,
   onClickNext,
   viewType,
   monthInView: viewingMonth,
@@ -37,20 +39,22 @@ function HeaderComponent({
 }: HeaderProps) {
   return (
     <header style={header.root} className="rc_header">
-      <button
-        type="button"
-        style={header.rc_header_nav}
-        className="rc_header_nav rc_header_nav-prev"
-        onClick={onClickPrev}
-      >
-        <span>←</span>
-      </button>
+      {showDualCalendar && isSecondary ? null : (
+        <button
+          type="button"
+          style={header.rc_header_nav}
+          className="rc_header_nav rc_header_nav-prev"
+          onClick={onClickPrev}
+        >
+          <span>←</span>
+        </button>
+      )}
       {viewType === 'month_dates' ? (
         <button
           type="button"
           style={header.rch_header_label}
           className="rc_header_label rc_header_label-days-of-month"
-          onClick={() => onChangeViewType('years')}
+          onClick={() => !isSecondary && onChangeViewType('years')}
         >
           <div>
             <span>{NATIVE_INDEX_TO_LABEL_MONTHS_MAP[viewingMonth]}</span>
@@ -61,7 +65,7 @@ function HeaderComponent({
         </button>
       ) : viewType === 'months' ? (
         <button type="button" style={header.rch_header_label} className="rc_header_label rc_header_label-months">
-          <div onClick={() => onChangeViewType('years')}>
+          <div onClick={() => !isSecondary && onChangeViewType('years')}>
             <span>{viewingYear}</span>
           </div>
         </button>
@@ -70,7 +74,7 @@ function HeaderComponent({
           type="button"
           style={header.rch_header_label}
           className="rc_header_label rc_header_label-years"
-          onClick={() => onChangeViewType('month_dates')}
+          onClick={() => !isSecondary && onChangeViewType('month_dates')}
         >
           <div>
             <span>
@@ -79,14 +83,16 @@ function HeaderComponent({
           </div>
         </button>
       )}
-      <button
-        type="button"
-        style={header.rc_header_nav}
-        className="rc_header_nav rc_header_nav-next"
-        onClick={onClickNext}
-      >
-        <span>→</span>
-      </button>
+      {showDualCalendar && !isSecondary && viewType === 'month_dates' ? null : (
+        <button
+          type="button"
+          style={header.rc_header_nav}
+          className="rc_header_nav rc_header_nav-next"
+          onClick={onClickNext}
+        >
+          <span>→</span>
+        </button>
+      )}
     </header>
   );
 }
