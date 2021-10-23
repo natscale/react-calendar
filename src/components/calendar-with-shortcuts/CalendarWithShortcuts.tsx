@@ -25,12 +25,12 @@ function CalendarWithShortcutsRef(
   const internalRef = useRef<CalendarRef | null>(null);
 
   const styles = useMemo(() => {
-    return giveStyles(props.size || DEFAULT_SIZE, props.direction);
-  }, [props.direction, props.size]);
+    return giveStyles((props.size || DEFAULT_SIZE) * (props.showDualCalendar ? 2 : 1), props.direction);
+  }, [props.direction, props.showDualCalendar, props.size]);
 
   const classNames = useMemo(() => {
     return (
-      'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? 'rc_dark' : '') + ('rc_dir-' + (props.direction || 'left'))
+      'rc_shortcut_cal_root' + ' ' + (props.useDarkMode ? ' rc_dark' : '') + (' rc_dir-' + (props.direction || 'left'))
     );
   }, [props.useDarkMode, props.direction]);
 
@@ -49,7 +49,11 @@ function CalendarWithShortcutsRef(
 
   return (
     <div style={styles.root} className={classNames}>
-      <ShortcutBar direction={props.direction || 'left'} shortcutButtons={props.shortcutButtons} />
+      <ShortcutBar
+        isDual={!!props.showDualCalendar}
+        direction={props.direction || 'left'}
+        shortcutButtons={props.shortcutButtons}
+      />
       <Calendar ref={internalRef} {...props} />
     </div>
   );
