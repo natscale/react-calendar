@@ -1,0 +1,37 @@
+---
+name: Basic
+route: /ui/examples/basic
+menu: Examples
+tags: ui
+updated: 2020-07-04 12:00:00
+navigation: true
+---
+
+import { Basic } from '../Components/Basic';
+
+# Basic Usage
+
+Using all the defaults.
+
+<Basic />
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar value={value} onChange={onChange} />;
+}
+```

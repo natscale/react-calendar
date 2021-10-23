@@ -4,5 +4,6 @@ dist
 .rpt2_cache
 .idea
 *.iml
+docs/.docz/
 
 docs/src/latest/

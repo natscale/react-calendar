@@ -1,0 +1,148 @@
+---
+name: Props
+route: /api/props/
+menu: API
+---
+
+# Props
+
+## startOfWeek
+
+By default the calendar starts from Sun which is represented 0 index.
+You can provide the index for any other day that you want as start of the week.
+
+import StartOfWeek from '../Components/Props/startOfWeek';
+
+<StartOfWeek />
+
+<br />
+
+| Type     | Default | Enum                        |
+| -------- | ------- | --------------------------- |
+| `number` | `0`     | `0 , 1 , 2 , 3 , 4 , 5 , 6` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar startOfWeek={1} value={value} onChange={onChange} />;
+}
+```
+
+## isMultiSelector
+
+Enable multi selection.
+
+import IsMultiSelector from '../Components/Props/isMultiSelector';
+
+<IsMultiSelector />
+
+<br />
+
+| Type      | Default |
+| --------- | ------- |
+| `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar isMultiSelector value={value} onChange={onChange} />;
+}
+```
+
+## isRangeSelector
+
+Enable multi selection.
+
+import IsRangeSelector from '../Components/Props/isRangeSelector';
+
+<IsRangeSelector />
+
+<br />
+
+| Type      | Default |
+| --------- | ------- |
+| `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar isMultiSelector value={value} onChange={onChange} />;
+}
+```
+
+## useDarkMode
+
+Enable/Disable dark mode.
+
+import UseDarkMode from '../Components/Props/useDarkMode';
+
+<UseDarkMode />
+
+<br />
+
+| Type      | Default |
+| --------- | ------- |
+| `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar useDarkMode value={value} onChange={onChange} />;
+}
+```

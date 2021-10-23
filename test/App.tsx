@@ -1,13 +1,13 @@
-import type { CalendarProps, WeekdayIndices, CalendarRef } from './latest/utils/types';
+import type { CalendarProps, WeekdayIndices, CalendarRef } from '../docs/src/latest/utils/types';
 import React, { useCallback, useState } from 'react';
 import { Button, Checkbox, Input } from 'semantic-ui-react';
 import { useRef } from 'react';
 
-import { Calendar } from './latest/main';
+import { Calendar } from '../docs/src/latest/main';
 
 import 'rc-slider/assets/index.css';
-import { CalendarWithShortcuts } from './latest/main';
-import { ShortcutButtonModel } from './latest/components/shortuct-bar/ShortcutButtonModel';
+import { CalendarWithShortcuts } from '../docs/src/latest/main';
+import { ShortcutButtonModel } from '../docs/src/latest/components/shortuct-bar/ShortcutButtonModel';
 
 const highlights = [
   new Date(2021, new Date().getMonth(), 6),
