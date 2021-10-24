@@ -40,6 +40,7 @@ export interface MonthCell {
 }
 
 export interface GetDaysOfMonthViewMetrixParams {
+  isHighlight?: (date: Date) => boolean;
   isSelectMultiDate: boolean;
   selectedMultiDates: Record<string, Date | undefined>;
   isRangeView: boolean;
@@ -53,7 +54,6 @@ export interface GetDaysOfMonthViewMetrixParams {
   selectedRangeEnd: Date | undefined;
   newSelectedRangeStart: undefined | Date;
   newSelectedRangeEnd: undefined | Date;
-  highlightsMap: Record<string, 1>;
   disableFuture: boolean;
   disablePast: boolean;
   disableToday: boolean;
@@ -191,7 +191,7 @@ export interface CalendarProps {
   /**
    * These dates will be highlighted
    */
-  highlights?: Date[];
+  isHighlight: (date: Date) => boolean;
   /**
    * OnChange callback functionn.
    */
@@ -221,6 +221,7 @@ export interface CalendarWithShortcutProps extends CalendarProps {
 type CommonProps = Required<
   Pick<
     CalendarProps,
+    | 'isHighlight'
     | 'lockView'
     | 'isDisabled'
     | 'noPadRangeCell'
@@ -262,7 +263,6 @@ export interface CalendarViewProps extends CommonProps {
   newSelectedRangeStart: Date | undefined;
   newSelectedRangeEnd: Date | undefined;
   selectedMultiDates: Record<string, Date | undefined>;
-  highlightsMap: Record<string, 1>;
   viewDate: Date | undefined;
   maxAllowedDate: string | undefined;
   minAllowedDate: string | undefined;
@@ -275,6 +275,7 @@ export interface CalendarViewProps extends CommonProps {
 
 export type DayOfMonthSelectorProps = Pick<
   CalendarViewProps,
+  | 'isHighlight'
   | 'onChangeNewSelectedRangeEnd'
   | 'onChangeNewSelectedRangeStart'
   | 'noPadRangeCell'
@@ -299,7 +300,6 @@ export type DayOfMonthSelectorProps = Pick<
   | 'disableToday'
   | 'hideAdjacentDates'
   | 'lockView'
-  | 'highlightsMap'
   | 'isDisabled'
   | 'checkIfWeekend'
   | 'onChange'

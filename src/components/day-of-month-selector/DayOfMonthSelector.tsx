@@ -54,8 +54,8 @@ function DayOfMonthSelectorComponent({
   lockView,
   checkIfWeekend,
   onPartialRangeSelect,
+  isHighlight,
   onEachMultiSelect,
-  highlightsMap,
   disableToday,
 }: DayOfMonthSelectorProps) {
   const daysOfMMonthViewMatrix = useMemo(() => {
@@ -70,18 +70,19 @@ function DayOfMonthSelectorComponent({
       isRangeSelectModeOn,
       weekendIndexes: weekendIndices,
       selectedMultiDates,
-      highlightsMap,
       isSelectMultiDate: isMultiSelectorView,
       yearInView: viewingYear,
       monthInView: viewingMonth,
       startOfTheWeek: weekStartIndex,
       disableFuture,
       disablePast,
+      isHighlight,
       disableToday,
       isDisabled,
     });
   }, [
     selectedDate,
+    isHighlight,
     selectedRangeStart,
     selectedRangeEnd,
     newSelectedRangeStart,
@@ -92,7 +93,6 @@ function DayOfMonthSelectorComponent({
     checkIfWeekend,
     weekendIndices,
     selectedMultiDates,
-    highlightsMap,
     isMultiSelectorView,
     viewingYear,
     viewingMonth,

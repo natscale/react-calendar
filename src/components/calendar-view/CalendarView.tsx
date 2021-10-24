@@ -79,7 +79,7 @@ function Component({
   disableFuture,
   weekendMap,
   disablePast,
-  highlightsMap,
+  isHighlight,
   disableToday,
 }: CalendarViewProps): React.ReactElement<CalendarViewProps> {
   const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
@@ -416,7 +416,7 @@ function Component({
               yearInView={yearInView}
               disableFuture={disableFuture}
               disablePast={disablePast}
-              highlightsMap={highlightsMap}
+              isHighlight={isHighlight}
               disableToday={disableToday}
             />
           </>
