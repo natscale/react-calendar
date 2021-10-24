@@ -4,9 +4,11 @@ route: /api/props/
 menu: API
 ---
 
+import { Hint } from '@nejcm/docz-theme-extended';
+
 # Props
 
-## startOfWeek
+## Start Day Of Week
 
 By default the calendar starts from Sun which is represented 0 index.
 You can provide the index for any other day that you want as start of the week.
@@ -15,11 +17,9 @@ import StartOfWeek from '../Components/Props/startOfWeek';
 
 <StartOfWeek />
 
-<br />
-
-| Type     | Default | Enum                        |
-| -------- | ------- | --------------------------- |
-| `number` | `0`     | `0 , 1 , 2 , 3 , 4 , 5 , 6` |
+| Prop          | Type     | Default | Enum                        |
+| ------------- | -------- | ------- | --------------------------- |
+| `startOfWeek` | `number` | `0`     | `0 , 1 , 2 , 3 , 4 , 5 , 6` |
 
 ```js
 import React, { useCallback, useState } from 'react';
@@ -42,7 +42,7 @@ export function Basic() {
 }
 ```
 
-## isMultiSelector
+## Select Multiple Dates
 
 Enable multi selection.
 
@@ -50,11 +50,9 @@ import IsMultiSelector from '../Components/Props/isMultiSelector';
 
 <IsMultiSelector />
 
-<br />
-
-| Type      | Default |
-| --------- | ------- |
-| `boolean` | `false` |
+| Prop              | Type      | Default |
+| ----------------- | --------- | ------- |
+| `isMultiSelector` | `boolean` | `false` |
 
 ```js
 import React, { useCallback, useState } from 'react';
@@ -77,19 +75,17 @@ export function Basic() {
 }
 ```
 
-## isRangeSelector
+## Select Date Range
 
-Enable multi selection.
+Select a date range.
 
 import IsRangeSelector from '../Components/Props/isRangeSelector';
 
 <IsRangeSelector />
 
-<br />
-
-| Type      | Default |
-| --------- | ------- |
-| `boolean` | `false` |
+| Prop              | Type      | Default |
+| ----------------- | --------- | ------- |
+| `isRangeSelector` | `boolean` | `false` |
 
 ```js
 import React, { useCallback, useState } from 'react';
@@ -108,11 +104,172 @@ export function Basic() {
     [setValue],
   );
 
-  return <Calendar isMultiSelector value={value} onChange={onChange} />;
+  return <Calendar isRangeSelector value={value} onChange={onChange} />;
 }
 ```
 
-## useDarkMode
+## Date Range With No Padding
+
+<Hint type="info">Only works if calendar is a range selector</Hint>
+
+import NoPadRangeCell from '../Components/Props/noPadRangeCell';
+
+<NoPadRangeCell />
+
+| Prop             | Type      | Default |
+| ---------------- | --------- | ------- |
+| `noPadRangeCell` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar noPadRangeCell isRangeSelector value={value} onChange={onChange} />;
+}
+```
+
+## Hide Adjacent Dates
+
+Hide Adjacent Dates.
+
+import HideAdjacentDates from '../Components/Props/hideAdjacentDates';
+
+<HideAdjacentDates />
+
+| Prop                | Type      | Default |
+| ------------------- | --------- | ------- |
+| `hideAdjacentDates` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar hideAdjacentDates value={value} onChange={onChange} />;
+}
+```
+
+## Classname
+
+Pass custom classnames.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `className` | `string` |         |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar className="my-class" value={value} onChange={onChange} />;
+}
+```
+
+## Initial View
+
+Todo
+
+import InitialView from '../Components/Props/initialView';
+
+<InitialView />
+
+| Prop          | Type   | Default         | Enum                               |
+| ------------- | ------ | --------------- | ---------------------------------- |
+| `initialView` | `enum` | `"month_dates"` | `"years", "months", "month_dates"` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar initialView="years" value={value} onChange={onChange} />;
+}
+```
+
+## Lock View
+
+Todo
+
+import LockView from '../Components/Props/lockView';
+
+<LockView />
+
+| Prop       | Type      | Default |
+| ---------- | --------- | ------- |
+| `lockView` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function Basic() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar lockView value={value} onChange={onChange} />;
+}
+```
+
+## Dark Mode
 
 Enable/Disable dark mode.
 
@@ -120,11 +277,9 @@ import UseDarkMode from '../Components/Props/useDarkMode';
 
 <UseDarkMode />
 
-<br />
-
-| Type      | Default |
-| --------- | ------- |
-| `boolean` | `false` |
+| Prop          | Type      | Default |
+| ------------- | --------- | ------- |
+| `useDarkMode` | `boolean` | `false` |
 
 ```js
 import React, { useCallback, useState } from 'react';

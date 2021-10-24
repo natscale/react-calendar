@@ -1,0 +1,41 @@
+.rc-btn {
+  background-color: #1c7ed4;
+  color: #fff;
+  box-shadow: 0 6px #115b9b;
+  transition: none;
+  width: 240px;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px 20px;
+  display: inline-block;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  border-radius: 5px;
+}
+
+.rc-btn:after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.rc-btn:active {
+  box-shadow: 0 4px #115b9b;
+  top: 2px;
+}
+
+/* Container */
+
+.rc-demo {
+  display: flex;
+  flex-direction: column;
+}

@@ -13,6 +13,10 @@ export default {
     Examples: 'Examples',
   },
   themeConfig: {
+    colors: {
+      primary: '#1c7ed4',
+      link: '#1c7ed4',
+    },
     search: true,
     mainContainer: {
       fullscreen: false,

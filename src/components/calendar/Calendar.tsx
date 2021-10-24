@@ -58,7 +58,7 @@ function CalendarWithRef(
     fixedRange,
     isDisabled,
     onPartialRangeSelect,
-    noPadRangeCell: noPadRangeCell = true,
+    noPadRangeCell = false,
     onEachMultiSelect,
     initialView,
     onChange,
