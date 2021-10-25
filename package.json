@@ -51,7 +51,7 @@
     "test:lint:fix": "yarn run test:lint -- --fix",
     "start": "yarn dev",
     "start-docs": "cd docs && yarn start",
-    "deploy": "yarn build && cd docs/ && yarn build && node_modules/gh-pages/bin/gh-pages.js -d build",
+    "deploy": "yarn build && cd docs/ && yarn build && node_modules/gh-pages/bin/gh-pages.js -d .docz/dist",
     "prettier": "npx prettier --write '**/*.{ts,tsx,jsx,js,css,html}'"
   },
   "files": [

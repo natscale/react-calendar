@@ -1,11 +1,9 @@
 import React, { Ref, useImperativeHandle, useRef, useMemo } from 'react';
 
 import { CalendarRef, CalendarWithShortcutProps } from '../../utils/types';
-import { ShortcutBar } from '../shortuct-bar/ShortcutBar';
+import { ShortcutBar, SHORTCUT_SIZE } from '../shortuct-bar/ShortcutBar';
 
 import Calendar, { DEFAULT_SIZE } from '../calendar/Calendar';
-
-export const SHORTCUT_SIZE = 130;
 
 const giveStyles: (width: number, direction?: 'left' | 'right' | 'bottom') => Record<'root', React.CSSProperties> = (
   width,
@@ -14,7 +12,7 @@ const giveStyles: (width: number, direction?: 'left' | 'right' | 'bottom') => Re
   root: {
     display: 'inline-flex',
     flexDirection: direction === 'bottom' ? 'column-reverse' : direction === 'right' ? 'row-reverse' : 'row',
-    width: `${width + (direction === 'bottom' ? 0 : 130)}px`,
+    width: `${width + (direction === 'bottom' ? 0 : SHORTCUT_SIZE)}px`,
   },
 });
 

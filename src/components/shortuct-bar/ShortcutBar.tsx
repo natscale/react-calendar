@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
-import { SHORTCUT_SIZE } from '../calendar-with-shortcuts/CalendarWithShortcuts';
-import { CalendarWithShortcutProps, ShortcutButtonModel } from '../calendar/Calendar';
+
+import { CalendarWithShortcutProps, ShortcutButtonModel } from '../../utils/types';
 
 interface Props extends Pick<CalendarWithShortcutProps, 'direction'> {
   shortcutButtons: Array<ShortcutButtonModel>;
   isDual: boolean;
 }
+
+export const SHORTCUT_SIZE = 130;
 
 const giveStyles: (
   dir: CalendarWithShortcutProps['direction'],

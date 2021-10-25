@@ -8,7 +8,7 @@
   "homepage": "https://natscale.github.io/react-calendar",
   "scripts": {
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d .docz/dist",
     "test": "echo 'No tests to run.'",
     "clean": "rimraf .docz && docz clean",
     "start": "yarn develop",
