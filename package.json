@@ -39,6 +39,7 @@
     "react-dom": "^16.8.0 || ^17.0.0"
   },
   "scripts": {
+    "postinstall": "cd docs/ && yarn install && cd ..",
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
     "prepublishOnly": "yarn build",

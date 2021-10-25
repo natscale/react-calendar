@@ -14,8 +14,20 @@ export default {
   },
   themeConfig: {
     colors: {
+      // https://github.com/doczjs/docz/blob/main/core/gatsby-theme-docz/src/theme/modes.js
       primary: '#1c7ed4',
       link: '#1c7ed4',
+      header: {
+        button: {
+          bg: '#1c7ed4',
+        },
+      },
+      props: {
+        highlight: '#1c7ed4',
+      },
+      sidebar: {
+        navLinkActive: '#1c7ed4',
+      },
     },
     search: true,
     mainContainer: {

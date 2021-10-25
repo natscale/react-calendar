@@ -14,12 +14,5 @@ export default function App() {
     [setValue],
   );
 
-  const isHighlight = useCallback((date) => {
-    // highlight any data that is divisible by 5
-    if (date.getDate() % 5 === 0) {
-      return true;
-    }
-  }, []);
-
-  return <Calendar isHighlight={isHighlight} value={value} onChange={onChange} />;
+  return <Calendar value={value} onChange={onChange} />;
 }
