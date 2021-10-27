@@ -1,11 +1,11 @@
-const pkgName = 'React Calendar';
+const pkgName = 'react-calendar';
 
 export default {
   lang: 'en',
   files: '**/*.mdx',
   ignore: ['./*.md'],
-  title: pkgName,
-  description: `${pkgName}.`,
+  title: 'React Calendar',
+  description: 'A no dependency, lightweight and feature-rich calendar component for react.',
   base: `/${pkgName}/`,
   menu: ['Introduction', 'Installation', { name: 'API', menu: [] }, { name: 'Examples', menu: [] }],
   menuDisplayName: {

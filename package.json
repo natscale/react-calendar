@@ -1,7 +1,7 @@
 {
   "name": "@natscale/react-calendar",
   "version": "0.0.0-beta.20",
-  "description": "A no dependencies, lightweight and feature-rich calendar component for react.",
+  "description": "A no dependency, lightweight and feature-rich calendar component for react.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "repository": {

@@ -344,7 +344,7 @@
   border-bottom-color: var(--rc-color-bg-dom-range-ep-weekend-active);
 }
 
-/* inacrtive range non-weekend endonts */
+/* inactive range non-weekend endonts */
 .rc_body-days-of-month .rc_body-cell.rc_range_start:not(.rc_active) .rc_body-cell_value,
 .rc_body-days-of-month .rc_body-cell.rc_range_end:not(.rc_active) .rc_body-cell_value,
 .rc_body-days-of-month .rc_body-cell.rc_selected:not(.rc_active) .rc_body-cell_value {
@@ -357,7 +357,7 @@
   color: var(--rc-color-text-dom-range-ep-inactive);
 }
 
-/* inacrtive range weekend endonts */
+/* inactive range weekend endonts */
 .rc_body-days-of-month .rc_body-cell.rc_in_range.rc_range_start.rc_wknd:not(.rc_active) .rc_body-cell_value,
 .rc_body-days-of-month .rc_body-cell.rc_in_range.rc_range_end.rc_wknd:not(.rc_active) .rc_body-cell_value,
 .rc_body-days-of-month .rc_body-cell.rc_selected.rc_wknd:not(.rc_active) .rc_body-cell_value {
@@ -376,10 +376,6 @@
 .rc_body-days-of-month .rc_body-cell.rc_highlight:not(.rc_disabled) button {
   border-bottom: 1px solid currentColor;
 }
-
-/* .rc_body-days-of-month .rc_body-cell.rc_selected button:focus {
-  outline: none;
-} */
 
 .rc_body-days-of-month .rc_body-cell.rc_selected .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-selected);
