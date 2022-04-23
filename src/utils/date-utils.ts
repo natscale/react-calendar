@@ -625,7 +625,7 @@ export function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams)
     selectedDate,
     selectedRangeStart,
     selectedRangeEnd,
-    highlightsMap,
+    isHighlight,
     newSelectedRangeStart,
     newSelectedRangeEnd,
     isSelectMultiDate,
@@ -678,7 +678,7 @@ export function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams)
           dayOfMonth,
         ),
         activeMonthInView: false,
-        highlightsMap,
+        isHighlight,
         newSelectedRangeEnd,
         newSelectedRangeStart,
         selectedDate,
@@ -710,7 +710,7 @@ export function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams)
       getCellValue({
         currDate: new Date(yearInView, monthInView, dayOfMonth),
         activeMonthInView: true,
-        highlightsMap,
+        isHighlight,
         newSelectedRangeEnd,
         newSelectedRangeStart,
         selectedDate,
@@ -743,7 +743,7 @@ export function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams)
       getCellValue({
         currDate: new Date(isCurrentMonthLast ? yearInView + 1 : yearInView, getNextMonth(monthInView), dayOfMonth),
         activeMonthInView: false,
-        highlightsMap,
+        isHighlight,
         newSelectedRangeEnd,
         newSelectedRangeStart,
         selectedDate,
@@ -771,7 +771,7 @@ export function getDaysOfMonthViewMetrix(params: GetDaysOfMonthViewMetrixParams)
 interface GetCellValueParams
   extends Pick<
     GetDaysOfMonthViewMetrixParams,
-    | 'highlightsMap'
+    | 'isHighlight'
     | 'isRangeView'
     | 'isRangeSelectModeOn'
     | 'newSelectedRangeStart'
@@ -795,7 +795,7 @@ interface GetCellValueParams
 function getCellValue({
   currDate,
   activeMonthInView,
-  highlightsMap,
+  isHighlight,
   newSelectedRangeEnd,
   newSelectedRangeStart,
   selectedDate,
@@ -817,7 +817,7 @@ function getCellValue({
     dayOfMonth: currDate.getDate(),
     month: currDate.getMonth() as MonthIndices,
     activeMonthInView,
-    isHighlight: highlightsMap[toString(currDate)] === 1,
+    isHighlight: typeof isHighlight === 'function' ? isHighlight(currDate) : false,
     isInRange: isRangeView
       ? isRangeSelectModeOn
         ? isValid(newSelectedRangeStart) && isValid(newSelectedRangeEnd)

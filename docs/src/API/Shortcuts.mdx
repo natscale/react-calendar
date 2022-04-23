@@ -1,0 +1,61 @@
+---
+name: With Shortcuts
+route: /api/shortcuts
+menu: API
+---
+
+## Basic
+
+By default the calendar starts from Sun which is represented 0 index.
+You can provide the index for any other day that you want as start of the week.
+
+import Value from '../Components/Shortcuts/basic';
+
+<Value />
+
+| Prop                         | Type                                                   |
+| ---------------------------- | ------------------------------------------------------ |
+| `shortcutButtons` (required) | `Array<{ id: string, render: () => React.ReactNode }>` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export default function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  const calendarRef = useRef(null);
+
+  const onDateChange = function onDateChange(date) {
+    if (calendarRef.current) {
+      calendarRef.current.setView(date);
+    }
+  };
+
+  return (
+    <CalendarWithShortcuts
+      shortcutButtons={[
+        {
+          id: '1',
+          render: () => {
+            return <button onClick={() => onDateChange(new Date(2011, 11, 24))}>24, Sept, 2011</button>;
+          },
+        },
+      ]}
+      ref={calendarRef}
+      value={value}
+      onChange={onChange}
+    />
+  );
+}
+```

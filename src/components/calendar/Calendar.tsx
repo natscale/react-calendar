@@ -27,7 +27,6 @@ import './styles.css';
 
 import { CalendarView, getInitialDateToShow } from '../calendar-view/CalendarView';
 
-const emptyArray: Date[] = [];
 const Views: Record<ViewType, 1> = {
   years: 1,
   months: 1,
@@ -48,7 +47,6 @@ function CalendarWithRef(
     isRangeSelector,
     useDarkMode = false,
     weekends,
-    highlights = emptyArray,
     initialViewDate,
     allowFewerDatesThanRange = false,
     startOfWeek = 1,
@@ -58,10 +56,11 @@ function CalendarWithRef(
     fixedRange,
     isDisabled,
     onPartialRangeSelect,
-    noPadRangeCell: noPadRangeCell = true,
+    noPadRangeCell = false,
     onEachMultiSelect,
     initialView,
     onChange,
+    isHighlight,
     lockView = false,
     disableFuture = false,
     size = DEFAULT_SIZE,
@@ -81,18 +80,6 @@ function CalendarWithRef(
 
   const startOfTheWeek = startOfWeek;
   const fixedRangeLength = isFixedRangeView ? (fixedRange as number) : 1;
-
-  const highlightsMap = useMemo<Record<string, 1>>(() => {
-    if (Array.isArray(highlights)) {
-      return highlights
-        .filter((d) => isValid(d))
-        .reduce((acc, curr) => {
-          acc[toString(curr)] = 1;
-          return acc;
-        }, {} as Record<string, 1>);
-    }
-    return {};
-  }, [highlights]);
 
   const weekendIndexes = useMemo<WeekdayIndices[]>(() => {
     return Array.isArray(weekends) && (weekends.every((num) => typeof num === 'number') || weekends.length === 0)
@@ -283,6 +270,7 @@ function CalendarWithRef(
       hideAdjacentDates: !!hideAdjacentDates,
       isNormalView: isNormalView,
       size: size,
+      isHighlight,
       fontSize: fontSize,
       startOfWeek: startOfTheWeek,
       weekends: weekendIndexes,
@@ -315,7 +303,6 @@ function CalendarWithRef(
       setView: changeView,
       disableFuture: disableFuture,
       disablePast: disablePast,
-      highlightsMap: highlightsMap,
       disableToday: disableToday,
       weekendMap: weekendMap,
       yearInView,
@@ -356,12 +343,12 @@ function CalendarWithRef(
       isMultiSelectorView,
       maxDate,
       minDate,
+      isHighlight,
       onChange,
       view,
       changeView,
       disableFuture,
       disablePast,
-      highlightsMap,
       disableToday,
       weekendMap,
       yearInView,

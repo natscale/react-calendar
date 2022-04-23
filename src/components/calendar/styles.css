@@ -301,7 +301,7 @@
 }
 
 /* in range bg colors */
-.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_active .rc_body-cell_value {
+.rc_body-days-of-month .rc_body-cell.rc_in_range .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-in-range-active);
   color: var(--rc-color-text-dark);
 }
@@ -316,26 +316,31 @@
   border-bottom-left-radius: 2px;
 }
 
-.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_wknd.rc_active .rc_body-cell_value {
+.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_wknd .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-in-range-weekend-active);
   color: var(--rc-color-text-dark);
 }
 
-/* range endpoints active color */
-.rc_body-days-of-month .rc_body-cell.rc_range_start.rc_active button,
-.rc_body-days-of-month .rc_body-cell.rc_range_end.rc_active button {
+/* range endpoints color */
+.rc_body-days-of-month .rc_body-cell.rc_range_start button,
+.rc_body-days-of-month .rc_body-cell.rc_range_end button {
   color: var(--rc-color-text-dom-range-ep-active);
 }
 
-/* active range non weekend endoints */
-.rc_body-days-of-month .rc_body-cell.rc_range_start.rc_active .rc_body-cell_value,
-.rc_body-days-of-month .rc_body-cell.rc_range_end.rc_active .rc_body-cell_value {
+.rc_body-days-of-month .rc_body-cell.rc_wknd.rc_range_start button ,
+.rc_body-days-of-month .rc_body-cell.rc_wknd.rc_range_end button {
+  color: var(--rc-color-text-dom-range-ep-active);
+}
+
+/* range non weekend endoints */
+.rc_body-days-of-month .rc_body-cell.rc_range_start .rc_body-cell_value,
+.rc_body-days-of-month .rc_body-cell.rc_range_end .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-range-ep-active);
 }
 
-/* active range weekend endoints */
-.rc_body-days-of-month .rc_body-cell.rc_range_start.rc_wknd.rc_active .rc_body-cell_value,
-.rc_body-days-of-month .rc_body-cell.rc_range_end.rc_wknd.rc_active .rc_body-cell_value {
+/*range weekend endoints */
+.rc_body-days-of-month .rc_body-cell.rc_range_start.rc_wknd .rc_body-cell_value,
+.rc_body-days-of-month .rc_body-cell.rc_range_end.rc_wknd .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-range-ep-weekend-active);
 }
 
@@ -344,42 +349,12 @@
   border-bottom-color: var(--rc-color-bg-dom-range-ep-weekend-active);
 }
 
-/* inacrtive range non-weekend endonts */
-.rc_body-days-of-month .rc_body-cell.rc_range_start:not(.rc_active) .rc_body-cell_value,
-.rc_body-days-of-month .rc_body-cell.rc_range_end:not(.rc_active) .rc_body-cell_value,
-.rc_body-days-of-month .rc_body-cell.rc_selected:not(.rc_active) .rc_body-cell_value {
-  background-color: var(--rc-color-bg-dom-range-ep-inactive);
-}
-
-.rc_body-days-of-month .rc_body-cell.rc_range_start:not(.rc_active) button,
-.rc_body-days-of-month .rc_body-cell.rc_range_end:not(.rc_active) button,
-.rc_body-days-of-month .rc_body-cell.rc_selected:not(.rc_active) button {
-  color: var(--rc-color-text-dom-range-ep-inactive);
-}
-
-/* inacrtive range weekend endonts */
-.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_range_start.rc_wknd:not(.rc_active) .rc_body-cell_value,
-.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_range_end.rc_wknd:not(.rc_active) .rc_body-cell_value,
-.rc_body-days-of-month .rc_body-cell.rc_selected.rc_wknd:not(.rc_active) .rc_body-cell_value {
-  background-color: var(--rc-color-bg-dom-range-ep-weekend-inactive);
-}
-
-.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_range_start.rc_wknd:not(.rc_active) button,
-.rc_body-days-of-month .rc_body-cell.rc_in_range.rc_range_end.rc_wknd:not(.rc_active) button,
-.rc_body-days-of-month .rc_body-cell.rc_selected.rc_wknd:not(.rc_active) button {
-  color: var(--rc-color-text-dom-range-ep-weekend-inactive);
-}
-
 /* Selected */
 
 .rc_body-days-of-month .rc_body-cell.rc_today:not(.rc_disabled) button,
 .rc_body-days-of-month .rc_body-cell.rc_highlight:not(.rc_disabled) button {
   border-bottom: 1px solid currentColor;
 }
-
-/* .rc_body-days-of-month .rc_body-cell.rc_selected button:focus {
-  outline: none;
-} */
 
 .rc_body-days-of-month .rc_body-cell.rc_selected .rc_body-cell_value {
   background-color: var(--rc-color-bg-dom-selected);
