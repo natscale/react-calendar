@@ -1,6 +1,6 @@
 {
   "name": "@natscale/react-calendar",
-  "version": "0.0.0-beta.22",
+  "version": "0.0.0-beta.23",
   "description": "A no dependency, lightweight and feature-rich calendar component for react.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -39,7 +39,6 @@
     "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
   "scripts": {
-    "postinstall": "cd docs/ && yarn install && cd ..",
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
     "prepublishOnly": "yarn build",
