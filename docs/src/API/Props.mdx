@@ -109,6 +109,66 @@ export function App() {
 }
 ```
 
+## Change Labels
+
+The calendar uses english labels for months and weeks by default. But you can change it
+using the props provided.
+
+import Labels from '../Components/Props/monthsLabel';
+
+<Labels />
+
+| Prop            | Type                       |
+| --------------- | -------------------------- |
+| `weekDaysLabel` | `Record<0 ... 6, string>`  |
+| `monthsLabel`   | `Record<0 ... 11, string>` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+const monthsLabel = {
+  0: 'janvier',
+  1: 'février',
+  2: 'mars',
+  3: 'avril',
+  4: 'mai',
+  5: 'juin',
+  6: 'juillet',
+  7: 'août',
+  8: 'septembre',
+  9: 'octobre',
+  10: 'novembre',
+  11: 'décembre',
+};
+
+const weekDaysLabel = {
+  0: 'Di',
+  1: 'Lu',
+  2: 'Ma',
+  3: 'Me',
+  4: 'Je',
+  5: 'Ve',
+  6: 'Sa',
+};
+
+export default function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar weekDaysLabel={weekDaysLabel} monthsLabel={monthsLabel} value={value} onChange={onChange} />;
+}
+```
+
 ## Select Multiple Dates
 
 Enable multi selection.
@@ -342,105 +402,6 @@ export function App() {
 }
 ```
 
-## Disable Past Dates
-
-Todo
-
-import DisablePast from '../Components/Props/disablePast';
-
-<DisablePast />
-
-| Prop          | Type      | Default |
-| ------------- | --------- | ------- |
-| `disablePast` | `boolean` |         |
-
-```js
-import React, { useCallback, useState } from 'react';
-
-import { Calendar } from '@natscale/react-calendar';
-
-import '@natscale/react-calendar/dist/main.css';
-
-export function App() {
-  const [value, setValue] = useState(new Date());
-
-  const onChange = useCallback(
-    (val) => {
-      setValue(val);
-    },
-    [setValue],
-  );
-
-  return <Calendar disablePast value={value} onChange={onChange} />;
-}
-```
-
-## Disable Today
-
-Todo
-
-import DisableToday from '../Components/Props/disableToday';
-
-<DisableToday />
-
-| Prop           | Type      | Default |
-| -------------- | --------- | ------- |
-| `disableToday` | `boolean` |         |
-
-```js
-import React, { useCallback, useState } from 'react';
-
-import { Calendar } from '@natscale/react-calendar';
-
-import '@natscale/react-calendar/dist/main.css';
-
-export function App() {
-  const [value, setValue] = useState(new Date());
-
-  const onChanghighlightse = useCallback(
-    (val) => {
-      setValue(val);
-    },
-    [setValue],
-  );
-
-  return <Calendar disableToday value={value} onChange={onChange} />;
-}
-```
-
-## Disable Future
-
-Todo
-
-import DisableFuture from '../Components/Props/disableFuture';
-
-<DisableFuture />
-
-| Prop            | Type      | Default |
-| --------------- | --------- | ------- |
-| `disableFuture` | `boolean` |         |
-
-```js
-import React, { useCallback, useState } from 'react';
-
-import { Calendar } from '@natscale/react-calendar';
-
-import '@natscale/react-calendar/dist/main.css';
-
-export function App() {
-  const [value, setValue] = useState(new Date());
-
-  const onChange = useCallback(
-    (val) => {
-      setValue(val);
-    },
-    [setValue],
-  );
-
-  return <Calendar disableFuture value={value} onChange={onChange} />;
-}
-```
-
 ## Custom Dates Disabled
 
 Todo
@@ -518,72 +479,6 @@ export function App() {
   }, []);
 
   return <Calendar isHighlight={isHighlight} value={value} onChange={onChange} />;
-}
-```
-
-## Max Allowed Date
-
-Todo
-
-import MaxAllowedDate from '../Components/Props/maxAllowedDate';
-
-<MaxAllowedDate />
-
-| Prop             | Type   | Default |
-| ---------------- | ------ | ------- |
-| `maxAllowedDate` | `Date` |         |
-
-```js
-import React, { useCallback, useState } from 'react';
-
-import { Calendar } from '@natscale/react-calendar';
-
-import '@natscale/react-calendar/dist/main.css';
-
-export function App() {
-  const [value, setValue] = useState(new Date());
-
-  const onChange = useCallback(
-    (val) => {
-      setValue(val);
-    },
-    [setValue],
-  );
-
-  return <Calendar maxAllowedDate={new Date(2025)} value={value} onChange={onChange} />;
-}
-```
-
-## Min Allowed Date
-
-Todo
-
-import MinAllowedDate from '../Components/Props/minAllowedDate';
-
-<MinAllowedDate />
-
-| Prop             | Type   | Default |
-| ---------------- | ------ | ------- |
-| `minAllowedDate` | `Date` |         |
-
-```js
-import React, { useCallback, useState } from 'react';
-
-import { Calendar } from '@natscale/react-calendar';
-
-import '@natscale/react-calendar/dist/main.css';
-
-export function App() {
-  const [value, setValue] = useState(new Date());
-
-  const onChange = useCallback(
-    (val) => {
-      setValue(val);
-    },
-    [setValue],
-  );
-
-  return <Calendar minAllowedDate={new Date(2020)} value={value} onChange={onChange} />;
 }
 ```
 

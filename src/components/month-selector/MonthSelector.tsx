@@ -15,7 +15,7 @@ const months = {
   },
 };
 
-function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: MonthSelectorProps) {
+function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType, monthsLabel }: MonthSelectorProps) {
   const monthsViewMatrix = useMemo<MonthCell[][]>(() => {
     return getMonthViewMetrix({});
   }, []);
@@ -31,6 +31,7 @@ function MonthSelectorComponent({ onChangeViewingMonth, onChangeViewType }: Mont
               key={cell.month}
             >
               <Month
+                monthsLabel={monthsLabel}
                 cell={cell}
                 onMonthClicked={(cell) => {
                   onChangeViewingMonth(cell.month), onChangeViewType('month_dates');

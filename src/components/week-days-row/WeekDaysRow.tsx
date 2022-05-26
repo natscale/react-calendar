@@ -3,7 +3,6 @@ import React, { memo, useMemo } from 'react';
 import { WeekdayRowProps } from '../../utils/types';
 
 import { getWeekDaysIndexToLabelMapForAStartOfTheWeek } from '../../utils/date-utils';
-import { NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP } from '../../utils/constants';
 
 const weekdaysRow = {
   'rc_body-weekdays': {
@@ -30,7 +29,7 @@ const weekdaysRow = {
   },
 };
 
-function WeekDaysRowComponent({ startOfWeek, weekendMap }: WeekdayRowProps) {
+function WeekDaysRowComponent({ startOfWeek, weekendMap, weekDaysLabel }: WeekdayRowProps) {
   // week days as per the start day of the week
   const { order: weekDayOrder } = useMemo(() => {
     return getWeekDaysIndexToLabelMapForAStartOfTheWeek(startOfWeek);
@@ -45,7 +44,7 @@ function WeekDaysRowComponent({ startOfWeek, weekendMap }: WeekdayRowProps) {
           className={`rc_body-weekdays_cell${weekendMap[weekDay] ? ' rc_wknd' : ''}`}
         >
           <div style={weekdaysRow['rc_body-weekdays_cell_value']}>
-            <span>{NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP[weekDay]}</span>
+            <span>{weekDaysLabel[weekDay]}</span>
           </div>
         </li>
       ))}

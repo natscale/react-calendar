@@ -1,0 +1,39 @@
+---
+name: Dual Calendar
+route: /api/dual-calendar
+menu: API
+---
+
+## Basic
+
+By default the calendar starts from Sun which is represented 0 index.
+You can provide the index for any other day that you want as start of the week.
+
+import Value from '../Components/Dual/basic';
+
+<Value />
+
+| Prop                         | Type                                                   |
+| ---------------------------- | ------------------------------------------------------ |
+| `shortcutButtons` (required) | `Array<{ id: string, render: () => React.ReactNode }>` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export default function App() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar showDualCalendar isRangeSelector value={value} onChange={onChange} />;
+}
+```

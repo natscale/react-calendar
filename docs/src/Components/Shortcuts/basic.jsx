@@ -29,7 +29,19 @@ export default function App() {
         {
           id: '1',
           render: () => {
-            return <button onClick={() => onDateChange(new Date(2011, 11, 24))}>24, Sept, 2011</button>;
+            return <button onClick={() => onDateChange(new Date(2011, 11, 24))}>24, Dec, 2011</button>;
+          },
+        },
+        {
+          id: '2',
+          render: () => {
+            return <button onClick={() => onDateChange(new Date(2016, 10, 15))}>15, Nov, 2016</button>;
+          },
+        },
+        {
+          id: '3',
+          render: () => {
+            return <button onClick={() => onDateChange(new Date())}>Today</button>;
           },
         },
       ]}

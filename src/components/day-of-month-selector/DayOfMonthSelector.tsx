@@ -2,7 +2,8 @@ import React, { memo, useCallback, useMemo } from 'react';
 
 import type { DayOfMonthCell, DayOfMonthSelectorProps } from '../../utils/types';
 
-import { addDays, getDaysOfMonthViewMetrix, getNextDate, isBefore, toString } from '../../utils/date-utils';
+import { addDays, getDaysOfMonthViewMetrix, isBefore, toString } from '../../utils/date-utils';
+
 import { DayOfMonth } from '../day-of-month-cell/DayOfMonthCell';
 
 const dayOfMonthStyles = {
@@ -49,14 +50,11 @@ function DayOfMonthSelectorComponent({
   yearInView: viewingYear,
   allowFewerDatesThanRange,
   noPadRangeCell,
-  disableFuture,
-  disablePast,
   lockView,
   checkIfWeekend,
   onPartialRangeSelect,
   isHighlight,
   onEachMultiSelect,
-  disableToday,
 }: DayOfMonthSelectorProps) {
   const daysOfMMonthViewMatrix = useMemo(() => {
     return getDaysOfMonthViewMetrix({
@@ -74,10 +72,7 @@ function DayOfMonthSelectorComponent({
       yearInView: viewingYear,
       monthInView: viewingMonth,
       startOfTheWeek: weekStartIndex,
-      disableFuture,
-      disablePast,
       isHighlight,
-      disableToday,
       isDisabled,
     });
   }, [
@@ -97,9 +92,6 @@ function DayOfMonthSelectorComponent({
     viewingYear,
     viewingMonth,
     weekStartIndex,
-    disableFuture,
-    disablePast,
-    disableToday,
     isDisabled,
   ]);
 
@@ -156,11 +148,7 @@ function DayOfMonthSelectorComponent({
         const { endDate, limitReached } = addDays(clickedDate, fixedRangeLength, {
           isDisabled,
           skipDisabledDatesInRange,
-          upperLimit: lockView
-            ? new Date(clickedDate.getFullYear(), clickedDate.getMonth() + 1, 1)
-            : disableFuture
-            ? getNextDate(new Date())
-            : undefined,
+          upperLimit: lockView ? new Date(clickedDate.getFullYear(), clickedDate.getMonth() + 1, 1) : undefined,
         });
 
         if (limitReached && !allowFewerDatesThanRange) {
@@ -209,7 +197,6 @@ function DayOfMonthSelectorComponent({
       fixedRangeLength,
       isDisabled,
       skipDisabledDatesInRange,
-      disableFuture,
       allowFewerDatesThanRange,
       selectedMultiDates,
       onEachMultiSelect,

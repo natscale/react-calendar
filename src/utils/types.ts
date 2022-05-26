@@ -54,22 +54,12 @@ export interface GetDaysOfMonthViewMetrixParams {
   selectedRangeEnd: Date | undefined;
   newSelectedRangeStart: undefined | Date;
   newSelectedRangeEnd: undefined | Date;
-  disableFuture: boolean;
-  disablePast: boolean;
-  disableToday: boolean;
   isDisabled: (date: Date) => boolean;
   checkIfWeekend: (date: Date) => boolean;
 }
 
 export interface CheckIfDateIsDisabledHOFParams {
-  disablePast: boolean;
-  disableToday: boolean;
-  disableFuture: boolean;
   customDisabledCheck?: (date: Date) => boolean;
-  maxDate?: Date;
-  minDate?: Date;
-  applyMax: boolean;
-  applyMin: boolean;
 }
 
 export type CalendarRef = { setView: (date: Date) => void };
@@ -83,6 +73,14 @@ export interface CSSProps {
 export type Value = Date | Date[] | [Date, Date];
 
 export interface CalendarProps {
+  /**
+   * Labels for month
+   */
+  monthsLabel?: Record<MonthIndices, string>;
+  /**
+   * Labels for weekdays
+   */
+  weekDaysLabel?: Record<WeekdayIndices, string>;
   /**
    * Hides the prev and next month dates
    */
@@ -165,33 +163,13 @@ export interface CalendarProps {
    */
   startOfWeek?: WeekdayIndices;
   /**
-   * A boolean flag to disable all past dates.
-   */
-  disablePast?: boolean;
-  /**
-   * A boolean flag to disable today's date.
-   */
-  disableToday?: boolean;
-  /**
-   * A boolean flag to disable all future dates.
-   */
-  disableFuture?: boolean;
-  /**
    * A callback function that can be used to disable specific dates on the calendar.
    */
   isDisabled?: (date: Date) => boolean;
   /**
-   * User will not be able to select past this date. This date will be selectable.
-   */
-  maxAllowedDate?: Date;
-  /**
-   * User will not be able to select before this date. This date will be selectable.
-   */
-  minAllowedDate?: Date;
-  /**
    * These dates will be highlighted
    */
-  isHighlight: (date: Date) => boolean;
+  isHighlight?: (date: Date) => boolean;
   /**
    * OnChange callback functionn.
    */
@@ -221,13 +199,11 @@ export interface CalendarWithShortcutProps extends CalendarProps {
 type CommonProps = Required<
   Pick<
     CalendarProps,
-    | 'isHighlight'
+    | 'monthsLabel'
+    | 'weekDaysLabel'
     | 'lockView'
     | 'isDisabled'
     | 'noPadRangeCell'
-    | 'disableFuture'
-    | 'disablePast'
-    | 'disableToday'
     | 'weekends'
     | 'fixedRange'
     | 'startOfWeek'
@@ -241,7 +217,7 @@ type CommonProps = Required<
     | 'className'
   >
 > &
-  Pick<CalendarProps, 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange' | 'initialView'>;
+  Pick<CalendarProps, 'isHighlight' | 'onEachMultiSelect' | 'onPartialRangeSelect' | 'onChange' | 'initialView'>;
 
 export interface CalendarViewProps extends CommonProps {
   onChangeNewSelectedRangeEnd: (date: Date | undefined) => unknown;
@@ -264,8 +240,6 @@ export interface CalendarViewProps extends CommonProps {
   newSelectedRangeEnd: Date | undefined;
   selectedMultiDates: Record<string, Date | undefined>;
   viewDate: Date | undefined;
-  maxAllowedDate: string | undefined;
-  minAllowedDate: string | undefined;
   weekendMap: Record<WeekdayIndices, 1>;
   monthInView: MonthIndices;
   yearInView: number;
@@ -295,9 +269,6 @@ export type DayOfMonthSelectorProps = Pick<
   | 'isMultiSelectorView'
   | 'isRangeSelectModeOn'
   | 'onChangeRangeSelectMode'
-  | 'disableFuture'
-  | 'disablePast'
-  | 'disableToday'
   | 'hideAdjacentDates'
   | 'lockView'
   | 'isDisabled'
@@ -305,13 +276,11 @@ export type DayOfMonthSelectorProps = Pick<
   | 'onChange'
   | 'onPartialRangeSelect'
   | 'onEachMultiSelect'
-  | 'maxAllowedDate'
-  | 'minAllowedDate'
   | 'allowFewerDatesThanRange'
   | 'skipDisabledDatesInRange'
 >;
 
-export interface MonthSelectorProps {
+export interface MonthSelectorProps extends Pick<CalendarViewProps, 'monthsLabel'> {
   onChangeViewType: (view: 'month_dates' | 'months' | 'years') => unknown;
   onChangeViewingMonth: (month: MonthIndices) => unknown;
 }
@@ -323,12 +292,12 @@ export interface YearSelectorProps {
   yearMatrixEnd: number;
 }
 
-export interface WeekdayRowProps {
+export interface WeekdayRowProps extends Pick<CalendarViewProps, 'weekDaysLabel'> {
   startOfWeek: WeekdayIndices;
   weekendMap: Record<WeekdayIndices, 1>;
 }
 
-export interface HeaderProps {
+export interface HeaderProps extends Pick<CalendarViewProps, 'monthsLabel'> {
   onClickPrev: () => any;
   onClickNext: () => any;
   onChangeViewType: (view: ViewType) => any;
@@ -347,7 +316,7 @@ export interface DayOfMonthCellProps {
   onDateClicked: (cell: DayOfMonthCell) => unknown;
 }
 
-export interface MonthCellProps {
+export interface MonthCellProps extends Pick<CalendarViewProps, 'monthsLabel'> {
   cell: MonthCell;
   onMonthClicked: (cell: MonthCell) => unknown;
 }

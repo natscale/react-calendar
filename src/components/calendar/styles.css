@@ -327,7 +327,7 @@
   color: var(--rc-color-text-dom-range-ep-active);
 }
 
-.rc_body-days-of-month .rc_body-cell.rc_wknd.rc_range_start button ,
+.rc_body-days-of-month .rc_body-cell.rc_wknd.rc_range_start button,
 .rc_body-days-of-month .rc_body-cell.rc_wknd.rc_range_end button {
   color: var(--rc-color-text-dom-range-ep-active);
 }

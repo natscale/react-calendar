@@ -52,9 +52,9 @@ function Component({
   view,
   setView,
   isSecondary,
+  monthsLabel,
+  weekDaysLabel,
   selectedMultiDates,
-  minAllowedDate,
-  maxAllowedDate,
   lockView,
   startOfWeek,
   noPadRangeCell,
@@ -76,11 +76,8 @@ function Component({
   isDisabled,
   checkIfWeekend,
   onChange,
-  disableFuture,
   weekendMap,
-  disablePast,
   isHighlight,
-  disableToday,
 }: CalendarViewProps): React.ReactElement<CalendarViewProps> {
   const styles = useMemo(() => getStyles(size, fontSize), [size, fontSize]);
 
@@ -359,6 +356,7 @@ function Component({
       ref={calendarRef}
     >
       <Header
+        monthsLabel={monthsLabel}
         isSecondary={isSecondary}
         showDualCalendar={showDualCalendar}
         onClickPrev={onPrevClick}
@@ -371,7 +369,13 @@ function Component({
         yearMatrixEnd={yearMatrixRangeEnd}
       />
       <div style={bodyStyles} className="rc_body">
-        {view === 'months' && <MonthSelector onChangeViewType={setView} onChangeViewingMonth={onChangeViewingMonth} />}
+        {view === 'months' && (
+          <MonthSelector
+            monthsLabel={monthsLabel}
+            onChangeViewType={setView}
+            onChangeViewingMonth={onChangeViewingMonth}
+          />
+        )}
         {view === 'years' && (
           <YearSelector
             onChangeViewType={setView}
@@ -382,7 +386,7 @@ function Component({
         )}
         {view === 'month_dates' && (
           <>
-            <WeekDaysRow startOfWeek={startOfWeek} weekendMap={weekendMap} />
+            <WeekDaysRow weekDaysLabel={weekDaysLabel} startOfWeek={startOfWeek} weekendMap={weekendMap} />
             <DayOfMonthSelector
               noPadRangeCell={noPadRangeCell}
               isRangeSelectModeOn={isRangeSelectModeOn}
@@ -409,15 +413,10 @@ function Component({
               selectedMultiDates={selectedMultiDates}
               isMultiSelectorView={isMultiSelectorView}
               monthInView={monthInView}
-              maxAllowedDate={maxAllowedDate}
-              minAllowedDate={minAllowedDate}
               weekends={weekends}
               onChange={onChange}
               yearInView={yearInView}
-              disableFuture={disableFuture}
-              disablePast={disablePast}
               isHighlight={isHighlight}
-              disableToday={disableToday}
             />
           </>
         )}
@@ -442,10 +441,6 @@ export function getInitialDateToShow(props: InitialDateParams): Date {
     ? props.selectedRangeStart
     : firstOfMulti && isValid(firstOfMulti)
     ? firstOfMulti
-    : isValid(props.minAllowedDate)
-    ? props.minAllowedDate
-    : isValid(props.maxAllowedDate)
-    ? props.maxAllowedDate
     : new Date();
 
   return date;
@@ -459,6 +454,4 @@ interface InitialDateParams {
   selectedDate?: Date;
   selectedRangeStart?: Date;
   selectedMultiDates?: Record<string, Date | undefined>;
-  minAllowedDate?: Date;
-  maxAllowedDate?: Date;
 }

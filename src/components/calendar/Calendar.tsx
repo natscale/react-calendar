@@ -18,7 +18,6 @@ import {
   checkIfWeekendHOF,
   giveRangeDays,
   validateAndReturnDateFormatter,
-  fromString,
   getNextMonth,
   getNextYear,
 } from '../../utils/date-utils';
@@ -26,6 +25,7 @@ import {
 import './styles.css';
 
 import { CalendarView, getInitialDateToShow } from '../calendar-view/CalendarView';
+import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP, NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP } from '../../utils/constants';
 
 const Views: Record<ViewType, 1> = {
   years: 1,
@@ -50,9 +50,7 @@ function CalendarWithRef(
     initialViewDate,
     allowFewerDatesThanRange = false,
     startOfWeek = 1,
-    maxAllowedDate,
     skipDisabledDatesInRange = false,
-    minAllowedDate,
     fixedRange,
     isDisabled,
     onPartialRangeSelect,
@@ -61,12 +59,11 @@ function CalendarWithRef(
     initialView,
     onChange,
     isHighlight,
+    monthsLabel = NATIVE_INDEX_TO_LABEL_MONTHS_MAP,
+    weekDaysLabel = NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP,
     lockView = false,
-    disableFuture = false,
     size = DEFAULT_SIZE,
     fontSize = 16,
-    disablePast = false,
-    disableToday = false,
     showDualCalendar = false,
     hideAdjacentDates = false,
   }: CalendarProps,
@@ -87,47 +84,16 @@ function CalendarWithRef(
       : [6, 0];
   }, [weekends]);
 
-  const maxDate = useMemo(() => {
-    return isValid(maxAllowedDate) ? toString(maxAllowedDate) : undefined;
-  }, [maxAllowedDate]);
-
-  const minDate = useMemo(() => {
-    return isValid(minAllowedDate) ? toString(minAllowedDate) : undefined;
-  }, [minAllowedDate]);
-
   const viewDate = useMemo(() => {
     return isValid(initialViewDate) ? initialViewDate : undefined;
   }, [initialViewDate]);
 
-  const applyMaxConstraint = useMemo(() => {
-    return isValid(maxAllowedDate)
-      ? isValid(minAllowedDate)
-        ? isBefore(maxAllowedDate, minAllowedDate)
-        : true
-      : false;
-  }, [maxAllowedDate, minAllowedDate]);
-
-  const applyminConstraint = useMemo(() => {
-    return isValid(minAllowedDate)
-      ? isValid(maxAllowedDate)
-        ? isBefore(maxAllowedDate, minAllowedDate)
-        : true
-      : false;
-  }, [maxAllowedDate, minAllowedDate]);
-
   const checkDisabledForADate = useMemo(
     () =>
       checkIfDateIsDisabledHOF({
-        disablePast,
-        disableToday,
-        disableFuture,
         customDisabledCheck: isDisabled,
-        maxDate: maxDate ? fromString(maxDate) : undefined,
-        minDate: minDate ? fromString(minDate) : undefined,
-        applyMax: applyMaxConstraint,
-        applyMin: applyminConstraint,
       }),
-    [applyMaxConstraint, applyminConstraint, disableFuture, disablePast, disableToday, isDisabled, maxDate, minDate],
+    [isDisabled],
   );
 
   const checkIfWeekend = useMemo(() => checkIfWeekendHOF(weekendIndexes), [weekendIndexes]);
@@ -202,8 +168,6 @@ function CalendarWithRef(
         selectedRangeStart: selectedRangeStart,
         selectedMultiDates: selectedMultiDates,
         viewDate: viewDate,
-        minAllowedDate: minDate ? fromString(minDate) : undefined,
-        maxAllowedDate: maxDate ? fromString(maxDate) : undefined,
       }).getMonth() as MonthIndices,
   );
 
@@ -218,8 +182,6 @@ function CalendarWithRef(
       selectedRangeStart: selectedRangeStart,
       selectedMultiDates: selectedMultiDates,
       viewDate: viewDate,
-      minAllowedDate: minDate ? fromString(minDate) : undefined,
-      maxAllowedDate: maxDate ? fromString(maxDate) : undefined,
     }).getFullYear(),
   );
 
@@ -262,6 +224,8 @@ function CalendarWithRef(
 
   const commonProps = useMemo<Omit<CalendarViewProps, 'isSecondary'>>(
     () => ({
+      monthsLabel,
+      weekDaysLabel,
       noPadRangeCell: !!noPadRangeCell && isRangeSelectorView,
       showDualCalendar: isDualMode,
       viewDate: viewDate,
@@ -296,14 +260,9 @@ function CalendarWithRef(
       checkIfWeekend: checkIfWeekend,
       selectedMultiDates: selectedMultiDates,
       isMultiSelectorView: isMultiSelectorView,
-      maxAllowedDate: maxDate,
-      minAllowedDate: minDate,
       onChange: onChange,
       view: view,
       setView: changeView,
-      disableFuture: disableFuture,
-      disablePast: disablePast,
-      disableToday: disableToday,
       weekendMap: weekendMap,
       yearInView,
       monthInView,
@@ -312,6 +271,8 @@ function CalendarWithRef(
     }),
     [
       noPadRangeCell,
+      monthsLabel,
+      weekDaysLabel,
       isRangeSelectorView,
       isDualMode,
       viewDate,
@@ -341,15 +302,10 @@ function CalendarWithRef(
       checkIfWeekend,
       selectedMultiDates,
       isMultiSelectorView,
-      maxDate,
-      minDate,
       isHighlight,
       onChange,
       view,
       changeView,
-      disableFuture,
-      disablePast,
-      disableToday,
       weekendMap,
       yearInView,
       monthInView,

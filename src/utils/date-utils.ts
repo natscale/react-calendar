@@ -545,71 +545,9 @@ export function checkIfWeekendHOF(weekends: WeekdayIndices[]): (date: Date) => b
 }
 
 export function checkIfDateIsDisabledHOF(params: CheckIfDateIsDisabledHOFParams): (date: Date) => boolean {
-  const { disablePast, disableToday, disableFuture, customDisabledCheck, maxDate, minDate, applyMax, applyMin } =
-    params;
-
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth();
-  const currDate = today.getDate();
+  const { customDisabledCheck } = params;
 
   return function checkIfDateIsDisabled(dateToCheck: Date) {
-    if (disablePast) {
-      if (dateToCheck.getFullYear() < currentYear) {
-        return true;
-      }
-
-      if (dateToCheck.getFullYear() === currentYear && dateToCheck.getMonth() < currentMonth) {
-        return true;
-      }
-
-      if (
-        dateToCheck.getFullYear() === currentYear &&
-        dateToCheck.getMonth() === currentMonth &&
-        dateToCheck.getDate() < currDate
-      ) {
-        return true;
-      }
-    }
-    if (disableToday) {
-      if (
-        dateToCheck.getFullYear() === currentYear &&
-        dateToCheck.getMonth() === currentMonth &&
-        dateToCheck.getDate() === currDate
-      ) {
-        return true;
-      }
-    }
-    if (disableFuture) {
-      if (dateToCheck.getFullYear() > currentYear) {
-        return true;
-      }
-
-      if (dateToCheck.getFullYear() === currentYear && dateToCheck.getMonth() > currentMonth) {
-        return true;
-      }
-
-      if (
-        dateToCheck.getFullYear() === currentYear &&
-        dateToCheck.getMonth() === currentMonth &&
-        dateToCheck.getDate() > currDate
-      ) {
-        return true;
-      }
-    }
-
-    if (applyMax && maxDate) {
-      if (isBefore(dateToCheck, maxDate)) {
-        return true;
-      }
-    }
-
-    if (applyMin && minDate) {
-      if (isBefore(minDate, dateToCheck)) {
-        return true;
-      }
-    }
-
     if (typeof customDisabledCheck === 'function') {
       return customDisabledCheck(dateToCheck);
     }

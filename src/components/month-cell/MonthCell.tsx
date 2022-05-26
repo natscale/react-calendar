@@ -2,8 +2,6 @@ import React, { memo } from 'react';
 
 import { MonthCellProps } from '../calendar/Calendar';
 
-import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
-
 const rcBodyCellValue = {
   width: '100%',
   height: '100%',
@@ -20,7 +18,7 @@ const rcBodyCellValueButton = {
   justifyContent: 'center',
 };
 
-function Component({ cell, onMonthClicked }: MonthCellProps) {
+function Component({ cell, onMonthClicked, monthsLabel }: MonthCellProps) {
   return (
     <div style={rcBodyCellValue}>
       <button
@@ -30,7 +28,7 @@ function Component({ cell, onMonthClicked }: MonthCellProps) {
           onMonthClicked(cell);
         }}
       >
-        {NATIVE_INDEX_TO_LABEL_MONTHS_MAP[cell.month]}
+        {monthsLabel[cell.month]}
       </button>
     </div>
   );

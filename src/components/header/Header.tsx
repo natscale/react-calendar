@@ -3,8 +3,6 @@ import React, { memo } from 'react';
 
 import { HeaderProps } from '../../utils/types';
 
-import { NATIVE_INDEX_TO_LABEL_MONTHS_MAP } from '../../utils/constants';
-
 const header = {
   root: {
     height: '12%',
@@ -28,6 +26,7 @@ const header = {
 function HeaderComponent({
   onClickPrev,
   onChangeViewType,
+  monthsLabel,
   showDualCalendar,
   isSecondary,
   onClickNext,
@@ -57,7 +56,7 @@ function HeaderComponent({
           onClick={() => !isSecondary && onChangeViewType('years')}
         >
           <div>
-            <span>{NATIVE_INDEX_TO_LABEL_MONTHS_MAP[viewingMonth]}</span>
+            <span>{monthsLabel[viewingMonth]}</span>
           </div>
           <div>
             <span>{viewingYear}</span>

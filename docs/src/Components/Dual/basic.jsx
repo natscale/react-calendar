@@ -5,7 +5,7 @@ import { Calendar } from '../../latest/main';
 import '../../latest/main.css';
 
 export default function App() {
-  const [value, setValue] = useState(new Date());
+  const [value, setValue] = useState([]);
 
   const onChange = useCallback(
     (val) => {
@@ -14,5 +14,5 @@ export default function App() {
     [setValue],
   );
 
-  return <Calendar disablePast value={value} onChange={onChange} />;
+  return <Calendar showDualCalendar isRangeSelector value={value} onChange={onChange} />;
 }
