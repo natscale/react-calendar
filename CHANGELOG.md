@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.0-beta.25
+
+### Breaking Changes
+
+- Removed `allowFewerDatesThanRange`, `skipDisabledDatesInRange`. Adds unrequired complexity.
+
 ## 0.0.0-beta.24
 
 ### Breaking Changes
