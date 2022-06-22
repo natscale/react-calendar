@@ -6,7 +6,6 @@
 /build/
 
 yarn.lock
-README.md
 CODE_OF_CONDUCT.md
 CHANGELOG.md
 .prettierrc

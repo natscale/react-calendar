@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.0-beta.26
+
+- Removed `README.md` fron `.npmignore`
+
 ## 0.0.0-beta.25
 
 ### Breaking Changes
