@@ -14,48 +14,26 @@ import { NATIVE_INDEX_TO_LABEL_WEEKDAY_MAP } from './constants';
 /**
  * Add number of days to a month.
  */
-export function addDays(
-  date: Date,
-  numberOfDaysToAdd: number,
-  options: {
-    isDisabled: (arg: Date) => boolean;
-    skipDisabledDatesInRange?: boolean;
-    upperLimit?: Date;
-  },
-): { endDate: Date; limitReached: boolean } {
+export function addDays(date: Date, numberOfDaysToAdd: number): { endDate: Date } {
   let daysLeftToAdd = numberOfDaysToAdd;
   let newDate = date;
-  let limitReached = false;
   let loopControl = 0;
 
   while (daysLeftToAdd > 0) {
     if (loopControl === 1500) {
-      limitReached = true;
       break;
     }
 
     const nextCouldBeDate = getNextDate(newDate);
 
-    if (options.upperLimit && isEqual(options.upperLimit, nextCouldBeDate)) {
-      limitReached = true;
-      break;
-    }
-
     newDate = nextCouldBeDate;
 
-    if (options.skipDisabledDatesInRange) {
-      if (options.skipDisabledDatesInRange && !options.isDisabled(nextCouldBeDate)) {
-        // if skipping is enabled and date is not disabled then decrement
-        daysLeftToAdd--;
-      }
-    } else {
-      // if skipping is disabled then just decrement
-      daysLeftToAdd--;
-    }
+    daysLeftToAdd--;
+
     loopControl++;
   }
 
-  return { endDate: newDate, limitReached };
+  return { endDate: newDate };
 }
 
 /**
@@ -323,6 +301,23 @@ export function giveRangeDays(range: [Date, Date]): Date[] {
   }
   dates.push(end);
   return dates;
+}
+
+export function numDifference(range: [Date, Date]): number {
+  if (!Array.isArray(range)) {
+    return 0;
+  }
+  const [start, end] = range;
+  if (!isValid(start) || !isValid(end)) {
+    return 0;
+  }
+  let date = start;
+  let count = 0;
+  while (isBefore(end, date)) {
+    count++;
+    date = getNextDate(date);
+  }
+  return count;
 }
 
 // WEEKDAY UTILS

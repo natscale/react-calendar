@@ -61,9 +61,7 @@ function Component({
   weekends,
   isRangeSelectModeOn,
   onChangeRangeSelectMode,
-  skipDisabledDatesInRange,
   hideAdjacentDates,
-  allowFewerDatesThanRange,
   selectedRangeEnd,
   newSelectedRangeStart,
   onChangeNewSelectedRangeEnd,
@@ -391,9 +389,7 @@ function Component({
               noPadRangeCell={noPadRangeCell}
               isRangeSelectModeOn={isRangeSelectModeOn}
               onChangeRangeSelectMode={onChangeRangeSelectMode}
-              skipDisabledDatesInRange={skipDisabledDatesInRange}
               hideAdjacentDates={hideAdjacentDates}
-              allowFewerDatesThanRange={allowFewerDatesThanRange}
               selectedDate={selectedDate}
               selectedRangeStart={selectedRangeStart}
               selectedRangeEnd={selectedRangeEnd}

@@ -140,14 +140,6 @@ export interface CalendarProps {
    */
   isRangeSelector?: boolean;
   /**
-   * Skip disabled dates when doing fixed range selection
-   */
-  skipDisabledDatesInRange?: boolean;
-  /**
-   * Skip disabled dates when doing fixed range selection
-   */
-  allowFewerDatesThanRange?: boolean;
-  /**
    * Always select n number of days starting from the user's selected date
    */
   fixedRange?: number;
@@ -207,8 +199,6 @@ type CommonProps = Required<
     | 'weekends'
     | 'fixedRange'
     | 'startOfWeek'
-    | 'skipDisabledDatesInRange'
-    | 'allowFewerDatesThanRange'
     | 'fontSize'
     | 'size'
     | 'hideAdjacentDates'
@@ -276,8 +266,6 @@ export type DayOfMonthSelectorProps = Pick<
   | 'onChange'
   | 'onPartialRangeSelect'
   | 'onEachMultiSelect'
-  | 'allowFewerDatesThanRange'
-  | 'skipDisabledDatesInRange'
 >;
 
 export interface MonthSelectorProps extends Pick<CalendarViewProps, 'monthsLabel'> {

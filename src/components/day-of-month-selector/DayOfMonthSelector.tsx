@@ -33,7 +33,6 @@ function DayOfMonthSelectorComponent({
   startOfWeek: weekStartIndex,
   newSelectedRangeEnd,
   isRangeSelectorView,
-  skipDisabledDatesInRange,
   onChangeRangeSelectMode: setIsRangeSelectModeOn,
   fixedRange: fixedRangeLength,
   isFixedRangeView,
@@ -48,7 +47,6 @@ function DayOfMonthSelectorComponent({
   weekends: weekendIndices,
   onChange,
   yearInView: viewingYear,
-  allowFewerDatesThanRange,
   noPadRangeCell,
   lockView,
   checkIfWeekend,
@@ -145,18 +143,10 @@ function DayOfMonthSelectorComponent({
           onPartialRangeSelect && onPartialRangeSelect(clickedDate);
         }
       } else if (isRangeSelectorView && isFixedRangeView) {
-        const { endDate, limitReached } = addDays(clickedDate, fixedRangeLength, {
-          isDisabled,
-          skipDisabledDatesInRange,
-          upperLimit: lockView ? new Date(clickedDate.getFullYear(), clickedDate.getMonth() + 1, 1) : undefined,
-        });
+        const { endDate } = addDays(clickedDate, fixedRangeLength);
 
-        if (limitReached && !allowFewerDatesThanRange) {
-          //
-        } else {
-          if (typeof onChange === 'function') {
-            onChange([clickedDate, endDate]);
-          }
+        if (typeof onChange === 'function') {
+          onChange([clickedDate, endDate]);
         }
       } else if (isMultiSelectorView) {
         const stringkey = toString(clickedDate);
@@ -195,9 +185,6 @@ function DayOfMonthSelectorComponent({
       onChangeNewSelectedRangeStart,
       onPartialRangeSelect,
       fixedRangeLength,
-      isDisabled,
-      skipDisabledDatesInRange,
-      allowFewerDatesThanRange,
       selectedMultiDates,
       onEachMultiSelect,
     ],

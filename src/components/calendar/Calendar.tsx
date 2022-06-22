@@ -20,6 +20,7 @@ import {
   validateAndReturnDateFormatter,
   getNextMonth,
   getNextYear,
+  numDifference,
 } from '../../utils/date-utils';
 
 import './styles.css';
@@ -48,9 +49,7 @@ function CalendarWithRef(
     useDarkMode = false,
     weekends,
     initialViewDate,
-    allowFewerDatesThanRange = false,
     startOfWeek = 1,
-    skipDisabledDatesInRange = false,
     fixedRange,
     isDisabled,
     onPartialRangeSelect,
@@ -125,7 +124,9 @@ function CalendarWithRef(
 
   // selected range start date
   const selectedRangeStart = useMemo(() => {
-    if (isRangeSelectorView && Array.isArray(value) && isValid(value[0])) {
+    if (isFixedRangeView && (!Array.isArray(value) || numDifference(value as [Date, Date]) !== fixedRange)) {
+      return undefined;
+    } else if (isRangeSelectorView && Array.isArray(value) && isValid(value[0])) {
       const year = value[0].getFullYear();
       const month = value[0].getMonth();
       const date = value[0].getDate();
@@ -133,7 +134,7 @@ function CalendarWithRef(
     } else {
       return undefined;
     }
-  }, [isRangeSelectorView, value]);
+  }, [fixedRange, isFixedRangeView, isRangeSelectorView, value]);
 
   const selectedRangeEnd = useMemo(() => {
     if (
@@ -240,8 +241,6 @@ function CalendarWithRef(
       weekends: weekendIndexes,
       isRangeSelectModeOn: isRangeSelectModeOn,
       onChangeRangeSelectMode: setIsRangeSelectModeOn,
-      skipDisabledDatesInRange: !!skipDisabledDatesInRange,
-      allowFewerDatesThanRange: !!allowFewerDatesThanRange,
       selectedDate: selectedDate,
       selectedRangeStart: selectedRangeStart,
       selectedRangeEnd: selectedRangeEnd,
@@ -285,8 +284,6 @@ function CalendarWithRef(
       startOfTheWeek,
       weekendIndexes,
       isRangeSelectModeOn,
-      skipDisabledDatesInRange,
-      allowFewerDatesThanRange,
       selectedDate,
       selectedRangeStart,
       selectedRangeEnd,
