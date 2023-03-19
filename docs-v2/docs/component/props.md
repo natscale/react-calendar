@@ -1,0 +1,583 @@
+---
+sidebar_position: 1
+---
+
+# Props
+
+react-calendar provides a number of props to configure it.
+
+## Basic
+
+By default the calendar starts from Sun which is represented 0 index.
+You can provide the index for any other day that you want as start of the week.
+
+import Value from '../../src/components/Props/value';
+
+<Value />
+
+| Prop                  | Type                    |
+| --------------------- | ----------------------- |
+| `value` (required)    | `Date`                  |
+| `onChange` (required) | `(value: Date) => void` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar value={value} onChange={onChange} />;
+}
+```
+
+## Start Day Of Week
+
+By default the calendar starts from Sun which is represented 0 index.
+You can provide the index for any other day that you want as start of the week.
+
+import StartOfWeek from '../../src/components/Props/startOfWeek';
+
+<StartOfWeek />
+
+| Prop          | Type     | Default | Enum                        |
+| ------------- | -------- | ------- | --------------------------- |
+| `startOfWeek` | `number` | `0`     | `0 , 1 , 2 , 3 , 4 , 5 , 6` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar startOfWeek={1} value={value} onChange={onChange} />;
+}
+```
+
+## Weekend
+
+By default the calendar starts from Sun which is represented 0 index.
+You can provide the index for any other day that you want as start of the week.
+
+import Weekends from '../../src/components/Props/weekends';
+
+<Weekends />
+
+| Prop       | Type            | Default | Enum                        |
+| ---------- | --------------- | ------- | --------------------------- |
+| `weekends` | `Array<number>` | `[0,6]` | `0 , 1 , 2 , 3 , 4 , 5 , 6` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar weekends={[0, 6]} value={value} onChange={onChange} />;
+}
+```
+
+## Change Labels
+
+The calendar uses english labels for months and weeks by default. But you can change it
+using the props provided.
+
+import Labels from '../../src/components/Props/monthsLabel';
+
+<Labels />
+
+| Prop            | Type                       |
+| --------------- | -------------------------- |
+| `weekDaysLabel` | `Record<0 ... 6, string>`  |
+| `monthsLabel`   | `Record<0 ... 11, string>` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+const monthsLabel = {
+  0: 'janvier',
+  1: 'février',
+  2: 'mars',
+  3: 'avril',
+  4: 'mai',
+  5: 'juin',
+  6: 'juillet',
+  7: 'août',
+  8: 'septembre',
+  9: 'octobre',
+  10: 'novembre',
+  11: 'décembre',
+};
+
+const weekDaysLabel = {
+  0: 'Di',
+  1: 'Lu',
+  2: 'Ma',
+  3: 'Me',
+  4: 'Je',
+  5: 'Ve',
+  6: 'Sa',
+};
+
+export default function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar weekDaysLabel={weekDaysLabel} monthsLabel={monthsLabel} value={value} onChange={onChange} />;
+}
+```
+
+## Select Multiple Dates
+
+Enable multi selection.
+
+import IsMultiSelector from '../../src/components/Props/isMultiSelector';
+
+<IsMultiSelector />
+
+| Prop                  | Type                           | Default |
+| --------------------- | ------------------------------ | ------- |
+| `isMultiSelector`     | `boolean`                      | `false` |
+| `value` (required)    | `Array<Date>`                  |
+| `onChange` (required) | `(value: Array<Date>) => void` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar isMultiSelector value={value} onChange={onChange} />;
+}
+```
+
+## Select Date Range
+
+Select a date range.
+
+import IsRangeSelector from '../../src/components/Props/isRangeSelector';
+
+<IsRangeSelector />
+
+| Prop                  | Type                            | Default |
+| --------------------- | ------------------------------- | ------- |
+| `isRangeSelector`     | `boolean`                       | `false` |
+| `value` (required)    | `[Date, Date]`                  |
+| `onChange` (required) | `(value: [Date, Date]) => void` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar isRangeSelector value={value} onChange={onChange} />;
+}
+```
+
+## Fixed Date Range
+
+Only works if calendar is a range selector.
+
+import FixedRange from '../../src/components/Props/fixedRange';
+
+<FixedRange />
+
+| Prop                  | Type                            | Default     |
+| --------------------- | ------------------------------- | ----------- |
+| `fixedRange`          | `number`                        | `undefined` |
+| `value` (required)    | `[Date, Date]`                  |
+| `onChange` (required) | `(value: [Date, Date]) => void` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState([new Date(2022, 6, 1), new Date(2022, 6, 6)]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar fixedRange={5} isRangeSelector value={value} onChange={onChange} />;
+}
+```
+
+## Date Range With No Padding
+
+Only works if calendar is a range selector.
+
+import NoPadRangeCell from '../../src/components/Props/noPadRangeCell';
+
+<NoPadRangeCell />
+
+| Prop             | Type      | Default |
+| ---------------- | --------- | ------- |
+| `noPadRangeCell` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState([]);
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar noPadRangeCell isRangeSelector value={value} onChange={onChange} />;
+}
+```
+
+## Hide Adjacent Dates
+
+Hide Adjacent Dates.
+
+import HideAdjacentDates from '../../src/components/Props/hideAdjacentDates';
+
+<HideAdjacentDates />
+
+| Prop                | Type      | Default |
+| ------------------- | --------- | ------- |
+| `hideAdjacentDates` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar hideAdjacentDates value={value} onChange={onChange} />;
+}
+```
+
+## Classname
+
+Pass custom classnames.
+
+| Prop        | Type     | Default |
+| ----------- | -------- | ------- |
+| `className` | `string` |         |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar className="my-class" value={value} onChange={onChange} />;
+}
+```
+
+## Initial View
+
+Todo
+
+import InitialView from '../../src/components/Props/initialView';
+
+<InitialView />
+
+| Prop          | Type   | Default         | Enum                               |
+| ------------- | ------ | --------------- | ---------------------------------- |
+| `initialView` | `enum` | `"month_dates"` | `"years", "months", "month_dates"` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar initialView="years" value={value} onChange={onChange} />;
+}
+```
+
+## Custom Dates Disabled
+
+Todo
+
+import IsDisabled from '../../src/components/Props/isDisabled';
+
+<IsDisabled />
+
+| Prop         | Type                      | Default |
+| ------------ | ------------------------- | ------- |
+| `isDisabled` | `(date: Date) => boolean` |         |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  const isDisabled = useCallback((date) => {
+    // disable wednesdays and any date that is divisible by 5
+    if (date.getDay() === 3 || date.getDate() % 5 === 0) {
+      return true;
+    }
+  }, []);
+
+  return <Calendar isDisabled={isDisabled} value={value} onChange={onChange} />;
+}
+```
+
+## Custom Dates Highlight
+
+Todo
+
+import IsHighlight from '../../src/components/Props/isHighlight';
+
+<IsHighlight />
+
+| Prop          | Type                      | Default |
+| ------------- | ------------------------- | ------- |
+| `isHighlight` | `(date: Date) => boolean` |         |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  const isHighlight = useCallback((date) => {
+    // highlight any data that is divisible by 5
+    if (date.getDate() % 5 === 0) {
+      return true;
+    }
+  }, []);
+
+  return <Calendar isHighlight={isHighlight} value={value} onChange={onChange} />;
+}
+```
+
+## Lock View
+
+Todo
+
+import LockView from '../../src/components/Props/lockView';
+
+<LockView />
+
+| Prop       | Type      | Default |
+| ---------- | --------- | ------- |
+| `lockView` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar lockView value={value} onChange={onChange} />;
+}
+```
+
+## Dark Mode
+
+Enable/Disable dark mode.
+
+import UseDarkMode from '../../src/components/Props/useDarkMode';
+
+<UseDarkMode />
+
+| Prop          | Type      | Default |
+| ------------- | --------- | ------- |
+| `useDarkMode` | `boolean` | `false` |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar useDarkMode value={value} onChange={onChange} />;
+}
+```
+
+## Size Control
+
+Enable/Disable dark mode.
+
+import Size from '../../src/components/Props/size';
+
+<Size />
+
+| Prop       | Type     | Default |
+| ---------- | -------- | ------- |
+| `fontSize` | `number` | `16`    |
+| `size`     | `number` | `276`   |
+
+```js
+import React, { useCallback, useState } from 'react';
+
+import { Calendar } from '@natscale/react-calendar';
+
+import '@natscale/react-calendar/dist/main.css';
+
+export function App() {
+  const [value, setValue] = useState(new Date());
+
+  const onChange = useCallback(
+    (val) => {
+      setValue(val);
+    },
+    [setValue],
+  );
+
+  return <Calendar size={420} fontSize={18} value={value} onChange={onChange} />;
+}
+```

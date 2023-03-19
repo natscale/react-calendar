@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Calendar } from '../../latest/main';
+import { Calendar } from '../../../latest/main';
 
-import '../../latest/main.css';
+import '../../../latest/main.css';
 
 export default function App() {
   const [value, setValue] = useState([new Date(2023, 1, 1), new Date(2023, 1, 10)]);

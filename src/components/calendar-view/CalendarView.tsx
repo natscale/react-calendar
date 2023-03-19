@@ -93,11 +93,29 @@ function Component({
       .map((str) => selectedMultiDates[str])
       .filter((d) => isValid(d));
 
+    // update view when first multi is selected
     if (dates.length === 1 && dates[0]) {
       onChangeViewingMonth(dates[0].getMonth() as MonthIndices);
       onChangeViewingYear(dates[0].getFullYear());
     }
-  }, [isSecondary, onChangeViewingMonth, onChangeViewingYear, selectedMultiDates]);
+  }, [
+    isSecondary,
+    onChangeViewingMonth,
+    onChangeViewingYear,
+    selectedMultiDates,
+    isMultiSelectorView,
+    isFixedRangeView,
+  ]);
+
+  // updating view when ranges are changed
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('val changed');
+    if (isFixedRangeView && newSelectedRangeStart) {
+      onChangeViewingMonth(newSelectedRangeStart.getMonth() as MonthIndices);
+      onChangeViewingYear(newSelectedRangeStart.getFullYear());
+    }
+  }, [onChangeViewingMonth, onChangeViewingYear, newSelectedRangeStart, isFixedRangeView]);
 
   const [startingYearForCurrRange, setStartingYearForCurrRange] = useState(getStartOfRangeForAYear(yearInView));
 

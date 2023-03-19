@@ -124,6 +124,8 @@ function CalendarWithRef(
 
   // selected range start date
   const selectedRangeStart = useMemo(() => {
+    // eslint-disable-next-line no-console
+    console.log('val changed');
     if (isFixedRangeView && (!Array.isArray(value) || numDifference(value as [Date, Date]) !== fixedRange)) {
       return undefined;
     } else if (isRangeSelectorView && Array.isArray(value) && isValid(value[0])) {
